@@ -1,0 +1,666 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Ramda 目录说明
+Ramda API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 src/ 下编写的模块（函数）供外部调用，在 internal/ 下编写的模块仅供内部使用，属于帮助函数，内部函数以下划线 &amp;quot;_&amp;quot; 开头。
+本次源码分析使用版本号为：Ramda v0.22.1。
+源码分析
+
+
+__ 占位符
+占位符是一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ramda 源码分析（一） 柯里化curry">
+<meta property="og:url" content="https://adispring.github.io/2016/10/21/Ramda-SourceCode-Analyze/index.html">
+<meta property="og:site_name" content="wangzengdi's Blog">
+<meta property="og:description" content="Ramda 目录说明
+Ramda API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 src/ 下编写的模块（函数）供外部调用，在 internal/ 下编写的模块仅供内部使用，属于帮助函数，内部函数以下划线 &amp;quot;_&amp;quot; 开头。
+本次源码分析使用版本号为：Ramda v0.22.1。
+源码分析
+
+
+__ 占位符
+占位符是一">
+<meta property="og:updated_time" content="2016-10-23T04:50:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ramda 源码分析（一） 柯里化curry">
+<meta name="twitter:description" content="Ramda 目录说明
+Ramda API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 src/ 下编写的模块（函数）供外部调用，在 internal/ 下编写的模块仅供内部使用，属于帮助函数，内部函数以下划线 &amp;quot;_&amp;quot; 开头。
+本次源码分析使用版本号为：Ramda v0.22.1。
+源码分析
+
+
+__ 占位符
+占位符是一">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://adispring.github.io/2016/10/21/Ramda-SourceCode-Analyze/"/>
+
+
+  <title> Ramda 源码分析（一） 柯里化curry | wangzengdi's Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wangzengdi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Functional Programming</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ramda 源码分析（一） 柯里化curry
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-21T09:34:59+08:00" content="2016-10-21">
+              2016-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/21/Ramda-SourceCode-Analyze/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/21/Ramda-SourceCode-Analyze/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ramda-mu-lu-shuo-ming">Ramda 目录说明</h2>
+<p><a href="http://ramdajs.com" target="_blank" rel="external">Ramda</a> API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 <strong>src/</strong> 下编写的模块（函数）供<strong>外部调用</strong>，在 <strong>internal/</strong> 下编写的模块仅供<strong>内部使用</strong>，属于帮助函数，<strong>内部函数以下划线 &quot;_&quot; 开头</strong>。</p>
+<p>本次源码分析使用版本号为：Ramda v0.22.1。</p>
+<h2 id="yuan-ma-fen-xi">源码分析</h2>
+<ul>
+<li>
+<p>__ 占位符</p>
+<p>占位符是一个 “普通的” object ，key 为 <code>@@functional/placeholder</code> ，value 为 true。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;<span class="string">'@@functional/placeholder'</span>: <span class="literal">true</span>&#125;;</div></pre></td></tr></table></figure></p>
+<p>配合柯里化函数使用，可以使柯里化函数传入实参不在限于从左往右依次传入，大大增强了柯里化函数的能力。</p>
+<p>举例如下，g 是一个柯里化的 ternary（三元）函数，_ 代表 R.__ ，下面的写法是等价的。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">g(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>, <span class="number">3</span>)(<span class="number">1</span>)</div><div class="line">g(_, _, <span class="number">3</span>)(<span class="number">1</span>)(<span class="number">2</span>)</div><div class="line">g(_, _, <span class="number">3</span>)(<span class="number">1</span>, <span class="number">2</span>)</div><div class="line">g(_, <span class="number">2</span>, _)(<span class="number">1</span>, <span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>)(<span class="number">1</span>)(<span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>)(<span class="number">1</span>, <span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>)(_, <span class="number">3</span>)(<span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<ul>
+<li>
+<p>_isPlaceholder</p>
+<p>判断实参是否为占位符（R.__），在柯里化函数中使用。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_isPlaceholder</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> a != <span class="literal">null</span> &amp;&amp;</div><div class="line">    <span class="keyword">typeof</span> a === <span class="string">'object'</span> &amp;&amp;</div><div class="line">    a[<span class="string">'@@functional/placeholder'</span>] === <span class="literal">true</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<ul>
+<li>
+<p>_curry1</p>
+<p>优化的内部单参数柯里化函数：对单参数函数<code>fn</code> 进行柯里化，返回柯里化了的 fn' → f1。</p>
+<p>当传入参数为空或者传入的是占位符，返回 f1；否则执行 f1 ，并返回执行结果。</p>
+<p>柯里化用到了闭包。_curry1/_curry2/_curry3 是为了柯里化 ramda API 优化用的。因为 ramda API 都是原生柯里化的，且参数一般不超过3个，所以用到上述3个内部优化的柯里化函数，以提高效率。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_curry1</span>(<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">arguments</span>.length === <span class="number">0</span> || _isPlaceholder(a)) &#123;</div><div class="line">      <span class="keyword">return</span> f1;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<ul>
+<li>
+<p>_curry2</p>
+<p>优化的内部双参数柯里化函数：对双参数函数 <code>fn</code> 进行柯里化，返回柯里化了的 fn' → f2。</p>
+<p>原理讲解：</p>
+<ol>
+<li>当无参数传入时，返回 f2；</li>
+<li>当有一个参数（a）传入时，判断该参数是否为 R.__ ：是则返回 f2，否则返回加持一个参数（a）的单参数柯里化函数；</li>
+<li>当传入两个参数时，若都是占位符，返回 f2，若有一个占位符则返回加持一个参数的单参数柯里化函数，若无占位符，则执行 fn。</li>
+</ol>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_curry2</span>(<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">    <span class="keyword">switch</span> (<span class="built_in">arguments</span>.length) &#123;</div><div class="line">      <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">        <span class="keyword">return</span> f2;</div><div class="line">      <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">return</span> _isPlaceholder(a) ? f2</div><div class="line">             : _curry1(<span class="function"><span class="keyword">function</span>(<span class="params">_b</span>) </span>&#123; <span class="keyword">return</span> fn(a, _b); &#125;);</div><div class="line">      <span class="keyword">default</span>:</div><div class="line">        <span class="keyword">return</span> _isPlaceholder(a) &amp;&amp; _isPlaceholder(b) ? f2</div><div class="line">             : _isPlaceholder(a) ? _curry1(<span class="function"><span class="keyword">function</span>(<span class="params">_a</span>) </span>&#123; <span class="keyword">return</span> fn(_a,   b); &#125;)</div><div class="line">             : _isPlaceholder(b) ? _curry1(<span class="function"><span class="keyword">function</span>(<span class="params">_b</span>) </span>&#123; <span class="keyword">return</span> fn(a, _b); &#125;)</div><div class="line">             : fn(a, b);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>_arity</p>
+<p>没有看出来 _arity 是干嘛用的，控制（限制）函数参数的个数？</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_arity</span>(<span class="params">n, fn</span>) </span>&#123;</div><div class="line">  <span class="comment">/* eslint-disable no-unused-vars */</span></div><div class="line">  <span class="keyword">switch</span> (n) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="number">0</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">1</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">2</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">3</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">4</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">5</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">6</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">7</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">8</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6, a7</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">9</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6, a7, a8</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">10</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6, a7, a8, a9</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">default</span>: <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'First argument to _arity must be a non-negative integer no greater than ten'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>curryN</p>
+<p>length：待柯里化函数参数的个数，fn：带柯里化函数</p>
+<p>参数个数为1，用 _curry1 对 fn 柯里化；参数个数范围为 (1，10] ，用 _curryN。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = _curry2(<span class="function"><span class="keyword">function</span> <span class="title">curryN</span>(<span class="params">length, fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (length === <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">return</span> _curry1(fn);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> _arity(length, _curryN(length, [], fn));</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>curry</p>
+<p>平时实际用到的柯里化函数</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = _curry1(<span class="function"><span class="keyword">function</span> <span class="title">curry</span>(<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> curryN(fn.length, fn);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/23/hello-world/" rel="prev" title="Hexo Workflow">
+                Hexo Workflow <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wangzengdi" />
+          <p class="site-author-name" itemprop="name">wangzengdi</p>
+          <p class="site-description motion-element" itemprop="description">FE@Meituan.com</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/adispring" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ramda-mu-lu-shuo-ming"><span class="nav-number">1.</span> <span class="nav-text">Ramda 目录说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yuan-ma-fen-xi"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangzengdi</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'adispring';
+      var disqus_identifier = '2016/10/21/Ramda-SourceCode-Analyze/';
+      var disqus_title = "Ramda 源码分析（一） 柯里化curry";
+      var disqus_url = 'https://adispring.github.io/2016/10/21/Ramda-SourceCode-Analyze/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

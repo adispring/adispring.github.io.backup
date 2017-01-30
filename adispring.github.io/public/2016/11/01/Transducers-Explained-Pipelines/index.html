@@ -1,0 +1,740 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="本文是 Transducer Explained 教程的第二篇。在第一篇中，讲解从 reducing functions 开始， 到 transformers， 再到使用 map transducers 的 transduce 。本文中，将介绍四个新的 transducers：filter、remove、drop 和 take。我们将展示如何将 transducers 组合成 pipeline，并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transducers Explained: Pipelines 中文">
+<meta property="og:url" content="https://adispring.github.io/2016/11/01/Transducers-Explained-Pipelines/index.html">
+<meta property="og:site_name" content="wangzengdi's Blog">
+<meta property="og:description" content="本文是 Transducer Explained 教程的第二篇。在第一篇中，讲解从 reducing functions 开始， 到 transformers， 再到使用 map transducers 的 transduce 。本文中，将介绍四个新的 transducers：filter、remove、drop 和 take。我们将展示如何将 transducers 组合成 pipeline，并">
+<meta property="og:updated_time" content="2016-12-10T13:21:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Transducers Explained: Pipelines 中文">
+<meta name="twitter:description" content="本文是 Transducer Explained 教程的第二篇。在第一篇中，讲解从 reducing functions 开始， 到 transformers， 再到使用 map transducers 的 transduce 。本文中，将介绍四个新的 transducers：filter、remove、drop 和 take。我们将展示如何将 transducers 组合成 pipeline，并">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://adispring.github.io/2016/11/01/Transducers-Explained-Pipelines/"/>
+
+
+  <title> Transducers Explained: Pipelines 中文 | wangzengdi's Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wangzengdi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Functional Programming</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Transducers Explained: Pipelines 中文
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-11-01T23:25:55+08:00" content="2016-11-01">
+              2016-11-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/01/Transducers-Explained-Pipelines/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/01/Transducers-Explained-Pipelines/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文是 Transducer Explained 教程的第二篇。在<a href="https://adispring.github.io/2016/10/24/Transducers-Explained-Part-1/">第一篇</a>中，讲解从 <em>reducing functions</em> 开始， 到 <em>transformers</em>， 再到使用 <code>map</code> <em>transducers</em> 的 <code>transduce</code> 。本文中，将介绍四个新的 <em>transducers</em>：<code>filter</code>、<code>remove</code>、<code>drop</code> 和 <code>take</code>。我们将展示如何将 <em>transducers</em> 组合成 <em>pipeline</em>，并讨论转换的顺序。我们还将改变 <code>reduce</code> 的实现，使其能够借助 <code>reduced</code> 值 提前终止遍历操作。</p>
+<p>那么，上次讲到哪了呢？</p>
+<h2 id="transformer">Transformer</h2>
+<p><a href="https://adispring.github.io/2016/10/24/Transducers-Explained-Part-1/">第一篇</a>文章中，通过定义 <em>transformer</em> 协议规范了 <code>reduce</code> 的步骤。</p>
+<p>所有 transformers 都包含3个方法：</p>
+<ol>
+<li>使用初始值初始化 transformation，<code>init</code></li>
+<li>使用 <em>reducing function</em> 来组合每个元素，<code>step</code></li>
+<li>将最后计算的结果转换为输出，<code>result</code></li>
+</ol>
+<p>在第一篇文章中，我们使用 <em>reducing functions</em> ：<code>mult</code>、<code>add</code> 和 <code>append</code> 来转换输入值。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> append = <span class="function">(<span class="params">value, item</span>) =&gt;</span> value.push(item);</div></pre></td></tr></table></figure></p>
+<p>本文中，我们只会用到 <code>append</code>，将元素拼接到数组的尾部。</p>
+<h2 id="reduce">Reduce</h2>
+<p>我们重新实现了 <code>reduce</code>，它接受以下参数：</p>
+<ol>
+<li>一个 transformer 或者将被封装成 transformer 的 <em>reducing Function</em></li>
+<li>一个初始值（例如<code>[]</code>)。</li>
+<li>一个输入源（例如传入 reduce 的数组）</li>
+</ol>
+<p>目前的实现使用 transformer 的 <code>step</code> 函数作为数组 <em>reducing function</em>，稍后将修改这一实现。</p>
+<p>在迭代过程中，使用两个参数来调用 <code>step</code> 函数：<code>value</code> 和 <code>item</code>。初始 value 由调用者提供，后续的每个 value 使用当前 <code>step</code> 函数的返回值。</p>
+<p><code>item</code> 由一些迭代过程（如何翻译？）提供。在第一篇文章中展示了两个过程：归约数组的每个元素，并使用每个新的 <code>item</code> 手动调用 <code>step</code> 函数。（在后续文章中我们将看到更多例子）。</p>
+<h2 id="transducer">Transducer</h2>
+<p>我们创建了 mapping <em>transducer</em>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> map = <span class="function"><span class="params">f</span> =&gt;</span> xf =&gt; (&#123;</div><div class="line">  <span class="attr">init</span>: <span class="function"><span class="params">()</span> =&gt;</span> xf.init(),</div><div class="line">  <span class="attr">step</span>: <span class="function">(<span class="params">result, item</span>) =&gt;</span> xf.step(result, f(item)),</div><div class="line">  <span class="attr">result</span>: <span class="function"><span class="params">result</span> =&gt;</span> xf.result(result),</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p><code>map</code> transducer 接受一个 mapping 函数：<code>f</code>，并返回一个 transducer：</p>
+<ol>
+<li>接受一个已有 transformer</li>
+<li>返回一个新的 transformer，用来通过 <code>f</code> 转换 <code>items</code></li>
+<li>代理给封装的 transformer 额外的处理</li>
+</ol>
+<p>函数<code>f</code>可以是接受一个 item, 然后将其映射为一个新值的任意函数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> plus1 = <span class="function"><span class="params">input</span> =&gt;</span> input + <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> plus2 = <span class="function"><span class="params">input</span> =&gt;</span> input + <span class="number">2</span>;</div></pre></td></tr></table></figure></p>
+<p>在本节的例子中将继续使用这两个简单的函数。</p>
+<h2 id="transduce">Transduce</h2>
+<p>我们定义了一个新函数，<code>transduce</code>, 其接受：</p>
+<ol>
+<li>一个 transducer: 定义transformation</li>
+<li>一个 stepper 函数，或 transformer (如 <code>append</code>)</li>
+<li>一个 stepper 函数 的初始值 (如 <code>[]</code>)</li>
+<li>输入源 (如一个待转换的数组)</li>
+</ol>
+<p>向 transducer 传入 <code>stepper</code> 函数，来创建一个 transformer, 然后将该 transformer、初始值和输入源一同传入 <code>reduce</code>。</p>
+<p>我们已经展示过，使用相同的 transducer 可以产生不同的结果，只要改变传入 <code>transduce</code> 的初始值和 <code>stepper</code> 函数</p>
+<h2 id="composition">Composition</h2>
+<p>最后，我们展示了可以通过组合已有 transducers 来创建新的 transducers</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> compose2 = <span class="function">(<span class="params">fn1, fn2</span>) =&gt;</span> item =&gt; fn1(fn2(item));</div><div class="line"></div><div class="line"><span class="keyword">const</span> transducer = compose2(</div><div class="line">      compose2(map(plus1), map(plus2)),</div><div class="line">      map(plus1));</div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [6,7,8]</span></div></pre></td></tr></table></figure></p>
+<p>被组合的 transducer 从左向右对输入源进行转换。</p>
+<p>今天我们从这里开始讲起。如果对上例不熟悉，可以参考<a href="https://adispring.github.io/2016/10/24/Transducers-Explained-Part-1/">第一篇文章</a></p>
+<h2 id="pipelines">Pipelines</h2>
+<p>首先，定义一个新的函数，用它可以组合任意数量的函数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> compose = <span class="function">(<span class="params">...fns</span>) =&gt;</span> xf =&gt; &#123;</div><div class="line">  <span class="keyword">let</span> i = fns.length - <span class="number">1</span>;</div><div class="line">  <span class="keyword">for</span>(; i &gt;=<span class="number">0</span>; i--) &#123; xf = fns[i](xf); &#125;</div><div class="line">  <span class="keyword">return</span> xf;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>这只是上面定义的 <code>compose2</code> 的扩展。函数组合从右向左：返回的函数接受用于调用右侧最后一个函数的初始参数。该调用的返回值(输出)用作左侧下一个函数的参数(输入)。对于所有传入 <code>ompose</code> 的函数，重复执行该过程。</p>
+<p>可以通过组合 <code>plus1</code> 和 <code>plus2</code> 来创建 <code>plus4</code>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 手动调用 </span></div><div class="line"><span class="keyword">const</span> value = plus1(plus1(plus2(<span class="number">5</span>)));</div><div class="line"><span class="comment">// 9</span></div><div class="line"></div><div class="line"><span class="comment">// 使用组合函数 (允许重复使用被组合的函数)</span></div><div class="line"><span class="keyword">const</span> plus4 = compose(plus1, plus1, plus2);</div><div class="line"><span class="keyword">const</span> value = plus4(<span class="number">5</span>);</div><div class="line"><span class="comment">// 9</span></div></pre></td></tr></table></figure></p>
+<p>我们通过组合 <code>map</code> transducers 来创建一个 <code>plus5</code> transducer。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> transducer = compose(</div><div class="line">      map(plus1),  <span class="comment">// [3,4,5]</span></div><div class="line">      map(plus2),  <span class="comment">// [5,6,7]</span></div><div class="line">      map(plus1),  <span class="comment">// [6,7,8]</span></div><div class="line">      map(plus1)); <span class="comment">// [7,8,9]</span></div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [7,8,9]</span></div></pre></td></tr></table></figure></p>
+<p>每个 transducer 旁边的注释将每次转换通过数组展示出来，这样每次完成一个完整的转换，更容易追踪转换的过程。</p>
+<p>然而，需要清楚，整个转换过程中，transducers 每次只顺序转换一个 item，并且不会产生中间结果。注释仅仅表示 pipeline 的每步的转换结果。我们将在下面继续讨论这个问题。</p>
+<p>实际上，虽然组合是从右向左，转换的顺序实际上是从左向右的（在示例中是从上向下）。（需要将 transducers 的组合顺序 和 组合后 transducers 对输入源的转换顺序区分开)。在本例中顺序并不重要，但下一个例子中，便需要考虑调用顺序了。</p>
+<h2 id="filter">Filter</h2>
+<p>我们来定义 <code>filter</code> transducer</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> filter = <span class="function"><span class="params">predicate</span> =&gt;</span> xf =&gt; (&#123;</div><div class="line">  <span class="attr">init</span>: <span class="function"><span class="params">()</span> =&gt;</span> xf.init(),</div><div class="line">  <span class="attr">step</span>: <span class="function">(<span class="params">value, item</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">const</span> allow = predicate(item);</div><div class="line">    <span class="keyword">if</span>(allow)&#123;</div><div class="line">      value = xf.step(value, item);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> value;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">result</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> xf.result(value),</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>注意到，只有在 predicate(断言) 返回 true 时，由 <code>filter</code> 返回的 transformer 才会代理给下一个(左侧) transformer。如果 predicate 返回 false，则会忽略该次 item，并返回上次的迭代结果。</p>
+<p>我们创建一个 transducer ，来过滤出所有奇数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isOdd = <span class="function"><span class="params">num</span> =&gt;</span> num % <span class="number">2</span> === <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> transducer = filter(isOdd);</div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [1,3,5]</span></div></pre></td></tr></table></figure></p>
+<p>我们创建了一个使用 <code>isOdd</code> predicate 来过滤元素的 transducer。然后使用 <code>transduce</code> 将其作用于一个整数数组，输出数组中只包含奇数。</p>
+<p>我们再创建一个函数，该函数返回一个检查与传入参数是否相等的 predicate。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// another predicate </span></div><div class="line"><span class="keyword">const</span> isEqual = <span class="function"><span class="params">y</span> =&gt;</span> x =&gt; x === y;</div><div class="line"></div><div class="line"><span class="keyword">const</span> transducer = filter(isEqual(<span class="number">2</span>));</div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [2]</span></div></pre></td></tr></table></figure></p>
+<p>可以看到，创建的 predicate `isEqual(2) 只允许数字 2 输出。</p>
+<p>再来一个辅助函数，接受一个 predicate，将其结果取反。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> not = <span class="function"><span class="params">predicate</span> =&gt;</span> x =&gt; !predicate(x);</div><div class="line"></div><div class="line"><span class="keyword">const</span> transducer = filter(not(isEqual(<span class="number">2</span>)));</div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [1,3,4,5]</span></div></pre></td></tr></table></figure></p>
+<p>我们修改了前面的例子：对 predicate <code>isEqual(2)</code> 取反，由此创建了一个移除输入源中所有数字 2 的 transducer。</p>
+<p>现在在我们的 pipeline 库中有了另一件武器，一起来把玩一下吧。</p>
+<h2 id="pipeline-shun-xu">Pipeline 顺序</h2>
+<p>我们来对每个元素加 1，然后过滤出奇数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> transducer = compose(</div><div class="line">      map(plus1),         <span class="comment">// [2,3,4,5,6]</span></div><div class="line">      filter(isOdd));     <span class="comment">// [3,5]</span></div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [3,5]</span></div></pre></td></tr></table></figure></p>
+<p>首先调用 <code>map(plus1)</code> transducer 对每个元素加 1，然后调用下一步转换：过滤出所有奇数。</p>
+<p>我们改变一下 transducers 的顺序，看看会发生什么。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> transducer = compose(</div><div class="line">      filter(isOdd),      <span class="comment">// [1,3,5]</span></div><div class="line">      map(plus1));        <span class="comment">// [2,4,6]</span></div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [2,4,6]</span></div></pre></td></tr></table></figure></p>
+<p>我们首先过滤出所有奇数。filter(<code>isOdd</code>) transformer 只将奇数传给下一个 transformer。所有传到下一步的元素(奇数)都会加1。</p>
+<p>上述表明了 <em>组合 transducers</em> 的两个重要性质：</p>
+<ol>
+<li>虽然组合是从右向左，但转换是从左向右。</li>
+<li>使用 transducers 越早减少 pipeline 中元素的数量，效率可能会越高。</li>
+</ol>
+<p>注意到，在最后一个例子中，<code>map(plus1)</code> 仅仅使用所有元素的子集调用。同样的，并未创建中间数组，仅仅作为注释便于理解而已。</p>
+<h2 id="remove">Remove</h2>
+<p>开始讲另一个 transducer 了哈。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> remove = <span class="function"><span class="params">predicate</span> =&gt;</span> filter(not(predicate));</div></pre></td></tr></table></figure></p>
+<p>很简单吧。实际上，我们可以通过对 predicate 取反 和 重用 <code>filter</code> 来创建 <code>remove</code>。</p>
+<p>我们来实践一下。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> transducer = compose(</div><div class="line">      filter(isOdd),        <span class="comment">// [1,3,5]</span></div><div class="line">      map(plus1),           <span class="comment">// [2,4,6] </span></div><div class="line">      remove(isEqual(<span class="number">4</span>)));  <span class="comment">// [2,6]</span></div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [2,6]</span></div></pre></td></tr></table></figure></p>
+<p>首先过滤出奇数，然后对每项加1，然后删除 <code>4</code>。</p>
+<h2 id="drop">Drop</h2>
+<p>如果我们想在迭代开始时跳过 <code>n</code> 个元素，该做么做呢？这正是 <code>drop</code> transducer 的本职。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> drop = <span class="function"><span class="params">n</span> =&gt;</span> xf =&gt; &#123;</div><div class="line">  <span class="keyword">var</span> left = n;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">init</span>: <span class="function"><span class="params">()</span> =&gt;</span> xf.init(),</div><div class="line">    <span class="attr">step</span>: <span class="function"><span class="keyword">function</span>(<span class="params">value, item</span>)</span>&#123;</div><div class="line">      <span class="keyword">if</span>(left &gt; <span class="number">0</span>)&#123;</div><div class="line">        left--;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        value = xf.step(value, item);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> value;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">result</span>: <span class="function"><span class="params">result</span> =&gt;</span> xf.result(result),</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>你可以这样使用：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> transducer = drop(<span class="number">2</span>);</div><div class="line"><span class="keyword">var</span> stepper = append;</div><div class="line"><span class="keyword">var</span> init = [];</div><div class="line"><span class="keyword">var</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">var</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [3,4,5]</span></div></pre></td></tr></table></figure></p>
+<p>Drop 接受从列表开始待丢弃元素的个数。这是我们第一个用来创建有状态变换的 transducer 的示例。每次调用 <code>drop</code> transducer 来创建一个 transformation 时，便会创建一个变量 <code>left</code>，指示在当次 transformation时，还剩多少个需要被丢弃的元素。<code>left</code> 被初始化为 <code>n</code>。</p>
+<p>注意，我们使用一个无状态的 transducer 创建了一个有状态的 transformer。这是一个重要的区别。这意味着我们可以重用 <code>drop(2)</code> transducer 任意多次，而不必担心任何状态。状态是在 transformer 中创建的，而不是 transducer 中。</p>
+<p>假如我们不想丢弃，而是获取前 <code>n</code> 个元素并丢弃剩余元素，该怎么办呢？为方便实现，假设 <code>n &gt; 0</code>。</p>
+<p>我们来尝试一下。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> take = <span class="function"><span class="params">n</span> =&gt;</span> xf =&gt; &#123;</div><div class="line">  <span class="keyword">var</span> left = n;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">init</span>: <span class="function"><span class="params">()</span> =&gt;</span> xf.init(),</div><div class="line">    <span class="attr">step</span>: <span class="function"><span class="keyword">function</span>(<span class="params">value, item</span>)</span>&#123;</div><div class="line">      value = xf.step(value, item);</div><div class="line">      <span class="keyword">if</span>(--left &lt;= <span class="number">0</span>)&#123;</div><div class="line">        <span class="comment">// 如何停止???</span></div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> value;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">result</span>: <span class="function"><span class="params">result</span> =&gt;</span> xf.result(result),</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>哦噢，麻烦来了。我们知道如何逐步处理每个元素，并且通过 transformer 的状态来保持剩余元素的计数。但是，如何停止对剩余元素的迭代呢？</p>
+<p>为什么我们需要表明我们已经完成，不再接受任何额外元素呢？不仅因为继续接受元素是一种浪费，还因为无法保证迭代能够完成。有可能迭代是无限的。如果可以，我们当然想终止无限迭代。</p>
+<p>那么如何表示提前终止呢？我们需要在看一下迭代的源代码：<code>transduce</code>。</p>
+<h2 id="reduce-redux-zhong-ji-reduce">Reduce redux (终极 Reduce)</h2>
+<p>下面是当前 <code>transduce</code> 和 <code>reduce</code> 的定义，取自<a href="https://adispring.github.io/2016/10/24/Transducers-Explained-Part-1/">第一篇文章</a>：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> transduce = <span class="function">(<span class="params">transducer, stepper, init, input</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> stepper === <span class="string">'function'</span>)&#123;</div><div class="line">    stepper = wrap(stepper);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> xf = transducer(stepper);</div><div class="line">  <span class="keyword">return</span> reduce(xf, init, input);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> reduce(xf, init, input) =&gt; &#123;</div><div class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> xf === <span class="string">'function'</span>)&#123;</div><div class="line">    xf = wrap(xf);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// how do we stop?? </span></div><div class="line">  <span class="keyword">var</span> value = input.reduce(xf.step, init); </div><div class="line">  <span class="keyword">return</span> xf.result(value);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> wrap = <span class="function"><span class="params">stepper</span> =&gt;</span> (&#123;</div><div class="line">  <span class="attr">init</span>: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'init not supported'</span>),</div><div class="line">  <span class="attr">step</span>: stepper,</div><div class="line">  <span class="attr">result</span>: <span class="function"><span class="params">value</span> =&gt;</span> value,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>看一下上面的实现，便会发现，我们正在使用原生数组 <code>reduce</code> 方法进行迭代，<code>reduce</code> 的 reducing function 来自 transformer。后续文章中，我们将删除输入源是数组的假设，但现在还需继续使用改假设。我们来定义自己的 <code>arrayReduce</code> 实现。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> reduce = <span class="function">(<span class="params">xf, init, input</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> xf === <span class="string">'function'</span>)&#123;</div><div class="line">    xf = wrap(xf);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> arrayReduce(xf, init, input);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> arrayReduce(xf, init, array) =&gt; &#123;</div><div class="line">  <span class="keyword">var</span> value = init;</div><div class="line">  <span class="keyword">var</span> idx = <span class="number">0</span>;</div><div class="line">  <span class="keyword">var</span> length = array.length;</div><div class="line">  <span class="keyword">for</span>(; idx &lt; length; idx++)&#123;</div><div class="line">    value = xf.step(value, array[idx]);</div><div class="line">    <span class="comment">// We need to break here, but how do we know?</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> xf.result(value);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><code>arrayReduce</code> 的实现接受一个 transformer 、初始值和输入数组。然后使用 <code>for</code> 循环遍历每个元素，并使用累加值 value 和数组元素来调用 transformer <code>step</code> 函数。</p>
+<p>我们需要一个方法来打破这个循环，打破循环需要依赖某些标记值。幸运的是，我们可以采用已有的 <a href="https://github.com/cognitect-labs/transducers-js#reduced" target="_blank" rel="external">transducer 协议</a>。</p>
+<p>为了在调用 transformer 中的 <code>step</code> 之后发出提前终止信号，我们可以将 <em>reduced</em> 值封装在包含两个属性的对象中：</p>
+<ol>
+<li><code>value</code>: 存储实际要封装的值。</li>
+<li><code>__transducers_reduced__</code>: bool 类型值，为<code>true</code>时，表示该对象是 reduced 的，迭代需要被终止。</li>
+</ol>
+<p>实现如下：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> reduced = <span class="function"><span class="params">value</span> =&gt;</span> (&#123;</div><div class="line">  <span class="attr">value</span>: value,</div><div class="line">  <span class="attr">__transducers_reduced__</span>: <span class="literal">true</span>,</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>我们还将添加一个 predicate 来确定值是否是 reduced 。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> iReduced = <span class="function"><span class="params">value</span> =&gt;</span> value &amp;&amp; value.__transducers_reduced__;</div></pre></td></tr></table></figure></p>
+<p>此外，我还需要一个方法来提取，或 <code>deref</code>(解引用) reduced 的值。</p>
+<p>现在我们可以优化 <code>arrayReduce</code> 来处理因 reduced values 提前终止的情况。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> arrayReduce =&gt; <span class="function">(<span class="params">xf, init, array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">var</span> value = init;</div><div class="line">  <span class="keyword">var</span> idx = <span class="number">0</span>;</div><div class="line">  <span class="keyword">var</span> length = array.length;</div><div class="line">  <span class="keyword">for</span>(; idx &lt; length; idx++)&#123;</div><div class="line">    value = xf.step(value, array[idx]);</div><div class="line">    <span class="keyword">if</span>(isReduced(value))&#123;</div><div class="line">      value = deref(value);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> xf.result(value);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们像以前一样对每个元素进行迭代，但每次调用 <code>step</code> 之后，我们检查是否得到一个 reduced value。如果是，我们提取值并终止迭代(中断循环)。我们仍然对最终值调用 <code>result</code> 方法，不管它来自 reduced value 还是完整的迭代。</p>
+<h2 id="take-2">Take 2</h2>
+<p>现在可以完成 <code>take</code> 的实现了：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> take = <span class="function"><span class="params">n</span> =&gt;</span> xf =&gt; &#123;</div><div class="line">  <span class="keyword">var</span> left = n;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">init</span>: <span class="function"><span class="params">()</span> =&gt;</span> xf.init(),</div><div class="line">    <span class="attr">step</span>: <span class="function"><span class="keyword">function</span>(<span class="params">value, item</span>)</span>&#123;</div><div class="line">      value = xf.step(value, item);</div><div class="line">      <span class="keyword">if</span>(--left &lt;= <span class="number">0</span>)&#123;</div><div class="line">        <span class="comment">// we are done, so signal reduced</span></div><div class="line">        value = reduced(value);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> value;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">result</span>: <span class="function"><span class="params">value</span> =&gt;</span> xf.result(value),</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>我们之前唯一缺失的是：当检测到转换完成后使用 <code>reduced</code> 对值进行封装。(现在已经补上了)</p>
+<p>让我们看看它是否能工作：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> transducer = take(<span class="number">3</span>);</div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [1,2,3]</span></div></pre></td></tr></table></figure></p>
+<p>工作正常！</p>
+<p>就像任何其他的 transducer，你可以将 <code>drop</code> 和 <code>take</code> 组合成一个 pipeline</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> transducer = compose(</div><div class="line">    drop(<span class="number">1</span>),    <span class="comment">// [2,3,4,5]</span></div><div class="line">    take(<span class="number">3</span>),    <span class="comment">// [2,3,4]</span></div><div class="line">    drop(<span class="number">1</span>));   <span class="comment">// [3,4]</span></div><div class="line"><span class="keyword">const</span> stepper = append;</div><div class="line"><span class="keyword">const</span> init = [];</div><div class="line"><span class="keyword">const</span> input = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</div><div class="line"><span class="keyword">const</span> output = transduce(transducer, stepper, init, input);</div><div class="line"><span class="comment">// [3,4]</span></div></pre></td></tr></table></figure></p>
+<p>第一个 <code>drop</code> 跳过第一个元素，然后将剩余元素通过 step 传给下一个 transformer。<code>take</code>  transformer 逐一遍历从第一个 <code>drop</code> 传过来的数组的前三个元素，然后停止迭代。最后一个 <code>drop</code> 删除从 <code>take</code> 传过来的数组的首个元素，并且在终止之前逐一发送剩余的两个元素。</p>
+<h2 id="di-er-bu-fen-zong-jie">第二部分总结</h2>
+<p>我们首先总结了在第一篇文章中学到的内容。我们增加了4个新的 transducers：<code>filter</code>、<code>remove</code>、<code>take</code>、<code>drop</code>。我们通过组合 transducers 来创建 transformer pipelines，并看到变换的顺序是从左到右。</p>
+<p>我们看到，除了在转换期间改变元素，一个 transformer 可以决定跳过任意元素，通过不调用下一个 transformer 的 <code>step</code> 来实现。每一个 transformer 的实现决定了什么会传递到下个 transformer。有些情况下， transformer 可能会发送多个值，例如 <code>cat</code> 或 <a href="https://github.com/transduce/transduce-string" target="_blank" rel="external"><code>transduce-string</code></a>。</p>
+<p>我们还看到了可以创建有状态变换的 transducer 的一些例子。状态由 transformer 管理，而不是 transducer。这允许无状态 transducer 的重用，即时它们创建的 transformers 管理状态。</p>
+<p>当实现 <code>take</code> 时，我们意识到需要添加一个用于提前终止迭代的方法。我们改变了 <code>reduce</code> 的实现来处理和解包 reduced 的值，并且实现 <code>take</code> 用于在取完数据时终止迭代。</p>
+<h2 id="huan-you-bie-de-ma">还有别的吗？</h2>
+<p>在入门教程的最后一篇文章中还有一些需要解释的相关问题。我们仍未解释 transformer 的 <code>init</code> 和 <code>reduce</code> 的作用。我们将添加 <code>into</code> 并一般化 <code>reduce</code> 的实现来支持迭代器。</p>
+<p>我们还看到输入元素可以是产生 sequence 值的任意东西：惰性列表、无限序列生成器、<a href="http://phuu.net/2014/08/31/csp-and-transducers.html" target="_blank" rel="external">CSP</a>、<a href="https://github.com/transduce/transduce-stream" target="_blank" rel="external">Node.js streams</a>、迭代器、生成器、immutable-js 数据结构等。</p>
+<p>想要获取新文章的通知吗？可以关注 获取 <a href="https://twitter.com/simplectic" target="_blank" rel="external">simplectic</a> 的 Twitter。</p>
+<h2 id="wo-xian-zai-yi-jing-zhun-bei-hao-liao">我现在已经准备好了！</h2>
+<p>已经准备使用 transducers 了吗？你应该已经具备良好的知识体系，如果通读了这篇文章：查看 <a href="https://github.com/cognitect-labs/transducers-js" target="_blank" rel="external">transducers-js</a> 和 <a href="https://github.com/jlongster/transducers.js" target="_blank" rel="external">transducers.js</a>。我们主要参考 transducers-js 的实现，但概念同样适用于 transducers.js。</p>
+<p>如果你喜欢 <a href="http://simplectic.com/projects/underarm" target="_blank" rel="external">Underscore.js</a>，可以查看 <a href="http://underscorejs.org/" target="_blank" rel="external">underarm</a>。它基于 <a href="https://github.com/transduce/transduce" target="_blank" rel="external">transduce</a> 库，允许针对 transducers.js 和 transducer-js 支持的公共协议定义 API。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/24/Transducers-Explained-Part-1/" rel="next" title="Transducers Explained: Part 1 中文">
+                <i class="fa fa-chevron-left"></i> Transducers Explained: Part 1 中文
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/19/Haskell趣学指南-学习笔记11-Functor-Applicative-Monoid-Monad/" rel="prev" title="Haskell趣学指南-学习笔记11-Functor/Applicative/Monoid/Monad">
+                Haskell趣学指南-学习笔记11-Functor/Applicative/Monoid/Monad <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wangzengdi" />
+          <p class="site-author-name" itemprop="name">wangzengdi</p>
+          <p class="site-description motion-element" itemprop="description">FE@Meituan.com</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/adispring" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer"><span class="nav-number">1.</span> <span class="nav-text">Transformer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reduce"><span class="nav-number">2.</span> <span class="nav-text">Reduce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transducer"><span class="nav-number">3.</span> <span class="nav-text">Transducer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transduce"><span class="nav-number">4.</span> <span class="nav-text">Transduce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#composition"><span class="nav-number">5.</span> <span class="nav-text">Composition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pipelines"><span class="nav-number">6.</span> <span class="nav-text">Pipelines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter"><span class="nav-number">7.</span> <span class="nav-text">Filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pipeline-shun-xu"><span class="nav-number">8.</span> <span class="nav-text">Pipeline 顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#remove"><span class="nav-number">9.</span> <span class="nav-text">Remove</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drop"><span class="nav-number">10.</span> <span class="nav-text">Drop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reduce-redux-zhong-ji-reduce"><span class="nav-number">11.</span> <span class="nav-text">Reduce redux (终极 Reduce)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#take-2"><span class="nav-number">12.</span> <span class="nav-text">Take 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#di-er-bu-fen-zong-jie"><span class="nav-number">13.</span> <span class="nav-text">第二部分总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#huan-you-bie-de-ma"><span class="nav-number">14.</span> <span class="nav-text">还有别的吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wo-xian-zai-yi-jing-zhun-bei-hao-liao"><span class="nav-number">15.</span> <span class="nav-text">我现在已经准备好了！</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangzengdi</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'adispring';
+      var disqus_identifier = '2016/11/01/Transducers-Explained-Pipelines/';
+      var disqus_title = "Transducers Explained: Pipelines 中文";
+      var disqus_url = 'https://adispring.github.io/2016/11/01/Transducers-Explained-Pipelines/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
