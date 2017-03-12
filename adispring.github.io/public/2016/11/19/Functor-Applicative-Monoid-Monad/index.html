@@ -1,0 +1,630 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Applicative类 的定义
+123class (Functor f) =&amp;gt; Applicative f where  pure :: a -&amp;gt; f a  (&amp;lt;*&amp;gt;) :: f (a -&amp;gt; b) -&amp;gt; f a -&amp;gt; f b
+Applicative 中定义了 pure 和 &amp;lt;*&amp;gt;
+Applicative Functor 的几个实例
+Maybe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Functor/Applicative/Monoid/Monad">
+<meta property="og:url" content="https://adispring.github.io/2016/11/19/Functor-Applicative-Monoid-Monad/index.html">
+<meta property="og:site_name" content="wangzengdi's Blog">
+<meta property="og:description" content="Applicative类 的定义
+123class (Functor f) =&amp;gt; Applicative f where  pure :: a -&amp;gt; f a  (&amp;lt;*&amp;gt;) :: f (a -&amp;gt; b) -&amp;gt; f a -&amp;gt; f b
+Applicative 中定义了 pure 和 &amp;lt;*&amp;gt;
+Applicative Functor 的几个实例
+Maybe">
+<meta property="og:updated_time" content="2017-03-06T15:38:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Functor/Applicative/Monoid/Monad">
+<meta name="twitter:description" content="Applicative类 的定义
+123class (Functor f) =&amp;gt; Applicative f where  pure :: a -&amp;gt; f a  (&amp;lt;*&amp;gt;) :: f (a -&amp;gt; b) -&amp;gt; f a -&amp;gt; f b
+Applicative 中定义了 pure 和 &amp;lt;*&amp;gt;
+Applicative Functor 的几个实例
+Maybe">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://adispring.github.io/2016/11/19/Functor-Applicative-Monoid-Monad/"/>
+
+
+  <title> Functor/Applicative/Monoid/Monad | wangzengdi's Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wangzengdi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Functional Programming</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Functor/Applicative/Monoid/Monad
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-11-19T13:31:25+08:00" content="2016-11-19">
+              2016-11-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/19/Functor-Applicative-Monoid-Monad/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/19/Functor-Applicative-Monoid-Monad/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="applicative-lei-de-ding-yi">Applicative类 的定义</h2>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> (<span class="type">Functor</span> <span class="title">f</span>) =&gt; <span class="type">Applicative</span> f <span class="keyword">where</span></span></div><div class="line">  pure :: a -&gt; f a</div><div class="line">  (&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b</div></pre></td></tr></table></figure></p>
+<p>Applicative 中定义了 <code>pure</code> 和 <code>&lt;*&gt;</code></p>
+<h2 id="applicative-functor-de-ji-ge-shi-li">Applicative Functor 的几个实例</h2>
+<h3 id="maybe">Maybe</h3>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Applicative</span> <span class="type">Maybe</span> <span class="keyword">where</span></span></div><div class="line">  pure = <span class="type">Just</span></div><div class="line">  <span class="type">Nothing</span> &lt;*&gt; _ = <span class="type">Nothing</span></div><div class="line">  (<span class="type">Just</span> f) &lt;*&gt; something = fmap f something</div></pre></td></tr></table></figure></p>
+<h3 id="applicative-xiang-jiao-yu-functor-de-gai-jin-zhi-chu">Applicative 相较于 Functor 的改进之处：</h3>
+<p>with the Applicative type class, we can chain the use of the &lt;*&gt; function, thus enabling us to seamlessly operate on several applicative values instead of just one. For instance, check this out:</p>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">pure</span>(+) &lt;*&gt; <span class="type">Just</span> <span class="number">3</span> &lt;*&gt; <span class="type">Just</span> <span class="number">5</span> <span class="comment">-- Just 8</span></div></pre></td></tr></table></figure></p>
+<p>lift 相当于 <code>pure</code></p>
+<h3 id="applicative-zhong-huan-ding-yi-liao-code-lt-gt-code">Applicative 中还定义了 <code>&lt;$&gt;</code></h3>
+<p>&lt;$&gt; 相当于中缀版的 fmap，但应用于 Applicative 的链式调用特别方便</p>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(&lt;$&gt;) :: (<span class="type">Functor</span> f) =&gt; (a -&gt; b) -&gt; f a -&gt; f b</div><div class="line"><span class="title">f</span> &lt;$&gt; x = fmap f x</div><div class="line"><span class="comment">-- pure f &lt;*&gt; x &lt;*&gt; y &lt;*&gt; ... === fmap f x &lt;*&gt; y... === f &lt;$&gt; x &lt;*&gt; y...</span></div></pre></td></tr></table></figure></p>
+<h3 id="list-ye-shi-applicative-functor">List 也是 Applicative Functor</h3>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Applicative</span> [] <span class="keyword">where</span></span></div><div class="line">  pure x = [x]</div><div class="line">  fs &lt;*&gt; xs = [f x | f &lt;- fs, x &lt;- xs]</div></pre></td></tr></table></figure></p>
+<p>理解了 haskell 中 List 的 <code>&lt;*&gt;</code> 也就理解了 Ramda 中的 <code>liftN</code>
+将 fs 中的每个 f map 到 xs 中的每个 x。</p>
+<p>例如
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="title">fs</span> = [f1, f2, f3]</div><div class="line"><span class="title">xs</span> = [x1, x2]</div><div class="line"><span class="title">fs</span> &lt;*&gt; xs === [f1 x1, f1 f2, f2 x1, f2 x2, f3 x1, f3 x2]</div></pre></td></tr></table></figure></p>
+<h3 id="han-shu-code-gt-r-code-ye-shi-applicative-functor-hen-you-yi-si">函数 <code>(-&gt;) r</code> 也是 Applicative Functor 很有意思</h3>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Applicative</span> ((-&gt;) r) <span class="keyword">where</span></span></div><div class="line">  pure x = (\_ -&gt; x)</div><div class="line">  f &lt;*&gt; g = \x -&gt; f x (g x)</div></pre></td></tr></table></figure></p>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(pure <span class="number">3</span>) <span class="string">"blah"</span> <span class="comment">-- 3</span></div><div class="line">(+) &lt;$&gt; (+<span class="number">3</span>) &lt;*&gt; (*<span class="number">100</span>) $ <span class="number">5</span> <span class="comment">-- 508</span></div></pre></td></tr></table></figure></p>
+<p><code>&lt;$&gt;</code> + <code>&lt;*&gt;</code> 大致对标 Ramda 中的 converge</p>
+<h2 id="laws">Laws</h2>
+<h3 id="1-a-href-https-en-wikibooks-org-wiki-haskell-the-functor-class-functor-laws-a">1. <a href="https://en.wikibooks.org/wiki/Haskell/The_Functor_class" target="_blank" rel="external">Functor Laws</a></h3>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">fmap</span> id = id</div><div class="line"><span class="title">fmap</span> (g . f) = fmap g . fmap f</div></pre></td></tr></table></figure></p>
+<h3 id="2-a-href-https-en-wikibooks-org-wiki-haskell-applicative-functors-applicative-functor-laws-a">2. <a href="https://en.wikibooks.org/wiki/Haskell/Applicative_functors" target="_blank" rel="external">Applicative Functor Laws</a></h3>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">pure</span> id &lt;*&gt; v = v                             <span class="comment">-- Identity</span></div><div class="line"><span class="title">pure</span> f &lt;*&gt; pure x = pure (f x)                <span class="comment">-- Homomorphism</span></div><div class="line"><span class="title">u</span> &lt;*&gt; pure y = pure ($ y) &lt;*&gt; u               <span class="comment">-- Interchange</span></div><div class="line"><span class="title">pure</span> (.) &lt;*&gt; u &lt;*&gt; v &lt;*&gt; w = u &lt;*&gt; (v &lt;*&gt; w)  <span class="comment">-- Composition</span></div></pre></td></tr></table></figure></p>
+<p>a bonus law
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fmap f x = pure f &lt;*&gt; x</div></pre></td></tr></table></figure></p>
+<h3 id="3-a-href-https-wiki-haskell-org-monad-laws-monad-laws-a">3. <a href="https://wiki.haskell.org/Monad_laws" target="_blank" rel="external">Monad Laws</a></h3>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="title">return</span> a &gt;&gt;= k  =  k a</div><div class="line"><span class="title">m</span> &gt;&gt;= return  =  m</div><div class="line"><span class="title">m</span> &gt;&gt;= (x -&gt; k x &gt;&gt;= h)  =  (m &gt;&gt;= k) &gt;&gt;= h</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/01/Transducers-Explained-Pipelines/" rel="next" title="Transducers Explained: Pipelines 中文">
+                <i class="fa fa-chevron-left"></i> Transducers Explained: Pipelines 中文
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wangzengdi" />
+          <p class="site-author-name" itemprop="name">wangzengdi</p>
+          <p class="site-description motion-element" itemprop="description">FE@Meituan.com</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/adispring" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#applicative-lei-de-ding-yi"><span class="nav-number">1.</span> <span class="nav-text">Applicative类 的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#applicative-functor-de-ji-ge-shi-li"><span class="nav-number">2.</span> <span class="nav-text">Applicative Functor 的几个实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#maybe"><span class="nav-number">2.1.</span> <span class="nav-text">Maybe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#applicative-xiang-jiao-yu-functor-de-gai-jin-zhi-chu"><span class="nav-number">2.2.</span> <span class="nav-text">Applicative 相较于 Functor 的改进之处：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#applicative-zhong-huan-ding-yi-liao-code-lt-gt-code"><span class="nav-number">2.3.</span> <span class="nav-text">Applicative 中还定义了 <$></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list-ye-shi-applicative-functor"><span class="nav-number">2.4.</span> <span class="nav-text">List 也是 Applicative Functor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#han-shu-code-gt-r-code-ye-shi-applicative-functor-hen-you-yi-si"><span class="nav-number">2.5.</span> <span class="nav-text">函数 (->) r 也是 Applicative Functor 很有意思</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#laws"><span class="nav-number">3.</span> <span class="nav-text">Laws</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-a-href-https-en-wikibooks-org-wiki-haskell-the-functor-class-functor-laws-a"><span class="nav-number">3.1.</span> <span class="nav-text">1. Functor Laws</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-a-href-https-en-wikibooks-org-wiki-haskell-applicative-functors-applicative-functor-laws-a"><span class="nav-number">3.2.</span> <span class="nav-text">2. Applicative Functor Laws</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-a-href-https-wiki-haskell-org-monad-laws-monad-laws-a"><span class="nav-number">3.3.</span> <span class="nav-text">3. Monad Laws</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangzengdi</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'adispring';
+      var disqus_identifier = '2016/11/19/Functor-Applicative-Monoid-Monad/';
+      var disqus_title = "Functor/Applicative/Monoid/Monad";
+      var disqus_url = 'https://adispring.github.io/2016/11/19/Functor-Applicative-Monoid-Monad/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

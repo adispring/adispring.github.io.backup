@@ -1,5 +1,5 @@
 ---
-title: Haskell趣学指南-学习笔记11-Functor/Applicative/Monoid/Monad
+title: Functor/Applicative/Monoid/Monad
 date: 2016-11-19 13:31:25
 tags:
 ---
