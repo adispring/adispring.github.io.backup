@@ -88,36 +88,18 @@
 
 
 
-<meta name="description" content="map、reduce 和 filter 是函数式编程中用到频率非常高的三个函数，对类Array 类型操作非常方便，被称为 FP 中的三板斧。还有几个相关的稍微复杂的函数也一并介绍： chain（flattenMap）、transduce、into、reduced。
-图解 map/reduce/filter
-虽然这是 Underscore 方式的写法，但不影响对三个概念的理解.
-
-源码分析
-
-map">
+<meta name="description" content="map、reduce 和 filter 是函数式编程中用到频率非常高的三个函数，对类Array 类型操作非常方便，被称为 FP 中的三板斧。还有几个相关的稍微复杂的函数也一并介绍： chain（flattenMap）、transduce、into、reduced。 图解 map/reduce/filter 虽然这是 Underscore 方式的写法，但不影响对三个概念的理解.  源码分析  map">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ramda 源码分析（二） map reduce filter">
 <meta property="og:url" content="https://adispring.github.io/2016/10/23/Ramda-map-filter-reduce-transduce/index.html">
-<meta property="og:site_name" content="wangzengdi's Blog">
-<meta property="og:description" content="map、reduce 和 filter 是函数式编程中用到频率非常高的三个函数，对类Array 类型操作非常方便，被称为 FP 中的三板斧。还有几个相关的稍微复杂的函数也一并介绍： chain（flattenMap）、transduce、into、reduced。
-图解 map/reduce/filter
-虽然这是 Underscore 方式的写法，但不影响对三个概念的理解.
-
-源码分析
-
-map">
-<meta property="og:image" content="https://adispring.github.io/./mapFilterReduce.jpg">
+<meta property="og:site_name" content="wangzengdi&#39;s Blog">
+<meta property="og:description" content="map、reduce 和 filter 是函数式编程中用到频率非常高的三个函数，对类Array 类型操作非常方便，被称为 FP 中的三板斧。还有几个相关的稍微复杂的函数也一并介绍： chain（flattenMap）、transduce、into、reduced。 图解 map/reduce/filter 虽然这是 Underscore 方式的写法，但不影响对三个概念的理解.  源码分析  map">
+<meta property="og:image" content="https://adispring.github.io/2016/10/23/Ramda-map-filter-reduce-transduce/mapFilterReduce.jpg">
 <meta property="og:updated_time" content="2016-10-23T14:53:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ramda 源码分析（二） map reduce filter">
-<meta name="twitter:description" content="map、reduce 和 filter 是函数式编程中用到频率非常高的三个函数，对类Array 类型操作非常方便，被称为 FP 中的三板斧。还有几个相关的稍微复杂的函数也一并介绍： chain（flattenMap）、transduce、into、reduced。
-图解 map/reduce/filter
-虽然这是 Underscore 方式的写法，但不影响对三个概念的理解.
-
-源码分析
-
-map">
-<meta name="twitter:image" content="https://adispring.github.io/./mapFilterReduce.jpg">
+<meta name="twitter:description" content="map、reduce 和 filter 是函数式编程中用到频率非常高的三个函数，对类Array 类型操作非常方便，被称为 FP 中的三板斧。还有几个相关的稍微复杂的函数也一并介绍： chain（flattenMap）、transduce、into、reduced。 图解 map/reduce/filter 虽然这是 Underscore 方式的写法，但不影响对三个概念的理解.  源码分析  map">
+<meta name="twitter:image" content="https://adispring.github.io/2016/10/23/Ramda-map-filter-reduce-transduce/mapFilterReduce.jpg">
 
 
 
@@ -148,6 +130,15 @@ map">
 
   
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-97388892-2', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
@@ -206,6 +197,14 @@ map">
           <a href="/archives" rel="section">
             
             Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            Tags
           </a>
         </li>
       
