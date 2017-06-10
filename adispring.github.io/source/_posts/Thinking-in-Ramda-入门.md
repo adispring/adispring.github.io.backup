@@ -4,9 +4,7 @@ date: 2017-06-09 21:45:47
 categories: 'Thinking in Ramda'
 ---
 
-译者注：本文翻译自 Randy Coulman 的 《[Thinking in Ramda: Getting Started](http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/)》，转载请与[原作者](https://github.com/randycoulman)或[本人](https://github.com/adispring)联系。
-
-下面开始正文。
+译者注：本文翻译自 Randy Coulman 的 《[Thinking in Ramda: Getting Started](http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/)》，转载请与[原作者](https://github.com/randycoulman)或[本人](https://github.com/adispring)联系。下面开始正文。
 
 ---
 
@@ -145,6 +143,30 @@ find(isEven, [1, 2, 3, 4]) //=> 2
 
 **reduce**
 
-`reduce` 比之前遇到的其他函数要复杂一些。了解它是值得的，但如果在开始时不太好理解，不要被它阻塞学习的进程。你可以在理解它之前继续学习其他知识。
+`reduce` 比之前遇到的其他函数要复杂一些。了解它是值得的，但如果刚开始不太好理解，不要被它挡住。你可以在理解它之前继续学习其他知识。
 
-`reduce` 接受一个二元函数，
+`reduce` 接受一个二元函数(`reducing function`)、一个初始值和待处理的数组。
+
+归约函数的第一个参数称为 "accumulator" (累加值)，第二个参数取自数组中的元素；返回值为一个新的 "accumulator"。
+
+先来看一个示例，然后看看会发生什么。
+
+```js
+const add = (accum, value) => accum + value
+
+reduce(add, 5, [1, 2, 3, 4]) //=> 15
+```
+
+1. `reduce` 首先将初始值 `5` 和 数组中的首个元素 `1` 传入归约函数 `add`，`add` 返回一个新的累加值：`5 + 1 = 6`。
+2. `reduce` 再次调用 `add`，这次使用新的累加值 `6` 和 数组中的下一个元素 `2` 作为参数，`add` 返回 `8`。
+3. `reduce` 再次使用 `8` 和 数组中的下个元素 `3` 来调用 `add`，输出 `11`。
+4. `reduce` 最后一次调用 `add`，使用 `11` 和 数组中的最后一个元素 `4` ，输出 `15`。
+5. `reduce` 将最终累加值 `15` 作为结果返回。
+
+**结论**
+
+从这些集合迭代函数开始，需要逐渐习惯将函数传入其他函数的编程方式。你可能在其他语言中用过，但没有意识到正在做函数式编程。
+
+**下一节**
+
+本系列的下一篇文章，[函数组合](https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/) 将演示怎样以新的、有趣的方式对函数进行组合。

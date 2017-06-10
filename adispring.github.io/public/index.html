@@ -246,6 +246,179 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/10/Thinking-in-Ramda-Combining-Functions/" itemprop="url">
+                  Thinking in Ramda: 函数组合
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-06-10T15:38:05+08:00" content="2017-06-10">
+              2017-06-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Thinking-in-Ramda/" itemprop="url" rel="index">
+                    <span itemprop="name">Thinking in Ramda</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/10/Thinking-in-Ramda-Combining-Functions/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/10/Thinking-in-Ramda-Combining-Functions/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/05/31/thinking-in-ramda-combining-functions/" target="_blank" rel="external">Thinking in Ramda: Combining Functions</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
+<hr>
+<p>本文是函数式编程系列文章：<a href="http://randycoulman.com/blog/categories/thinking-in-ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第二篇。</p>
+<p>在<a href="https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/" target="_blank" rel="external">第一篇</a>中，介绍了 Ramda 和函数式编程的一些基本思想，如函数、纯函数和数据不变性。并介绍了如何入门：可以从集合迭代函数（如 <code>forEach</code>、<code>map</code>、<code>reduce</code>）开始。</p>
+<p><strong>简单组合</strong></p>
+<p>一旦熟悉了可以将函数传递给其他函数，你可能会开始找将多个函数组合在一起的场景。</p>
+<p>Ramda 为简单的函数组合提供了一些函数。我们来看看。</p>
+<p><strong>Complement</strong></p>
+<p>在上一节，我们使用 <code>find</code> 来查找列表中的首个偶数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isEven = <span class="function"><span class="params">x</span> =&gt;</span> x % <span class="number">2</span> === <span class="number">0</span></div><div class="line">find(isEven, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; 2</span></div></pre></td></tr></table></figure></p>
+<p>如果想找首个奇数呢？我们可以随手写一个 <code>isOdd</code> 函数并使用它。但我们知道任何非偶整数都是奇数，所以可以重用 <code>isEven</code> 函数。</p>
+<p>Ramda 提供了一个更高阶的函数：<code>complement</code>，给它传入一个函数，返回一个新的函数：当原函数返回 &quot;假值&quot; 时，新函数返回 <code>true</code>；原函数返回 &quot;真值&quot; 时，新函数返回 <code>false</code>，即新函数是原函数的补函数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isEven = <span class="function"><span class="params">x</span> =&gt;</span> x % <span class="number">2</span> === <span class="number">0</span></div><div class="line"> </div><div class="line">find(complement(isEven), [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">// --&gt; 1</span></div></pre></td></tr></table></figure></p>
+<p>更进一步，可以给 <code>complement</code> 过的函数起个名字，这样新函数便可以复用：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isEven = <span class="function"><span class="params">x</span> =&gt;</span> x % <span class="number">2</span> === <span class="number">0</span></div><div class="line"><span class="keyword">const</span> isOdd = complement(isEven)</div><div class="line"> </div><div class="line">find(isOdd, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">// --&gt; 1</span></div></pre></td></tr></table></figure></p>
+<p>注意，<code>complement</code> 以函数的方式实现了逻辑非操作（<code>!</code>， not）的功能。</p>
+<p><code>Both/Either</code></p>
+<p>假设我们正在开发一个投票系统，给定一个人，我们希望能够确定其是否有资格投票。根据现有知识，一个人必须年满 18 岁并且是本国公民，才有资格投票。成为公民的条件：在本国出生，或者后来加入该国国籍。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> wasBornInCountry = <span class="function"><span class="params">person</span> =&gt;</span> person.birthCountry === OUR_COUNTRY</div><div class="line"><span class="keyword">const</span> wasNaturalized = <span class="function"><span class="params">person</span> =&gt;</span> <span class="built_in">Boolean</span>(person.naturalizationDate)</div><div class="line"><span class="keyword">const</span> isOver18 = <span class="function"><span class="params">person</span> =&gt;</span> person.age &gt;= <span class="number">18</span></div><div class="line"> </div><div class="line"><span class="keyword">const</span> isCitizen = <span class="function"><span class="params">person</span> =&gt;</span> wasBornInCountry(person) || wasNaturalized(person)</div><div class="line"> </div><div class="line"><span class="keyword">const</span> isEligibleToVote = <span class="function"><span class="params">person</span> =&gt;</span> isOver18(person) &amp;&amp; isCitizen(person)</div></pre></td></tr></table></figure></p>
+<p>上面代码实现了我们的需求，但 Ramda 提供了一些方便的函数，以帮助我们精简代码。</p>
+<p><code>both</code> 接受两个函数，返回一个新函数：当两个传入函数都返回 <code>truthy</code> 值时，新函数返回 <code>true</code>，否则返回 <code>false</code></p>
+<p><code>either</code> 接受两个函数，返回一个新函数：当两个传入函数任意一个返回 <code>truthy</code> 值时，新函数返回 <code>true</code>，否则返回 <code>false</code></p>
+<p>我们可以使用这两个函数来简化 <code>isCitizen</code> 和 <code>isEligibleToVote</code>。
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isCitizen = either(wasBornInCountry, wasNaturalized)</div><div class="line"><span class="keyword">const</span> isEligibleToVote = both(isOver18, isCitizen)</div></pre></td></tr></table></figure></p>
+<p>注意，<code>both</code> 以函数的方式实现了逻辑与（<code>&amp;&amp;</code>）的功能，<code>either</code> 实现了逻辑或（<code>||</code>）的功能。</p>
+<p>Ramda 还提供了 <code>allPass</code> 和 <code>anyPass</code>，接受由任意多个函数组成的数组作为参数。如名称所示，<code>allPass</code> 类似于 <code>both</code>，而 <code>anyPass</code> 类似于 <code>either</code>。</p>
+<p><strong>Pipelines(管道)</strong></p>
+<p>有时我们需要以 pipeline 的方式将多个函数依次作用于某些数据。例如，接受两个数字，将它们相乘，加 1 ，然后平方。我们可以这样写：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> multiply = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a * b</div><div class="line"><span class="keyword">const</span> addOne = <span class="function"><span class="params">x</span> =&gt;</span> x + <span class="number">1</span></div><div class="line"><span class="keyword">const</span> square = <span class="function"><span class="params">x</span> =&gt;</span> x * x</div><div class="line"> </div><div class="line"><span class="keyword">const</span> operate = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> product = multiply(x, y)</div><div class="line">  <span class="keyword">const</span> incremented = addOne(product)</div><div class="line">  <span class="keyword">const</span> squared = square(incremented)</div><div class="line"> </div><div class="line">  <span class="keyword">return</span> squared</div><div class="line">&#125;</div><div class="line"> </div><div class="line">operate(<span class="number">3</span>, <span class="number">4</span>) <span class="comment">// =&gt; ((3 * 4) + 1)^2 =&gt; (12 + 1)^2 =&gt; 13^2 =&gt; 169</span></div></pre></td></tr></table></figure></p>
+<p>注意，每次操作是对上次操作的结果进行处理。</p>
+<p><strong>pipe</strong></p>
+<p>Ramda 提供了 <code>pipe</code> 函数：接受一系列函数，并返回一个新函数。</p>
+<p>新函数的元数与第一个传入函数的元数相同（元数：接受参数的个数），然后顺次通过 &quot;管道&quot; 中的函数对输入参数进行处理。它将第一个函数作用于参数，返回结果作为下一个函数的入参，依次进行下去。&quot;管道&quot; 中最后一个函数的结果作为 <code>pipe</code> 调用的最终结果。</p>
+<p>注意，除首个函数外，其余的函数都是一元函数。</p>
+<p>了解这些后，我们可以使用 <code>pipe</code> 来简化我们的 <code>operate</code> 函数：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> operate = pipe(</div><div class="line">  multiply,</div><div class="line">  addOne,</div><div class="line">  square</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>当调用 <code>operate(3, 4)</code> 时，<code>pipe</code> 将 <code>3</code> 和 <code>4</code> 传给 <code>multiply</code> 函数，输出 <code>12</code>，然后将 <code>12</code> 传给 <code>addOne</code>，返回 <code>13</code>，然后将 <code>13</code> 传给 <code>square</code>，返回 <code>169</code>，并将 <code>169</code> 作为最终 <code>operate</code> 的最终结果返回。</p>
+<p><strong>compose</strong></p>
+<p>另一种编写原始 <code>operate</code> 函数的方式是内联所有暂时变量：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> operate = <span class="function">(<span class="params">x, y</span>) =&gt;</span> square(addOne(multiply(x, y)))</div></pre></td></tr></table></figure></p>
+<p>这样更紧凑，但也更不便于阅读。然而这种形式可以使用 Ramda 的 <code>compose</code> 函数进行重写。</p>
+<p><code>compose</code> 的工作方式跟 <code>pipe</code> 基本相同，除了其调用函数的顺序是从右到左，而不是从左到右。下面使用 <code>compose</code> 来重写 <code>operate</code>：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> operate = compose(</div><div class="line">  square,</div><div class="line">  addOne,</div><div class="line">  multiply</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>这与上面的 <code>pipe</code> 几乎一样，除了函数的顺序是相反的。实际上，Ramda 中的 <code>compose</code> 函数的内部是用 <code>pipe</code> 实现的。</p>
+<p>我一直这样思考 <code>compose</code> 的工作方式：<code>compose(f, g)(value)</code> 等价于 <code>f(g(value))</code>。</p>
+<p>注意，与 <code>pipe</code> 类似，<code>compose</code> 中的函数除最后一个外，其余都是一元函数。</p>
+<p><strong>compose 还是 pipe？</strong></p>
+<p>具有命令式编程背景的人可能觉得 <code>pipe</code> 更容易理解，因为可以按照从左往右的顺序进行阅读。但 <code>compose</code> 更容易对如上所示的嵌套函数进行转换。</p>
+<p>我也不太清楚什么时候该用 <code>compose</code>，什么时候该用 <code>pipe</code>。由于它们在 Ramda 中基本等价，所以选择用哪个可能并不重要。只要根据自己的情况选择合适的即可。</p>
+<p><strong>结论</strong></p>
+<p>通过特定的方式进行函数组合，我们已经可以开始编写更强的函数了。</p>
+<p><strong>下一节</strong></p>
+<p>你可能已经注意到了，在进行函数组合时，我们多数情况下都可以省略函数参数。只有在最终调用组合好的函数时，才传入参数。</p>
+<p>这在函数式编程中非常常见，我们将在下一节 [<code>Partial Application</code> (部分应用)](#TODO: 加入下一节链接)进行更多详细介绍。我们还会讨论如何组合多元（多参数）函数。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/06/09/Thinking-in-Ramda-入门/" itemprop="url">
                   Thinking in Ramda: 入门
                 </a>
@@ -316,8 +489,7 @@
       
         
           
-            <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/" target="_blank" rel="external">Thinking in Ramda: Getting Started</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。</p>
-<p>下面开始正文。</p>
+            <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/" target="_blank" rel="external">Thinking in Ramda: Getting Started</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
 <hr>
 <p>本文是函数式编程系列文章：<a href="http://randycoulman.com/blog/categories/thinking-in-ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第一篇。</p>
 <p>本系列文章使用 <a href="http://ramda.cn" target="_blank" rel="external">Ramda</a> JavaScript 库进行演示。许多理论、方法同样适用于其他函数式 JavaScript 库，如 <a href="http://underscorejs.org/" target="_blank" rel="external">Underscore</a> 和 <a href="https://lodash.com/" target="_blank" rel="external">Lodash</a>。</p>
@@ -379,8 +551,22 @@
 <p><code>find</code> 将断言函数作用于数组中的每个元素，并返回第一个使断言函数返回真值的元素。</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find(isEven, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; 2</span></div></pre></td></tr></table></figure></p>
 <p><strong>reduce</strong></p>
-<p><code>reduce</code> 比之前遇到的其他函数要复杂一些。了解它是值得的，但如果在开始时不太好理解，不要被它阻塞学习的进程。你可以在理解它之前继续学习其他知识。</p>
-<p><code>reduce</code> 接受一个二元函数，</p>
+<p><code>reduce</code> 比之前遇到的其他函数要复杂一些。了解它是值得的，但如果刚开始不太好理解，不要被它挡住。你可以在理解它之前继续学习其他知识。</p>
+<p><code>reduce</code> 接受一个二元函数(<code>reducing function</code>)、一个初始值和待处理的数组。</p>
+<p>归约函数的第一个参数称为 &quot;accumulator&quot; (累加值)，第二个参数取自数组中的元素；返回值为一个新的 &quot;accumulator&quot;。</p>
+<p>先来看一个示例，然后看看会发生什么。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> add = <span class="function">(<span class="params">accum, value</span>) =&gt;</span> accum + value</div><div class="line"></div><div class="line">reduce(add, <span class="number">5</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; 15</span></div></pre></td></tr></table></figure></p>
+<ol>
+<li><code>reduce</code> 首先将初始值 <code>5</code> 和 数组中的首个元素 <code>1</code> 传入归约函数 <code>add</code>，<code>add</code> 返回一个新的累加值：<code>5 + 1 = 6</code>。</li>
+<li><code>reduce</code> 再次调用 <code>add</code>，这次使用新的累加值 <code>6</code> 和 数组中的下一个元素 <code>2</code> 作为参数，<code>add</code> 返回 <code>8</code>。</li>
+<li><code>reduce</code> 再次使用 <code>8</code> 和 数组中的下个元素 <code>3</code> 来调用 <code>add</code>，输出 <code>11</code>。</li>
+<li><code>reduce</code> 最后一次调用 <code>add</code>，使用 <code>11</code> 和 数组中的最后一个元素 <code>4</code> ，输出 <code>15</code>。</li>
+<li><code>reduce</code> 将最终累加值 <code>15</code> 作为结果返回。</li>
+</ol>
+<p><strong>结论</strong></p>
+<p>从这些集合迭代函数开始，需要逐渐习惯将函数传入其他函数的编程方式。你可能在其他语言中用过，但没有意识到正在做函数式编程。</p>
+<p><strong>下一节</strong></p>
+<p>本系列的下一篇文章，<a href="https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/" target="_blank" rel="external">函数组合</a> 将演示怎样以新的、有趣的方式对函数进行组合。</p>
 
           
         
@@ -1257,6 +1443,8 @@ lazy lists, indefinite sequence generation, CSP[http://phuu.net/2014/08/31/csp-a
 <p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
 <h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
 <p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure></p>
+<h3 id="generate-amp-deploy-together">Generate &amp; Deploy together</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d -g</div></pre></td></tr></table></figure></p>
 <p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
           
@@ -1486,7 +1674,7 @@ lazy lists, indefinite sequence generation, CSP[http://phuu.net/2014/08/31/csp-a
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
