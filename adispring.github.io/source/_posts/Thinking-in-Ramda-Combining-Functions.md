@@ -8,7 +8,7 @@ categories: 'Thinking in Ramda'
 
 ---
 
-本文是函数式编程系列文章：[Thinking in Ramda](http://randycoulman.com/blog/categories/thinking-in-ramda/) 的第二篇。
+本文是函数式编程系列文章：[Thinking in Ramda](https://adispring.coding.me/categories/Thinking-in-Ramda/) 的第二篇。
 
 在[第一篇](https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/)中，介绍了 Ramda 和函数式编程的一些基本思想，如函数、纯函数和数据不变性。并介绍了如何入门：可以从集合迭代函数（如 `forEach`、`map`、`reduce`）开始。
 
@@ -159,4 +159,4 @@ const operate = compose(
 
 你可能已经注意到了，在进行函数组合时，我们多数情况下都可以省略函数参数。只有在最终调用组合好的函数时，才传入参数。
 
-这在函数式编程中非常常见，我们将在下一节 [`Partial Application` (部分应用)](#TODO: 加入下一节链接)进行更多详细介绍。我们还会讨论如何组合多元（多参数）函数。
+这在函数式编程中非常常见，我们将在下一节 [`Partial Application` (部分应用)](https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/)进行更多详细介绍。我们还会讨论如何组合多元（多参数）函数。

@@ -8,7 +8,7 @@ categories: 'Thinking in Ramda'
 
 ---
 
-本文是函数式编程系列文章：[Thinking in Ramda](http://randycoulman.com/blog/categories/thinking-in-ramda/) 的第一篇。
+本文是函数式编程系列文章：[Thinking in Ramda](https://adispring.coding.me/categories/Thinking-in-Ramda/) 的第一篇。
 
 本系列文章使用 [Ramda](http://ramda.cn) JavaScript 库进行演示。许多理论、方法同样适用于其他函数式 JavaScript 库，如 [Underscore](http://underscorejs.org/) 和 [Lodash](https://lodash.com/)。
 
