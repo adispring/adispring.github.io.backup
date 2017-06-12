@@ -94,7 +94,7 @@
 <meta property="og:url" content="https://adispring.github.io/2017/06/11/Thinking-in-Ramda-Declarative-Programming/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
 <meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三篇中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
-<meta property="og:updated_time" content="2017-06-11T16:04:42.000Z">
+<meta property="og:updated_time" content="2017-06-12T15:16:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinking in Ramda: 声明式编程">
 <meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三篇中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
@@ -358,6 +358,44 @@
 <p>我们可以使用上面刚学到的 <code>isNil</code> 函数，但 Ramda 提供了一个更好的选择：<code>defaultTo</code>。</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> lineWidth = defaultTo(<span class="number">80</span>, settings.lineWidth)</div></pre></td></tr></table></figure></p>
 <p><code>defaultTo</code> 检查第二个参数是否为空（<code>isNil</code>）。如果非空，则返回该值；否则返回第一个值。</p>
+<p><strong>Conditionals (条件)</strong></p>
+<p>控制流在函数式编程中不是必要的，但偶尔也会有些用处。在 <a href="https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/" target="_blank" rel="external">第一节</a> 中讨论的集合迭代函数在大部分情况下都可以很好的取代循环，但 &quot;条件&quot; 仍然非常重要。</p>
+<p><strong>ifElse</strong></p>
+<p>我们来写一个函数，<code>forever21</code>，接受一个年龄，并返回下一个年龄。但正如名字所示，一旦成长到 21 岁，就一直保持这样。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> forever21 = <span class="function"><span class="params">age</span> =&gt;</span> age &gt;= <span class="number">21</span> ? <span class="number">21</span> : age + <span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>注意，条件（<code>age &gt;= 21</code>）和第二个分支（<code>age + 1</code>）都可以写作 <code>age</code> 的函数。第一个分支（<code>21</code>）也可以重写成一个常量函数（<code>() =&gt; 21</code>）。现在我们有三个接受（或忽略）<code>age</code> 为参数的函数。</p>
+<p>现在可以使用 Ramda 的 <code>ifElse</code> 函数了，这是一个相当于 <code>if...then...else</code> 或 <code>?:</code> 的函数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> forever21 = <span class="function"><span class="params">age</span> =&gt;</span> ifElse(gte(__, <span class="number">21</span>), () =&gt; <span class="number">21</span>, inc)(age)</div></pre></td></tr></table></figure></p>
+<p>如上所示，比较函数在进行组合时，可能并不是以我们想要的形式进行工作。所以在这里被迫引入了占位符（<code>__</code>）。我们也可以使用 <code>lte</code>：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> forever21 = <span class="function"><span class="params">age</span> =&gt;</span> ifElse(lte(<span class="number">21</span>), () =&gt; <span class="number">21</span>, inc)(age)</div></pre></td></tr></table></figure></p>
+<p>在这种情况下，我们不得不读作：&quot;21岁小于或等于给定年龄&quot;。但这样可读性很低、比较乱，所以我坚持使用占位符版本的函数。</p>
+<p><strong>constants (常量)</strong></p>
+<p>常量函数在这种情形下非常有用。你可能已经想到了，Ramda 为我们提供了一些便捷的方法。本例中，这个方法是 <code>always</code>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> forever21 = <span class="function"><span class="params">age</span> =&gt;</span> ifElse(gte(__, <span class="number">21</span>), always(<span class="number">21</span>), inc)(age)</div></pre></td></tr></table></figure></p>
+<p>Ramda 还提供了 <code>T</code> 和 <code>F</code>，作为 <code>always(true) 和 always(false)</code> 的缩写。</p>
+<p><strong>identity (恒等)</strong></p>
+<p>再来写一个函数：<code>alwaysDrivingAge</code>。该函数接受一个年龄，如果 <code>gte</code> 16，则将该年龄返回；但如果小于 16，则返回 16。这样任何人都可以伪造他们的驾驶年龄了，即使他们还没有达到。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> alwaysDrivingAge = <span class="function"><span class="params">age</span> =&gt;</span> ifElse(lt(__, <span class="number">16</span>), always(<span class="number">16</span>), a =&gt; a)(age)</div></pre></td></tr></table></figure></p>
+<p>条件中的第二个分支（<code>a =&gt; a</code>）是函数式编程中的另一种常见的模式。它被称为恒等函数。也即，输出永远等于输入的函数。</p>
+<p>正如你所想的，Ramda 为我们提供了 <code>identity</code> 函数。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> alwaysDrivingAge = <span class="function"><span class="params">age</span> =&gt;</span> ifElse(lt(__, <span class="number">16</span>), always(<span class="number">16</span>), identity)(age)</div></pre></td></tr></table></figure></p>
+<p><code>identity</code> 可以接受多个参数，但总是返回首个参数。如果想要返回除首个参数之外的参数，可以使用更通用的 <code>nthArg</code> 函数。但 <code>nthArg</code> 不如 <code>identity</code> 用的频繁。</p>
+<p><strong>when 和 unless</strong></p>
+<p>在 <code>ifElse</code> 代码中，其中一个条件分支为 <code>identity</code> 也很常见。所以 Ramda 也提供了便捷的方法。</p>
+<p>如果像上例所示，第二个分支是 <code>identity</code>，可以用 <code>when</code> 代替 <code>ifElse</code>：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> alwaysDrivingAge = <span class="function"><span class="params">age</span> =&gt;</span> when(lt(__, <span class="number">16</span>), always(<span class="number">16</span>))(age)</div></pre></td></tr></table></figure></p>
+<p>如果第一个条件分支是 <code>identity</code>，可以用 <code>unless</code>。借助 <code>gte(__, 16)</code> 来翻转一下我们的条件，便可以使用 <code>unless</code> 了。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> alwaysDrivingAge = <span class="function"><span class="params">age</span> =&gt;</span> unless(gte(__, <span class="number">16</span>), always(<span class="number">16</span>))(age)</div></pre></td></tr></table></figure></p>
+<p><strong>cond</strong></p>
+<p>Ramda 还提供了 <code>cond</code> 函数，来代替 <code>switch</code> 语句或链式的 <code>if...then...else</code> 语句。</p>
+<p>这里采用 Ramda 文档中的例子来展示 <code>cond</code> 的用法：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> water = <span class="function"><span class="params">temperature</span> =&gt;</span> cond([</div><div class="line">  [equals(<span class="number">0</span>),   always(<span class="string">'water freezes at 0°C'</span>)],</div><div class="line">  [equals(<span class="number">100</span>), always(<span class="string">'water boils at 100°C'</span>)],</div><div class="line">  [T,           temp =&gt; <span class="string">`nothing special happens at <span class="subst">$&#123;temp&#125;</span>°C`</span>]</div><div class="line">])(temperature)</div></pre></td></tr></table></figure></p>
+<p>我目前还不需要在 Ramda 代码中使用 <code>cond</code>。但我很多年前编写过 Common Lisp 代码，所以 <code>cond</code> 函数感觉就像是位老朋友。</p>
+<p><strong>结论</strong></p>
+<p>本节中展示了很多将命令式代码转为函数声明式代码的 Ramda 函数。</p>
+<p><strong>下一节</strong></p>
+<p>你可能已经注意到了，最后我们编写的几个函数（<code>forever21</code>、<code>alwaysDrivingAge</code> 和 <code>water</code>）都只接受一个参数，构建一个新函数，然后将该函数作用于参数。</p>
+<p>这也是一种常见的模式，并且 Ramda 照例提供了一些简化这些代码的便捷方法。下一节中，<a href="#%E6%B7%BB%E5%8A%A0%E4%B8%8B%E4%B8%80%E8%8A%82%E6%96%87%E7%AB%A0%E9%93%BE%E6%8E%A5">Pointfree Style</a> 将演示如何简化符合这种模式的代码。</p>
 
       
     </div>
