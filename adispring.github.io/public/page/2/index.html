@@ -88,16 +88,15 @@
 
 
 
-<meta name="description" content="Ramda 目录说明 Ramda API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 src/ 下编写的模块（函数）供外部调用，在 internal/ 下编写的模块仅供内部使用，属于帮助函数，内部函数以下划线 &amp;quot;_&amp;quot; 开头。 本次源码分析使用版本号为：Ramda v0.22.1。 源码分析   __ 占位符 占位符是一">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Ramda 源码分析（一） 柯里化curry">
-<meta property="og:url" content="https://adispring.github.io/2016/10/21/Ramda-SourceCode-Analyze/index.html">
+<meta name="description" content="FE@Meituan.com">
+<meta property="og:type" content="website">
+<meta property="og:title" content="wangzengdi&#39;s Blog">
+<meta property="og:url" content="https://adispring.github.io/page/2/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
-<meta property="og:description" content="Ramda 目录说明 Ramda API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 src/ 下编写的模块（函数）供外部调用，在 internal/ 下编写的模块仅供内部使用，属于帮助函数，内部函数以下划线 &amp;quot;_&amp;quot; 开头。 本次源码分析使用版本号为：Ramda v0.22.1。 源码分析   __ 占位符 占位符是一">
-<meta property="og:updated_time" content="2016-10-23T04:50:29.000Z">
+<meta property="og:description" content="FE@Meituan.com">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ramda 源码分析（一） 柯里化curry">
-<meta name="twitter:description" content="Ramda 目录说明 Ramda API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 src/ 下编写的模块（函数）供外部调用，在 internal/ 下编写的模块仅供内部使用，属于帮助函数，内部函数以下划线 &amp;quot;_&amp;quot; 开头。 本次源码分析使用版本号为：Ramda v0.22.1。 源码分析   __ 占位符 占位符是一">
+<meta name="twitter:title" content="wangzengdi&#39;s Blog">
+<meta name="twitter:description" content="FE@Meituan.com">
 
 
 
@@ -118,10 +117,10 @@
 
 
 
-  <link rel="canonical" href="https://adispring.github.io/2016/10/21/Ramda-SourceCode-Analyze/"/>
+  <link rel="canonical" href="https://adispring.github.io/page/2/"/>
 
 
-  <title> Ramda 源码分析（一） 柯里化curry | wangzengdi's Blog </title>
+  <title> wangzengdi's Blog </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="en">
@@ -151,7 +150,9 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -222,9 +223,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
   
@@ -244,7 +245,10 @@
             
             
               
-                Ramda 源码分析（一） 柯里化curry
+                
+                <a class="post-title-link" href="/2016/10/21/Ramda-SourceCode-Analyze/" itemprop="url">
+                  Ramda 源码分析（一） 柯里化curry
+                </a>
               
             
           </h1>
@@ -291,7 +295,9 @@
       
 
       
-        <h2 id="ramda-mu-lu-shuo-ming">Ramda 目录说明</h2>
+        
+          
+            <h2 id="ramda-mu-lu-shuo-ming">Ramda 目录说明</h2>
 <p><a href="http://ramdajs.com" target="_blank" rel="external">Ramda</a> API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 <strong>src/</strong> 下编写的模块（函数）供<strong>外部调用</strong>，在 <strong>internal/</strong> 下编写的模块仅供<strong>内部使用</strong>，属于帮助函数，<strong>内部函数以下划线 &quot;_&quot; 开头</strong>。</p>
 <p>本次源码分析使用版本号为：Ramda v0.22.1。</p>
 <h2 id="yuan-ma-fen-xi">源码分析</h2>
@@ -351,20 +357,16 @@
 </li>
 </ul>
 
+          
+        
       
     </div>
 
     <div>
       
-        
-
-      
     </div>
 
     <div>
-      
-        
-
       
     </div>
 
@@ -372,32 +374,23 @@
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/23/hello-world/" rel="prev" title="Hexo Workflow">
-                Hexo Workflow <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
       
+      
+        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -405,17 +398,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -435,17 +417,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -499,17 +472,6 @@
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ramda-mu-lu-shuo-ming"><span class="nav-number">1.</span> <span class="nav-text">Ramda 目录说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yuan-ma-fen-xi"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -606,10 +568,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
 
   
 
@@ -626,9 +584,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'adispring';
-      var disqus_identifier = '2016/10/21/Ramda-SourceCode-Analyze/';
-      var disqus_title = "Ramda 源码分析（一） 柯里化curry";
-      var disqus_url = 'https://adispring.github.io/2016/10/21/Ramda-SourceCode-Analyze/';
+      var disqus_identifier = 'page/2/index.html';
+      var disqus_title = "";
+      var disqus_url = '';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
@@ -639,13 +597,6 @@
       }
 
       run_disqus_script('count.js');
-      
-        var disqus_config = function () {
-            this.page.url = disqus_url;
-            this.page.identifier = disqus_identifier;
-            this.page.title = disqus_title;
-        };
-        run_disqus_script('embed.js');
       
     </script>
   

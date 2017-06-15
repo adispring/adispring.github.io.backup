@@ -10,7 +10,7 @@ categories: 'Thinking in Ramda'
 
 本文是函数式编程系列文章：[Thinking in Ramda](https://adispring.coding.me/categories/Thinking-in-Ramda/) 的第四篇。
 
-在[第三篇](https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/)中，讨论了使用 "部分应用" 和 "柯里化" 技术来组合多元（多参数）函数。
+在[第三节](https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/)中，讨论了使用 "部分应用" 和 "柯里化" 技术来组合多元（多参数）函数。
 
 当我们开始编写小的函数式构建块并组合它们时，发现必须写好多函数来包裹 JavaScript 操作符，比如算术、比较、逻辑操作符和控制流。这可能比较乏味，但 Ramda 将我们拉了回来，让事情变得有趣起来。
 
@@ -241,6 +241,6 @@ const water = temperature => cond([
 
 **下一节**
 
-你可能已经注意到了，最后我们编写的几个函数（`forever21`、`alwaysDrivingAge` 和 `water`）都只接受一个参数，构建一个新函数，然后将该函数作用于参数。
+你可能已经注意到了，最后我们编写的几个函数（`forever21`、`alwaysDrivingAge` 和 `water`）都接受一个参数，构建一个新函数，然后将该函数作用于参数。
 
-这也是一种常见的模式，并且 Ramda 照例提供了一些简化这些代码的便捷方法。下一节中，[Pointfree Style](#添加下一节文章链接) 将演示如何简化符合这种模式的代码。
+这也是一种常见的模式，并且 Ramda 照例提供了一些简化这些代码的便捷方法。下一节中，[Pointfree Style](https://adispring.coding.me/2017/06/13/Thinking-in-Ramda-Pointfree-Style/) 将演示如何简化符合这种模式的代码。

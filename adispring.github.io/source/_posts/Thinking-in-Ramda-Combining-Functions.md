@@ -10,7 +10,7 @@ categories: 'Thinking in Ramda'
 
 本文是函数式编程系列文章：[Thinking in Ramda](https://adispring.coding.me/categories/Thinking-in-Ramda/) 的第二篇。
 
-在[第一篇](https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/)中，介绍了 Ramda 和函数式编程的一些基本思想，如函数、纯函数和数据不变性。并介绍了如何入门：可以从集合迭代函数（如 `forEach`、`map`、`reduce`）开始。
+在[第一节](https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/)中，介绍了 Ramda 和函数式编程的一些基本思想，如函数、纯函数和数据不变性。并介绍了如何入门：可以从集合迭代函数（如 `forEach`、`map`、`reduce`）开始。
 
 **简单组合**
 

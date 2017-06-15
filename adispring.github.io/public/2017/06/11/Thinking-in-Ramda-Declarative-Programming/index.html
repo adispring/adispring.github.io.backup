@@ -88,16 +88,16 @@
 
 
 
-<meta name="description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三篇中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
+<meta name="description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三节中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thinking in Ramda: 声明式编程">
 <meta property="og:url" content="https://adispring.github.io/2017/06/11/Thinking-in-Ramda-Declarative-Programming/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
-<meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三篇中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
-<meta property="og:updated_time" content="2017-06-12T15:16:21.000Z">
+<meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三节中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
+<meta property="og:updated_time" content="2017-06-15T01:07:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinking in Ramda: 声明式编程">
-<meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三篇中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
+<meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Declarative Programming》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第四篇。 在第三节中，讨论了使用 &amp;quot;部分应用&amp;quot; 和 &amp;quot;柯里化&amp;quot; 技术来组合多元（多参数）函数。 当我们开始编写">
 
 
 
@@ -313,7 +313,7 @@
         <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/06/14/thinking-in-ramda-declarative-programming/" target="_blank" rel="external">Thinking in Ramda: Declarative Programming</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
 <hr>
 <p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第四篇。</p>
-<p>在<a href="https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/" target="_blank" rel="external">第三篇</a>中，讨论了使用 &quot;部分应用&quot; 和 &quot;柯里化&quot; 技术来组合多元（多参数）函数。</p>
+<p>在<a href="https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/" target="_blank" rel="external">第三节</a>中，讨论了使用 &quot;部分应用&quot; 和 &quot;柯里化&quot; 技术来组合多元（多参数）函数。</p>
 <p>当我们开始编写小的函数式构建块并组合它们时，发现必须写好多函数来包裹 JavaScript 操作符，比如算术、比较、逻辑操作符和控制流。这可能比较乏味，但 Ramda 将我们拉了回来，让事情变得有趣起来。</p>
 <p>开始之前，先介绍一些背景知识。</p>
 <p><strong>命令式 vs 声明式</strong></p>
@@ -394,8 +394,8 @@
 <p><strong>结论</strong></p>
 <p>本节中展示了很多将命令式代码转为函数声明式代码的 Ramda 函数。</p>
 <p><strong>下一节</strong></p>
-<p>你可能已经注意到了，最后我们编写的几个函数（<code>forever21</code>、<code>alwaysDrivingAge</code> 和 <code>water</code>）都只接受一个参数，构建一个新函数，然后将该函数作用于参数。</p>
-<p>这也是一种常见的模式，并且 Ramda 照例提供了一些简化这些代码的便捷方法。下一节中，<a href="#%E6%B7%BB%E5%8A%A0%E4%B8%8B%E4%B8%80%E8%8A%82%E6%96%87%E7%AB%A0%E9%93%BE%E6%8E%A5">Pointfree Style</a> 将演示如何简化符合这种模式的代码。</p>
+<p>你可能已经注意到了，最后我们编写的几个函数（<code>forever21</code>、<code>alwaysDrivingAge</code> 和 <code>water</code>）都接受一个参数，构建一个新函数，然后将该函数作用于参数。</p>
+<p>这也是一种常见的模式，并且 Ramda 照例提供了一些简化这些代码的便捷方法。下一节中，<a href="https://adispring.coding.me/2017/06/13/Thinking-in-Ramda-Pointfree-Style/" target="_blank" rel="external">Pointfree Style</a> 将演示如何简化符合这种模式的代码。</p>
 
       
     </div>
@@ -428,6 +428,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/13/Thinking-in-Ramda-Pointfree-Style/" rel="prev" title="Thinking in Ramda: Pointfree Style (无参数风格编程)">
+                Thinking in Ramda: Pointfree Style (无参数风格编程) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -502,7 +506,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

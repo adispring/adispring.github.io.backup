@@ -10,7 +10,7 @@ categories: 'Thinking in Ramda'
 
 本文是函数式编程系列文章：[Thinking in Ramda](https://adispring.coding.me/categories/Thinking-in-Ramda/) 的第三篇。
 
-在[第二篇](https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/)中，讨论了各种函数组合的方式。最后，演示了 `compose` 和 `pipe`， 可以以 "pipeline" （管道）的形式对一系列函数进行调用。
+在[第二节](https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/)中，讨论了各种函数组合的方式。最后，演示了 `compose` 和 `pipe`， 可以以 "pipeline" （管道）的形式对一系列函数进行调用。
 
 在上篇文章中，简单的函数链式调用（"pipeline"）时，其中的被调用函数都是一元的（除了首个函数）。但如果要使用多元函数呢？
 

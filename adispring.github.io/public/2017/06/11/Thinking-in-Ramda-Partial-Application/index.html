@@ -88,16 +88,16 @@
 
 
 
-<meta name="description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Partial Application》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第三篇。 在第二篇中，讨论了各种函数组合的方式。最后，演示了 compose 和 pipe， 可以以 &amp;quot;pipeline&amp;quot; （管道）的形式">
+<meta name="description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Partial Application》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第三篇。 在第二节中，讨论了各种函数组合的方式。最后，演示了 compose 和 pipe， 可以以 &amp;quot;pipeline&amp;quot; （管道）的形式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thinking in Ramda: 部分应用">
 <meta property="og:url" content="https://adispring.github.io/2017/06/11/Thinking-in-Ramda-Partial-Application/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
-<meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Partial Application》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第三篇。 在第二篇中，讨论了各种函数组合的方式。最后，演示了 compose 和 pipe， 可以以 &amp;quot;pipeline&amp;quot; （管道）的形式">
-<meta property="og:updated_time" content="2017-06-12T15:01:19.000Z">
+<meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Partial Application》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第三篇。 在第二节中，讨论了各种函数组合的方式。最后，演示了 compose 和 pipe， 可以以 &amp;quot;pipeline&amp;quot; （管道）的形式">
+<meta property="og:updated_time" content="2017-06-13T13:34:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinking in Ramda: 部分应用">
-<meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Partial Application》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第三篇。 在第二篇中，讨论了各种函数组合的方式。最后，演示了 compose 和 pipe， 可以以 &amp;quot;pipeline&amp;quot; （管道）的形式">
+<meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Partial Application》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第三篇。 在第二节中，讨论了各种函数组合的方式。最后，演示了 compose 和 pipe， 可以以 &amp;quot;pipeline&amp;quot; （管道）的形式">
 
 
 
@@ -313,7 +313,7 @@
         <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/06/07/thinking-in-ramda-partial-application/" target="_blank" rel="external">Thinking in Ramda: Partial Application</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
 <hr>
 <p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第三篇。</p>
-<p>在<a href="https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/" target="_blank" rel="external">第二篇</a>中，讨论了各种函数组合的方式。最后，演示了 <code>compose</code> 和 <code>pipe</code>， 可以以 &quot;pipeline&quot; （管道）的形式对一系列函数进行调用。</p>
+<p>在<a href="https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/" target="_blank" rel="external">第二节</a>中，讨论了各种函数组合的方式。最后，演示了 <code>compose</code> 和 <code>pipe</code>， 可以以 &quot;pipeline&quot; （管道）的形式对一系列函数进行调用。</p>
 <p>在上篇文章中，简单的函数链式调用（&quot;pipeline&quot;）时，其中的被调用函数都是一元的（除了首个函数）。但如果要使用多元函数呢？</p>
 <p>例如，假设有一个书籍对象的集合，我们想要找到特定年份出版的所有图书的标题。可以使用 Ramda 的集合迭代函数完成该需求：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> publishedInYear = <span class="function">(<span class="params">book, year</span>) =&gt;</span> book.year === year</div><div class="line"> </div><div class="line"><span class="keyword">const</span> titlesForYear = <span class="function">(<span class="params">books, year</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> selected = filter(<span class="function"><span class="params">book</span> =&gt;</span> publishedInYear(book, year), books)</div><div class="line"> </div><div class="line">  <span class="keyword">return</span> map(<span class="function"><span class="params">book</span> =&gt;</span> book.title, selected)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -500,7 +500,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
