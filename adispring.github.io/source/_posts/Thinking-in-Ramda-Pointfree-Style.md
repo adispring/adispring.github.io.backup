@@ -172,4 +172,4 @@ Pointfree 风格也被成为 [tacit 式编程](https://en.wikipedia.org/wiki/Tac
 
 我们需要找到声明式的方式来处理对象和数组。Immutability (不变性) 怎么样？我们如何以 "不变" (immutable) 的方式来操作对象和数组呢？
 
-本系列的下一节，[数据不变性和对象](#todo: 需要下一节的链接) 将讨论如何以函数式和 immutable 的方式来处理对象。紧随其后的章节：[数据不变性和数组](#todo: 需要下下节的链接) 对数组也是相同的处理方式。
+本系列的下一节，[数据不变性和对象](https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/) 将讨论如何以函数式和 immutable 的方式来处理对象。紧随其后的章节：[数据不变性和数组](#todo: 需要下下节的链接) 对数组也是相同的处理方式。
