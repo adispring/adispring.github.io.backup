@@ -1,0 +1,662 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Immutability and Arrays》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第七篇。 在 第六节 中，讨论了以函数式和数据不变性（immutable）的方式来处理 JavaScript 对象。 本节将继续用相同的方式讨论数组。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thinking in Ramda: 数据不变性和数组">
+<meta property="og:url" content="https://adispring.github.io/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/index.html">
+<meta property="og:site_name" content="wangzengdi&#39;s Blog">
+<meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Immutability and Arrays》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第七篇。 在 第六节 中，讨论了以函数式和数据不变性（immutable）的方式来处理 JavaScript 对象。 本节将继续用相同的方式讨论数组。">
+<meta property="og:updated_time" content="2017-06-17T16:21:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Thinking in Ramda: 数据不变性和数组">
+<meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Immutability and Arrays》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第七篇。 在 第六节 中，讨论了以函数式和数据不变性（immutable）的方式来处理 JavaScript 对象。 本节将继续用相同的方式讨论数组。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://adispring.github.io/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/"/>
+
+
+  <title> Thinking in Ramda: 数据不变性和数组 | wangzengdi's Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-97388892-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wangzengdi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Functional Programming</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Thinking in Ramda: 数据不变性和数组
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-06-17T22:21:48+08:00" content="2017-06-17">
+              2017-06-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Thinking-in-Ramda/" itemprop="url" rel="index">
+                    <span itemprop="name">Thinking in Ramda</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/07/05/thinking-in-ramda-immutability-and-arrays/" target="_blank" rel="external">Thinking in Ramda: Immutability and Arrays</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
+<hr>
+<p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第七篇。</p>
+<p>在 <a href="https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" target="_blank" rel="external">第六节</a> 中，讨论了以函数式和数据不变性（immutable）的方式来处理 JavaScript 对象。</p>
+<p>本节将继续用相同的方式讨论数组。</p>
+<p><strong>读取数组元素</strong></p>
+<p>在 <a href="https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" target="_blank" rel="external">第六节</a> 中，展示了许多读取对象属性的 Ramda 函数，包括 <code>prop</code>、<code>pick</code> 和 <code>has</code>。Ramda 有更多的方法来读取数组的元素。</p>
+<p>数组中与 <code>prop</code> 类似的是 <code>nth</code>；与 <code>pick</code> 类似的是 <code>slice</code>，跟 <code>has</code> 类似的是 <code>contains</code>。来看一些例子。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">nth(<span class="number">3</span>, numbers) <span class="comment">// =&gt; 40  (0-based indexing)</span></div><div class="line"> </div><div class="line">nth(<span class="number">-2</span>, numbers) <span class="comment">// =&gt; 50 (negative numbers start from the right)</span></div><div class="line"> </div><div class="line">slice(<span class="number">2</span>, <span class="number">5</span>, numbers) <span class="comment">// =&gt; [30, 40, 50] (see below)</span></div><div class="line"> </div><div class="line">contains(<span class="number">20</span>, numbers) <span class="comment">// =&gt; true</span></div></pre></td></tr></table></figure></p>
+<p><code>slice</code> 接受两个索引，返回从第 1 个索引开始（以 0 为起始）到第 2 个索引结束（不包含）的所有元素组成的子数组。</p>
+<p>经常会访问首个（<code>nth(0)</code>）和最后一个（<code>nth(-1)</code>）元素，所以 Ramda 为这两种特殊情形提供的便捷方法：<code>head</code> 和 <code>last</code>。还提供了访问除首个元素之外的所有元素的函数：<code>tail</code>，除最后一个元素之外的所有元素的方法：<code>init</code>，前 <code>N</code> 个元素：<code>take(N)</code>，后 <code>N</code> 个元素：<code>takeLast(N)</code>。来看看这些函数的实例。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">head(numbers) <span class="comment">// =&gt; 10</span></div><div class="line">tail(numbers) <span class="comment">// =&gt; [20, 30, 40, 50, 60]</span></div><div class="line"> </div><div class="line">last(numbers) <span class="comment">// =&gt; 60</span></div><div class="line">init(numbers) <span class="comment">// =&gt; [10, 20, 30, 40, 50]</span></div><div class="line"> </div><div class="line">take(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [10, 20, 30]</span></div><div class="line">takeLast(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [40, 50, 60]</span></div></pre></td></tr></table></figure></p>
+<p><strong>增、删、改数组元素</strong></p>
+<p>对于对象，我们已经学了对其属性进行增、删、改的函数：<code>assoc</code>、<code>dissoc</code>、<code>evolve</code> 等。</p>
+<p>但数组是有序数据结构，有好多函数与 <code>assoc</code> 类似。最常用的是 <code>insert</code> 和 <code>update</code>，Ramda 还提供了 <code>append</code> 和 <code>prepend</code> 来在数组头部或尾部添加元素。<code>insert</code>、<code>append</code> 和 <code>prepend</code> 会给数组添加新元素；<code>update</code> 使用新值替换已有元素。</p>
+<p>正如一般函数式库应该具备的，所有这些函数都返回修改后的新数组，原有数组保持不变。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">insert(<span class="number">3</span>, <span class="number">35</span>, numbers) <span class="comment">// =&gt; [10, 20, 30, 35, 40, 50, 60]</span></div><div class="line"> </div><div class="line">append(<span class="number">70</span>, numbers) <span class="comment">// =&gt; [10, 20, 30, 40, 50, 60, 70]</span></div><div class="line"> </div><div class="line">prepend(<span class="number">0</span>, numbers) <span class="comment">// =&gt; [0, 10, 20, 30, 40, 50, 60]</span></div><div class="line"> </div><div class="line">update(<span class="number">1</span>, <span class="number">15</span>, numbers) <span class="comment">// =&gt; [10, 15, 30, 40, 50, 60]</span></div></pre></td></tr></table></figure></p>
+<p>为了将两个对象合并为一个，我们学习了 <code>merge</code>；Ramda 为数组合并提供了 <code>concat</code>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">concat(numbers, [<span class="number">70</span>, <span class="number">80</span>, <span class="number">90</span>]) <span class="comment">// =&gt; [10, 20, 30, 40, 50, 60, 70, 80, 90]</span></div></pre></td></tr></table></figure></p>
+<p>注意，第二个数组添加到第一个数组之后。当单独使用 <code>concat</code> 时，可以很好的工作；但类似于 <code>merge</code>，在 pipeline 中可能并不像预期的那样工作。可以为在 pipeline 中使用定义一个辅助函数 <code>concatAfter</code>：<code>const concatAfter = flip(concat)</code>。</p>
+<p>Ramda 还提供了几个删除元素的函数。<code>remove</code> 删除指定索引处的元素，<code>without</code> 通过值删除元素。还有常用到的删除前 <code>N</code> 或 后 <code>N</code> 个元素的函数：<code>drop</code> 和 <code>dropLast</code>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">remove(<span class="number">2</span>, <span class="number">3</span>, numbers) <span class="comment">// =&gt; [10, 20, 60]</span></div><div class="line"> </div><div class="line">without([<span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>], numbers) <span class="comment">// =&gt; [10, 20, 60]</span></div><div class="line"> </div><div class="line">drop(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [40, 50, 60]</span></div><div class="line"> </div><div class="line">dropLast(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [10, 20, 30]</span></div></pre></td></tr></table></figure></p>
+<p>注意，<code>remove</code> 接受一个索引和一个删除元素的数量，而 <code>slice</code> 接受两个索引。如果你不知道这种不一致，可能会造成使用上的困扰。</p>
+<p><strong>变换元素</strong></p>
+<p>与对象一样，我们可能希望通过将函数应用于元素的原始值来更新数组元素。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">update(<span class="number">2</span>, multiply(<span class="number">10</span>, nth(<span class="number">2</span>, numbers)), numbers) <span class="comment">// =&gt; [10, 20, 300, 40, 50, 60]</span></div></pre></td></tr></table></figure></p>
+<p>为了简化这个常见的用例， Ramda 提供了 <code>adjust</code>，其工作方式类似于操作对象的 <code>evolve</code>。与 <code>evolve</code> 不同的是， <code>adjust</code> 只能作用于数组的单个元素。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">adjust(multiply(<span class="number">10</span>), <span class="number">2</span>, numbers)</div></pre></td></tr></table></figure></p>
+<p>注意，与 <code>update</code> 相比，<code>adjust</code> 将前两个参数的位置交换了一下。这可能会引起困扰，但当进行部分应用时，这样做还是很有道理的。你可能会先提供一个调整函数，比如 <code>adjust(multiply(10))</code> ，然后再决定要调整的索引和数组。</p>
+<p><strong>结论</strong></p>
+<p>我们现在有了以声明式和不变式操作对象和数组的一系列方法。这允许我们在不改变已有数据的情况下，从较小的、函数式的构建模块来构建程序，通过对函数进行组合来实现我们想要的功能。</p>
+<p><strong>下一节</strong></p>
+<p>我们学习了读取、更新和转换对象属性和数组元素的方法。Ramda 提供了更通用的进行这些操作的工具：lens（透镜）。<a href="#todo%EF%BC%9A%E4%B8%8B%E4%B8%80%E8%8A%82%E9%93%BE%E6%8E%A5%E9%9C%80%E8%A6%81%E8%A1%A5%E5%85%85">Lenses</a> 向我们演示了它们的工作原理和方式。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" rel="next" title="Thinking in Ramda: 数据不变性和对象">
+                <i class="fa fa-chevron-left"></i> Thinking in Ramda: 数据不变性和对象
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wangzengdi" />
+          <p class="site-author-name" itemprop="name">wangzengdi</p>
+          <p class="site-description motion-element" itemprop="description">FE@Meituan.com</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/adispring" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangzengdi</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'adispring';
+      var disqus_identifier = '2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/';
+      var disqus_title = "Thinking in Ramda: 数据不变性和数组";
+      var disqus_url = 'https://adispring.github.io/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

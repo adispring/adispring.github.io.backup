@@ -209,5 +209,5 @@ function f(a, b, options = {}) {
 
 **下一节**
 
-现在可以以 Immutable 的方式处理对象，那么数组呢？[数据不变性和数组](#todo 加入下一节链接) 将演示对数组的处理。
+现在可以以 Immutable 的方式处理对象，那么数组呢？[数据不变性和数组](https://adispring.coding.me/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/) 将演示对数组的处理。
 

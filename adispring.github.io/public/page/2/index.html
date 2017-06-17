@@ -246,6 +246,115 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/23/Ramda-map-filter-reduce-transduce/" itemprop="url">
+                  Ramda 源码分析（二） map reduce filter
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-23T09:43:20+08:00" content="2016-10-23">
+              2016-10-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/23/Ramda-map-filter-reduce-transduce/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/23/Ramda-map-filter-reduce-transduce/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>map、reduce 和 filter 是函数式编程中用到频率非常高的三个函数，对类Array 类型操作非常方便，被称为 FP 中的三板斧。还有几个相关的稍微复杂的函数也一并介绍： chain（flattenMap）、transduce、into、reduced。</p>
+<h2 id="tu-jie-map-reduce-filter">图解 map/reduce/filter</h2>
+<p>虽然这是 <a href="http://underscorejs.org/" target="_blank" rel="external">Underscore</a> 方式的写法，但不影响对三个概念的理解.</p>
+<p><img src="./mapFilterReduce.jpg" alt="map/reduce/filter"></p>
+<h2 id="yuan-ma-fen-xi">源码分析</h2>
+<ul>
+<li>map</li>
+</ul>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = _curry2(_dispatchable(<span class="string">'map'</span>, _xmap, <span class="function"><span class="keyword">function</span> <span class="title">map</span>(<span class="params">fn, functor</span>) </span>&#123;</div><div class="line">  <span class="keyword">switch</span> (<span class="built_in">Object</span>.prototype.toString.call(functor)) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'[object Function]'</span>:</div><div class="line">      <span class="keyword">return</span> curryN(functor.length, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> fn.call(<span class="keyword">this</span>, functor.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));</div><div class="line">      &#125;);</div><div class="line">    <span class="keyword">case</span> <span class="string">'[object Object]'</span>:</div><div class="line">      <span class="keyword">return</span> _reduce(<span class="function"><span class="keyword">function</span>(<span class="params">acc, key</span>) </span>&#123;</div><div class="line">        acc[key] = fn(functor[key]);</div><div class="line">        <span class="keyword">return</span> acc;</div><div class="line">      &#125;, &#123;&#125;, keys(functor));</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">return</span> _map(fn, functor);</div><div class="line">  &#125;</div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/23/hello-world/" itemprop="url">
                   Hexo Workflow
                 </a>
@@ -545,7 +654,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
