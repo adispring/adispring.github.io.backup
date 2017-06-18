@@ -94,7 +94,7 @@
 <meta property="og:url" content="https://adispring.github.io/2017/06/09/Thinking-in-Ramda-入门/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
 <meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Getting Started》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第一篇。 本系列文章使用 Ramda JavaScript 库进行演示。许多理论、方法同样适用于其他函数式 JavaScript 库，如 Underscore 和 L">
-<meta property="og:updated_time" content="2017-06-10T22:06:28.000Z">
+<meta property="og:updated_time" content="2017-06-18T04:33:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinking in Ramda: 入门">
 <meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Getting Started》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第一篇。 本系列文章使用 Ramda JavaScript 库进行演示。许多理论、方法同样适用于其他函数式 JavaScript 库，如 Underscore 和 L">
@@ -367,7 +367,7 @@
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isEven = <span class="function"><span class="params">x</span> =&gt;</span> x % <span class="number">2</span> === <span class="number">0</span></div><div class="line">filter(isEven, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; [2, 4]</span></div></pre></td></tr></table></figure></p>
 <p><code>filter</code> 将断言函数（本例中为 <code>isEven</code>）作用于数组中的每个元素。每当断言函数返回 &quot;真值&quot; 时，相应的元素将包含到结果中；反之当断言函数返回为 &quot;falsy&quot; 值时，相应的元素将从结果数组中排除掉（过滤掉）。</p>
 <p><code>reject</code> 是 <code>filter</code> 的补操作。它保留使断言函数返回 &quot;falsy&quot; 的元素，排除使断言函数返回 &quot;truthy&quot; 的元素。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">reject(isEven, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; [1, 3]</span></div><div class="line"><span class="string">`</span></div></pre></td></tr></table></figure></p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reject(isEven, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; [1, 3]</span></div></pre></td></tr></table></figure></p>
 <p><strong>find</strong></p>
 <p><code>find</code> 将断言函数作用于数组中的每个元素，并返回第一个使断言函数返回真值的元素。</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find(isEven, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; 2</span></div></pre></td></tr></table></figure></p>
