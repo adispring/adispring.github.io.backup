@@ -121,4 +121,4 @@ adjust(multiply(10), 2, numbers)
 
 **下一节**
 
-我们学习了读取、更新和转换对象属性和数组元素的方法。Ramda 提供了更通用的进行这些操作的工具：lens（透镜）。[Lenses](#todo：下一节链接需要补充) 向我们演示了它们的工作原理和方式。
+我们学习了读取、更新和转换对象属性和数组元素的方法。Ramda 提供了更通用的进行这些操作的工具：lens（透镜）。[Lenses](https://adispring.coding.me/2017/06/18/Thinking-in-Ramda-Lenses/) 向我们演示了它们的工作原理和方式。
