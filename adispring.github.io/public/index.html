@@ -256,6 +256,142 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/25/Introducing-Ramda/" itemprop="url">
+                  Ramda 简介
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-06-25T14:49:18+08:00" content="2017-06-25">
+              2017-06-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ramda/" itemprop="url" rel="index">
+                    <span itemprop="name">Ramda</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/25/Introducing-Ramda/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/25/Introducing-Ramda/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>译者注：本文翻译自 <a href="https://github.com/buzzdecafe" target="_blank" rel="external">Michael Hurley</a> 的 《<a href="http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda/" target="_blank" rel="external">Introducing Ramda</a>》，转载请与<a href="https://github.com/buzzdecafe" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
+<hr>
+<p>在过去一年的时间里，我的同事 Scott Sauyet 和我一直在编写 <a href="https://github.com/ramda/ramda" target="_blank" rel="external">Ramda</a> ：&quot;一个实用的 JavaScript 函数式编程库&quot;。当我们为 Frontend Masters 注册 &quot;使用 JavaScript 进行核心函数式编程&quot; 工作室时，惊讶地发现，他们选择 Ramda 来说明他们的示例。这件事给了我们信心，我们认为现在是宣布 Ramda 到来的时候了。</p>
+<p>现在已经存在一些优秀的函数式库，如 <a href="https://github.com/jashkenas/underscore" target="_blank" rel="external">Underscore</a> 和 <a href="https://github.com/lodash/lodash" target="_blank" rel="external">Lodash</a>。Ramda 包含了所有你想要的列表操作函数，像 <code>map</code>、<code>filter</code>、<code>reduce</code> 和 <code>find</code> 等。但 Ramda 跟 Underscore 和 Lodash 有很大的区别。Ramda 的主要特性如下：</p>
+<ul>
+<li><strong>Ramda 先接受函数参数，最后接受数据参数。</strong> <a href="http://www.youtube.com/watch?v=m3svKOdZijA" target="_blank" rel="external">Brian Lonsdorf 解释了为什么这样的参数顺序很重要</a>。简言之，柯里化和 &quot;函数优先&quot; 这两者相结合，使开发者在最终传入数据之前，能够以非常少的代码（通常为 &quot;point-free&quot; 风格，也即无参数风格）来组合函数。例如，以下面代码为例：</li>
+</ul>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Underscore/Lodash style:</span></div><div class="line"><span class="keyword">var</span> validUsersNamedBuzz = <span class="function"><span class="keyword">function</span>(<span class="params">users</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> _.filter(users, <span class="function"><span class="keyword">function</span>(<span class="params">user</span>) </span>&#123; </div><div class="line">    <span class="keyword">return</span> user.name === <span class="string">'Buzz'</span> &amp;&amp; _.isEmpty(user.errors); </div><div class="line">  &#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>现在可以这么写：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Ramda style:</span></div><div class="line"><span class="keyword">var</span> validUsersNamedBuzz = R.filter(R.where(&#123;<span class="attr">name</span>: <span class="string">'Buzz'</span>, <span class="attr">errors</span>: R.isEmpty&#125;));</div></pre></td></tr></table></figure></p>
+<ul>
+<li><strong>Ramda 的函数是自动柯里化的</strong> 。当你需要对 Underscore 或 Lodash 中的函数进行手动柯里化（或部分柯里化）时，Ramda 在内部已经替你完成这项工作了。实际上，Ramda 中所有的多元（多参数）函数都默认是柯里化的。例如：</li>
+</ul>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// `prop` takes two arguments. If I just give it one, I get a function back</span></div><div class="line"><span class="keyword">var</span> moo = R.prop(<span class="string">'moo'</span>);</div><div class="line"><span class="comment">// when I call that function with one argument, I get the result.</span></div><div class="line"><span class="keyword">var</span> value = moo(&#123;<span class="attr">moo</span>: <span class="string">'cow'</span>&#125;); <span class="comment">// =&gt; 'cow'</span></div></pre></td></tr></table></figure></p>
+<p>这种自动柯里化使得 &quot;通过组合函数来创建新函数&quot; 变得非常容易。因为 API 都是函数优先、数据最后（先传函数，最后传数据参数），你可以不断地组合函数，直到创建出需要的新函数，然后将数据传入其中。（Hugh Jackson 发表了一遍描述这种风格优点的 <a href="http://hughfdjackson.com/javascript/why-curry-helps/" target="_blank" rel="external">非常优秀的文章</a>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// take an object with an `amount` property</span></div><div class="line"><span class="comment">// add one to it</span></div><div class="line"><span class="comment">// find its remainder when divided by 7</span></div><div class="line"><span class="keyword">var</span> amtAdd1Mod7 = R.compose(R.moduloBy(<span class="number">7</span>), R.add(<span class="number">1</span>), R.prop(<span class="string">'amount'</span>));</div><div class="line"></div><div class="line"><span class="comment">// we can use that as is:</span></div><div class="line">amtAdd1Mod7(&#123;<span class="attr">amount</span>: <span class="number">17</span>&#125;); <span class="comment">// =&gt; 4</span></div><div class="line">amtAdd1Mod7(&#123;<span class="attr">amount</span>: <span class="number">987</span>&#125;); <span class="comment">// =&gt; 1</span></div><div class="line">amtAdd1Mod7(&#123;<span class="attr">amount</span>: <span class="number">68</span>&#125;); <span class="comment">// =&gt; 6</span></div><div class="line"><span class="comment">// etc. </span></div><div class="line"></div><div class="line"><span class="comment">// But we can also use our composed function on a list of objects, e.g. to `map`:</span></div><div class="line"><span class="keyword">var</span> amountObjects = [</div><div class="line">  &#123;<span class="attr">amount</span>: <span class="number">903</span>&#125;, &#123;<span class="attr">amount</span>: <span class="number">2875654</span>&#125;, &#123;<span class="attr">amount</span>: <span class="number">6</span>&#125;</div><div class="line">]</div><div class="line">R.map(amtAdd1Mod7, amountObjects); <span class="comment">// =&gt; [1, 6, 0]</span></div><div class="line"></div><div class="line"><span class="comment">// of course, `map` is also curried, so you can generate a new function </span></div><div class="line"><span class="comment">// using `amtAdd1Mod7` that will wait for a list of "amountObjects" to </span></div><div class="line"><span class="comment">// get passed in:</span></div><div class="line"><span class="keyword">var</span> amountsToValue = map(amtAdd1Mod7);</div><div class="line">amountsToValue(amountObjects); <span class="comment">// =&gt; [1, 6, 0]</span></div></pre></td></tr></table></figure></p>
+<p><a href="https://www.npmjs.org/package/ramda" target="_blank" rel="external">Ramda 提供了 npm 包</a>，可以下载下来尝试一下。如果你对 Ramda 库有什么想法或改进建议，<a href="https://github.com/CrossEye/ramda/issues" target="_blank" rel="external">请联系我们</a>。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/06/18/Thinking-in-Ramda-Wrap-Up/" itemprop="url">
                   Thinking in Ramda: 概要总结
                 </a>
@@ -1874,138 +2010,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/19/Functor-Applicative-Monoid-Monad/" itemprop="url">
-                  Functor/Applicative/Monoid/Monad
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-11-19T13:31:25+08:00" content="2016-11-19">
-              2016-11-19
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/19/Functor-Applicative-Monoid-Monad/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/19/Functor-Applicative-Monoid-Monad/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="applicative-lei-de-ding-yi">Applicative类 的定义</h2>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> (<span class="type">Functor</span> <span class="title">f</span>) =&gt; <span class="type">Applicative</span> f <span class="keyword">where</span></span></div><div class="line">  pure :: a -&gt; f a</div><div class="line">  (&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b</div></pre></td></tr></table></figure></p>
-<p>Applicative 中定义了 <code>pure</code> 和 <code>&lt;*&gt;</code></p>
-<h2 id="applicative-functor-de-ji-ge-shi-li">Applicative Functor 的几个实例</h2>
-<h3 id="maybe">Maybe</h3>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Applicative</span> <span class="type">Maybe</span> <span class="keyword">where</span></span></div><div class="line">  pure = <span class="type">Just</span></div><div class="line">  <span class="type">Nothing</span> &lt;*&gt; _ = <span class="type">Nothing</span></div><div class="line">  (<span class="type">Just</span> f) &lt;*&gt; something = fmap f something</div></pre></td></tr></table></figure></p>
-<h3 id="applicative-xiang-jiao-yu-functor-de-gai-jin-zhi-chu">Applicative 相较于 Functor 的改进之处：</h3>
-<p>with the Applicative type class, we can chain the use of the &lt;*&gt; function, thus enabling us to seamlessly operate on several applicative values instead of just one. For instance, check this out:</p>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">pure</span>(+) &lt;*&gt; <span class="type">Just</span> <span class="number">3</span> &lt;*&gt; <span class="type">Just</span> <span class="number">5</span> <span class="comment">-- Just 8</span></div></pre></td></tr></table></figure></p>
-<p>lift 相当于 <code>pure</code></p>
-<h3 id="applicative-zhong-huan-ding-yi-liao-code-lt-gt-code">Applicative 中还定义了 <code>&lt;$&gt;</code></h3>
-<p>&lt;$&gt; 相当于中缀版的 fmap，但应用于 Applicative 的链式调用特别方便</p>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(&lt;$&gt;) :: (<span class="type">Functor</span> f) =&gt; (a -&gt; b) -&gt; f a -&gt; f b</div><div class="line"><span class="title">f</span> &lt;$&gt; x = fmap f x</div><div class="line"><span class="comment">-- pure f &lt;*&gt; x &lt;*&gt; y &lt;*&gt; ... === fmap f x &lt;*&gt; y... === f &lt;$&gt; x &lt;*&gt; y...</span></div></pre></td></tr></table></figure></p>
-<h3 id="list-ye-shi-applicative-functor">List 也是 Applicative Functor</h3>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Applicative</span> [] <span class="keyword">where</span></span></div><div class="line">  pure x = [x]</div><div class="line">  fs &lt;*&gt; xs = [f x | f &lt;- fs, x &lt;- xs]</div></pre></td></tr></table></figure></p>
-<p>理解了 haskell 中 List 的 <code>&lt;*&gt;</code> 也就理解了 Ramda 中的 <code>liftN</code>
-将 fs 中的每个 f map 到 xs 中的每个 x。</p>
-<p>例如
-<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="title">fs</span> = [f1, f2, f3]</div><div class="line"><span class="title">xs</span> = [x1, x2]</div><div class="line"><span class="title">fs</span> &lt;*&gt; xs === [f1 x1, f1 f2, f2 x1, f2 x2, f3 x1, f3 x2]</div></pre></td></tr></table></figure></p>
-<h3 id="han-shu-code-gt-r-code-ye-shi-applicative-functor-hen-you-yi-si">函数 <code>(-&gt;) r</code> 也是 Applicative Functor 很有意思</h3>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Applicative</span> ((-&gt;) r) <span class="keyword">where</span></span></div><div class="line">  pure x = (\_ -&gt; x)</div><div class="line">  f &lt;*&gt; g = \x -&gt; f x (g x)</div></pre></td></tr></table></figure></p>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(pure <span class="number">3</span>) <span class="string">"blah"</span> <span class="comment">-- 3</span></div><div class="line">(+) &lt;$&gt; (+<span class="number">3</span>) &lt;*&gt; (*<span class="number">100</span>) $ <span class="number">5</span> <span class="comment">-- 508</span></div></pre></td></tr></table></figure></p>
-<p><code>&lt;$&gt;</code> + <code>&lt;*&gt;</code> 大致对标 Ramda 中的 converge</p>
-<h2 id="laws">Laws</h2>
-<h3 id="1-a-href-https-en-wikibooks-org-wiki-haskell-the-functor-class-functor-laws-a">1. <a href="https://en.wikibooks.org/wiki/Haskell/The_Functor_class" target="_blank" rel="external">Functor Laws</a></h3>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">fmap</span> id = id</div><div class="line"><span class="title">fmap</span> (g . f) = fmap g . fmap f</div></pre></td></tr></table></figure></p>
-<h3 id="2-a-href-https-en-wikibooks-org-wiki-haskell-applicative-functors-applicative-functor-laws-a">2. <a href="https://en.wikibooks.org/wiki/Haskell/Applicative_functors" target="_blank" rel="external">Applicative Functor Laws</a></h3>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">pure</span> id &lt;*&gt; v = v                             <span class="comment">-- Identity</span></div><div class="line"><span class="title">pure</span> f &lt;*&gt; pure x = pure (f x)                <span class="comment">-- Homomorphism</span></div><div class="line"><span class="title">u</span> &lt;*&gt; pure y = pure ($ y) &lt;*&gt; u               <span class="comment">-- Interchange</span></div><div class="line"><span class="title">pure</span> (.) &lt;*&gt; u &lt;*&gt; v &lt;*&gt; w = u &lt;*&gt; (v &lt;*&gt; w)  <span class="comment">-- Composition</span></div></pre></td></tr></table></figure></p>
-<p>a bonus law
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fmap f x = pure f &lt;*&gt; x</div></pre></td></tr></table></figure></p>
-<h3 id="3-a-href-https-wiki-haskell-org-monad-laws-monad-laws-a">3. <a href="https://wiki.haskell.org/Monad_laws" target="_blank" rel="external">Monad Laws</a></h3>
-<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="title">return</span> a &gt;&gt;= k  =  k a</div><div class="line"><span class="title">m</span> &gt;&gt;= return  =  m</div><div class="line"><span class="title">m</span> &gt;&gt;= (x -&gt; k x &gt;&gt;= h)  =  (m &gt;&gt;= k) &gt;&gt;= h</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2051,7 +2055,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -2059,7 +2063,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
