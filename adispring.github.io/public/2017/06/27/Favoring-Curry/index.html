@@ -1,0 +1,668 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="译者注：本文翻译自 Scott Sauyet 的 《Favoring Curry》，转载请与原作者或本人联系。下面开始正文。  我最近一篇 关于 Ramda 函数式组合的文章阐述了一个重要的话题。为了使用 Ramda 函数做这种组合，需要这些函数是柯里化的。 Curry，咖喱？像是辣的食物？什么？在哪里？ 实际上，curry 是为纪念 Haskell Curry 而命名的，他是第一个研究这种技术的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爱上柯里化 (Favoring Curry)">
+<meta property="og:url" content="https://adispring.github.io/2017/06/27/Favoring-Curry/index.html">
+<meta property="og:site_name" content="wangzengdi&#39;s Blog">
+<meta property="og:description" content="译者注：本文翻译自 Scott Sauyet 的 《Favoring Curry》，转载请与原作者或本人联系。下面开始正文。  我最近一篇 关于 Ramda 函数式组合的文章阐述了一个重要的话题。为了使用 Ramda 函数做这种组合，需要这些函数是柯里化的。 Curry，咖喱？像是辣的食物？什么？在哪里？ 实际上，curry 是为纪念 Haskell Curry 而命名的，他是第一个研究这种技术的">
+<meta property="og:updated_time" content="2017-06-27T00:54:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爱上柯里化 (Favoring Curry)">
+<meta name="twitter:description" content="译者注：本文翻译自 Scott Sauyet 的 《Favoring Curry》，转载请与原作者或本人联系。下面开始正文。  我最近一篇 关于 Ramda 函数式组合的文章阐述了一个重要的话题。为了使用 Ramda 函数做这种组合，需要这些函数是柯里化的。 Curry，咖喱？像是辣的食物？什么？在哪里？ 实际上，curry 是为纪念 Haskell Curry 而命名的，他是第一个研究这种技术的">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://adispring.github.io/2017/06/27/Favoring-Curry/"/>
+
+
+  <title> 爱上柯里化 (Favoring Curry) | wangzengdi's Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-97388892-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?fdee4a7147278c4213ba1baf75394f94";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">wangzengdi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Functional Programming</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                爱上柯里化 (Favoring Curry)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-06-27T07:49:41+08:00" content="2017-06-27">
+              2017-06-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ramda/" itemprop="url" rel="index">
+                    <span itemprop="name">Ramda</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/27/Favoring-Curry/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/27/Favoring-Curry/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>译者注：本文翻译自 <a href="https://github.com/CrossEye" target="_blank" rel="external">Scott Sauyet</a> 的 《<a href="http://fr.umio.us/favoring-curry/" target="_blank" rel="external">Favoring Curry</a>》，转载请与<a href="https://github.com/CrossEye" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
+<hr>
+<p>我<a href="http://fr.umio.us/why-ramda/" target="_blank" rel="external">最近一篇</a> 关于 <a href="https://github.com/ramda/ramda" target="_blank" rel="external">Ramda</a> 函数式组合的文章阐述了一个重要的话题。为了使用 Ramda 函数做这种组合，需要这些函数是柯里化的。</p>
+<p>Curry，咖喱？像是辣的食物？什么？在哪里？</p>
+<p>实际上，<code>curry</code> 是为纪念 Haskell Curry 而命名的，他是第一个研究这种技术的人。（是的，人们还用他的姓氏--Haskell--作为一门函数式编程语言；不仅如此，Curry 的中间名字以 'B' 开头，代表 <a href="http://en.wikipedia.org/wiki/Brainfuck" target="_blank" rel="external">Brainf*ck</a></p>
+<p>柯里化将多参数函数转化一个新函数：当接受部分参数时，返回等待剩余参数的新函数。</p>
+<p>原始函数看起来像是这样：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// uncurried version</span></div><div class="line"><span class="keyword">var</span> formatName1 = <span class="function"><span class="keyword">function</span>(<span class="params">first, middle, last</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> first + <span class="string">' '</span> + middle + <span class="string">' '</span> + last;</div><div class="line">&#125;;</div><div class="line">formatName1(<span class="string">'John'</span>, <span class="string">'Paul'</span>, <span class="string">'Jones'</span>);</div><div class="line"><span class="comment">//=&gt; 'John Paul Jones' // (Ah, but the musician or the admiral?)</span></div><div class="line">formatName1(<span class="string">'John'</span>, <span class="string">'Paul'</span>);</div><div class="line"><span class="comment">//=&gt; 'John Paul undefined');</span></div></pre></td></tr></table></figure></p>
+<p>但柯里化后的函数更有用：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// curried version</span></div><div class="line"><span class="keyword">var</span> formatNames2 = R.curry(<span class="function"><span class="keyword">function</span>(<span class="params">first, middle, last</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> first + <span class="string">' '</span> + middle + <span class="string">' '</span> + last;</div><div class="line">&#125;);</div><div class="line">formatNames2(<span class="string">'John'</span>, <span class="string">'Paul'</span>, <span class="string">'Jones'</span>);</div><div class="line"><span class="comment">//=&gt; 'John Paul Jones' // (definitely the musician!)</span></div><div class="line"><span class="keyword">var</span> jp = formatNames2(<span class="string">'John'</span>, <span class="string">'Paul'</span>); <span class="comment">//=&gt; returns a function</span></div><div class="line">jp(<span class="string">'Jones'</span>); <span class="comment">//=&gt; 'John Paul Jones' (maybe this one's the admiral)</span></div><div class="line">jp(<span class="string">'Stevens'</span>); <span class="comment">//=&gt; 'John Paul Stevens' (the Supreme Court Justice)</span></div><div class="line">jp(<span class="string">'Pontiff'</span>); <span class="comment">//=&gt; 'John Paul Pontiff' (ok, so I cheated.)</span></div><div class="line">jp(<span class="string">'Ziller'</span>); <span class="comment">//=&gt; 'John Paul Ziller' (magician, a wee bit fictional)</span></div><div class="line">jp(<span class="string">'Georgeandringo'</span>); <span class="comment">//=&gt; 'John Paul Georgeandringo' (rockers)</span></div></pre></td></tr></table></figure></p>
+<p>或这样：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[<span class="string">'Jones'</span>, <span class="string">'Stevens'</span>, <span class="string">'Ziller'</span>].map(jp);</div><div class="line"><span class="comment">//=&gt; ['John Paul Jones', 'John Paul Stevens', 'John Paul Ziller']</span></div></pre></td></tr></table></figure></p>
+<p>你也可以分多次传入参数，像这样：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> james = formatNames2(<span class="string">'James'</span>); <span class="comment">//=&gt; returns a function</span></div><div class="line">james(<span class="string">'Byron'</span>, <span class="string">'Dean'</span>); <span class="comment">//=&gt; 'James Byron Dean' (rebel)</span></div><div class="line"><span class="keyword">var</span> je = james(<span class="string">'Earl'</span>); also returns a <span class="function"><span class="keyword">function</span></span></div><div class="line"><span class="title">je</span>(<span class="params"><span class="string">'Carter'</span></span>); //=&gt; '<span class="title">James</span> <span class="title">Earl</span> <span class="title">Carter</span>' (<span class="params">president</span>)</div><div class="line"><span class="title">je</span>(<span class="params"><span class="string">'Jones'</span></span>); //=&gt; '<span class="title">James</span> <span class="title">Earl</span> <span class="title">Jones</span>' (<span class="params">actor, Vader</span>)</div></pre></td></tr></table></figure></p>
+<p>（有些人会坚持认为我们正在做的应该叫作 &quot;部分应用(partial application)&quot;，&quot;柯里化&quot; 的返回函数应该每次只接受一个参数，该函数处理完后返回一个新的接受单参数的函数，直到所有必需的参数都已传入。他们可以坚持他们的观点，无所谓）</p>
+<p><strong>好无聊啊...! 你能为我做什么呢？</strong></p>
+<p>这里有一个稍有意义的示例。如果想计算一个数字集合的总和，可以这样：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Plain JS:</span></div><div class="line"><span class="keyword">var</span> add = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;<span class="keyword">return</span> a + b;&#125;;</div><div class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</div><div class="line"><span class="keyword">var</span> sum = numbers.reduce(add, <span class="number">0</span>); <span class="comment">//=&gt; 15</span></div></pre></td></tr></table></figure></p>
+<p>而如果想编写一个通用的计算数字列表总和的函数，可以这样：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> total = <span class="function"><span class="keyword">function</span>(<span class="params">list</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> list.reduce(add, <span class="number">0</span>);</div><div class="line">&#125;;</div><div class="line"><span class="keyword">var</span> sum = total(numbers); <span class="comment">//=&gt; 15</span></div></pre></td></tr></table></figure></p>
+<p>在 Ramda 中，<code>total</code> 和 <code>sum</code> 和上面的定义非常相似。可以这样定义 <code>sum</code>：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> sum = R.reduce(add, <span class="number">0</span>, numbers); <span class="comment">//=&gt; 15</span></div></pre></td></tr></table></figure></p>
+<p>但由于 <code>reduce</code> 是柯里化函数，当你跳过最后一个参数时，就像在 <code>total</code> 中定义的那样：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// In Ramda:</span></div><div class="line"><span class="keyword">var</span> total = R.reduce(add, <span class="number">0</span>);  <span class="comment">// returns a function</span></div></pre></td></tr></table></figure></p>
+<p>将会获得一个可以调用的函数：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> sum = total(numbers); <span class="comment">//=&gt; 15</span></div></pre></td></tr></table></figure></p>
+<p>再次注意，函数的定义和将函数作用于数据是多么的相似：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> total = R.reduce(add, <span class="number">0</span>); <span class="comment">//=&gt; function:: [Number] -&gt; Number</span></div><div class="line"><span class="keyword">var</span> sum =   R.reduce(add, <span class="number">0</span>, numbers); <span class="comment">//=&gt; 15</span></div></pre></td></tr></table></figure></p>
+<p><strong>我不关心这些，我又不是数学极客</strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/25/Why-Ramda/" rel="next" title="Why Ramda">
+                <i class="fa fa-chevron-left"></i> Why Ramda
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="wangzengdi" />
+          <p class="site-author-name" itemprop="name">wangzengdi</p>
+          <p class="site-description motion-element" itemprop="description">FE@Meituan.com</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/adispring" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangzengdi</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'adispring';
+      var disqus_identifier = '2017/06/27/Favoring-Curry/';
+      var disqus_title = "爱上柯里化 (Favoring Curry)";
+      var disqus_url = 'https://adispring.github.io/2017/06/27/Favoring-Curry/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
