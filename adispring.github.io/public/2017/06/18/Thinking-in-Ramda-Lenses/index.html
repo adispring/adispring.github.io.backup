@@ -94,7 +94,7 @@
 <meta property="og:url" content="https://adispring.github.io/2017/06/18/Thinking-in-Ramda-Lenses/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
 <meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Lenses》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第八篇。 在 第六节  和 第七节 中，我们学习了如何以声明式和不变式来读取、更新和转换对象的属性和数组的元素。 Ramda 提供了一个更通用的工具：透镜（lens），来进行这些操作。">
-<meta property="og:updated_time" content="2017-06-18T03:59:42.000Z">
+<meta property="og:updated_time" content="2017-06-28T02:32:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinking in Ramda: 透镜（Lenses）">
 <meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Lenses》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第八篇。 在 第六节  和 第七节 中，我们学习了如何以声明式和不变式来读取、更新和转换对象的属性和数组的元素。 Ramda 提供了一个更通用的工具：透镜（lens），来进行这些操作。">
@@ -325,10 +325,10 @@
 <p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第八篇。</p>
 <p>在 <a href="https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" target="_blank" rel="external">第六节</a>  和 <a href="https://adispring.coding.me/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/" target="_blank" rel="external">第七节</a> 中，我们学习了如何以声明式和不变式来读取、更新和转换对象的属性和数组的元素。</p>
 <p>Ramda 提供了一个更通用的工具：透镜（lens），来进行这些操作。</p>
-<p><strong>什么是透镜？</strong></p>
+<h2 id="shi-yao-shi-tou-jing">什么是透镜？</h2>
 <p>透镜将 &quot;getter&quot; 和 &quot;setter&quot; 函数组合为一个单一模块。Ramda 提供了一系列配合透镜一起工作的函数。</p>
 <p>可以将透镜视为对某些较大数据结构的特定部分的聚焦、关注。</p>
-<p><strong>如何创建透镜</strong></p>
+<h2 id="ru-he-chuang-jian-tou-jing">如何创建透镜</h2>
 <p>在 Ramda 中，最常见的创建透镜的方法是 <code>lens</code> 函数。<code>lens</code> 接受一个 &quot;getter&quot; 函数和一个 &quot;setter&quot; 函数，然后返回一个新透镜。</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> person = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'Randy'</span>,</div><div class="line">  <span class="attr">socialMedia</span>: &#123;</div><div class="line">    <span class="attr">github</span>: <span class="string">'randycoulman'</span>,</div><div class="line">    <span class="attr">twitter</span>: <span class="string">'@randycoulman'</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="keyword">const</span> nameLens = lens(prop(<span class="string">'name'</span>), assoc(<span class="string">'name'</span>))</div><div class="line"><span class="keyword">const</span> twitterLens = lens(</div><div class="line">  path([<span class="string">'socialMedia'</span>, <span class="string">'twitter'</span>]),</div><div class="line">  assocPath([<span class="string">'socialMedia'</span>, <span class="string">'twitter'</span>])</div><div class="line">)</div></pre></td></tr></table></figure></p>
 <p>这里使用 <code>prop</code> 和 <code>path</code> 作为 &quot;getter&quot; 方法；<code>assoc</code> 和 <code>assocPath</code> 作为 &quot;setter&quot; 方法。</p>
@@ -341,7 +341,7 @@
 <p>可以用 <code>lensProp</code> 和 <code>lensPath</code> 来重写上述示例：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> nameLens = lensProp(<span class="string">'name'</span>)</div><div class="line"><span class="keyword">const</span> twitterLens = lensPath([<span class="string">'socialMedia'</span>, <span class="string">'twitter'</span>])</div></pre></td></tr></table></figure></p>
 <p>这样便摆脱了向 &quot;getter&quot; 和 &quot;setter&quot; 重复输入两次相同参数的烦扰，变得简洁多了。在实际工作中，我发现我几乎从来不需要使用通用的 <code>lens</code> 函数。</p>
-<p><strong>我能用它做什么呢？</strong></p>
+<h2 id="wo-neng-yong-ta-zuo-shi-yao-ni">我能用它做什么呢？</h2>
 <p>我们创建了一些透镜，可以用它们做些什么呢？</p>
 <p>Ramda 提供了三个配合透镜一起使用的的函数：</p>
 <ul>
@@ -351,9 +351,9 @@
 </ul>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">view(nameLens, person) <span class="comment">// =&gt; 'Randy'</span></div><div class="line"> </div><div class="line">set(twitterLens, <span class="string">'@randy'</span>, person)</div><div class="line"><span class="comment">// =&gt; &#123;</span></div><div class="line"><span class="comment">//   name: 'Randy',</span></div><div class="line"><span class="comment">//   socialMedia: &#123;</span></div><div class="line"><span class="comment">//     github: 'randycoulman',</span></div><div class="line"><span class="comment">//     twitter: '@randy'</span></div><div class="line"><span class="comment">//   &#125;</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"> </div><div class="line">over(nameLens, toUpper, person)</div><div class="line"><span class="comment">// =&gt; &#123;</span></div><div class="line"><span class="comment">//   name: 'RANDY',</span></div><div class="line"><span class="comment">//   socialMedia: &#123;</span></div><div class="line"><span class="comment">//     github: 'randycoulman',</span></div><div class="line"><span class="comment">//     twitter: '@randycoulman'</span></div><div class="line"><span class="comment">//   &#125;</span></div><div class="line"><span class="comment">// &#125;</span></div></pre></td></tr></table></figure></p>
 <p>注意，<code>set</code> 和 <code>over</code> 会按指定的方式对被透镜关注的属性进行修改，并返回整个新的对象。</p>
-<p><strong>结论</strong></p>
+<h2 id="jie-lun">结论</h2>
 <p>如果想从复杂数据结构的操作中抽象出简单、通用的方法，透镜可以提供很多帮助。我们只需暴露透镜；而不需要暴露整个数据结构、或者为每个可访问属性都提供 &quot;setter&quot;、&quot;getter&quot; 和 变换方法。</p>
-<p><strong>下一节</strong></p>
+<h2 id="xia-yi-jie">下一节</h2>
 <p>我们现在已经了解了许多 Ramda 提供的方法，已经足以应对大部分编程需要。<a href="https://adispring.coding.me/2017/06/18/Thinking-in-Ramda-Wrap-Up/" target="_blank" rel="external">总结</a> 将回顾整个系列的内容，并会提到一些可能需要自己进一步探索的其他主题。</p>
 
       
@@ -515,7 +515,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#shi-yao-shi-tou-jing"><span class="nav-number">1.</span> <span class="nav-text">什么是透镜？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ru-he-chuang-jian-tou-jing"><span class="nav-number">2.</span> <span class="nav-text">如何创建透镜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wo-neng-yong-ta-zuo-shi-yao-ni"><span class="nav-number">3.</span> <span class="nav-text">我能用它做什么呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jie-lun"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xia-yi-jie"><span class="nav-number">5.</span> <span class="nav-text">下一节</span></a></li></ol></div>
             
           </div>
         </section>

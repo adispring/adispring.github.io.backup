@@ -30,7 +30,7 @@ const titlesForYear = (books, year) => {
 
 如果不需要在 `filter` 中使用箭头函数会更好些。先来解决这个问题，并借此展示一些制作 "pipeline" 的知识。
 
-**高阶函数**
+## 高阶函数
 
 在本系列文章的[第一篇](https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/)中，我们将函数视为 "一等结构"。一等函数可以作为参数传递给其他函数，也可以作为其他函数的返回值。我们一直在使用前者，但还没有见过后者（函数作为其他函数的返回值）。
 
@@ -66,7 +66,7 @@ const titlesForYear = (books, year) => {
 
 现在，当调用 `filter` 时，`publishedInYear(year)` 会立即调用，并返回一个接受 `book` 为参数的函数，这正是 `filter` 需要的。
 
-**部分应用函数**
+## 部分应用函数
 
 可以按上面的方式重写任何多参数函数。但我们不可能拥有所有我们想要的函数的源码；另外，很多情况下，我们可能还是希望以普通的方式调用多参数函数。
 
@@ -98,7 +98,7 @@ const titlesForYear = (books, year) => {
 First argument to _arity must be a non-negative integer no greater than ten
 ```
 
-**柯里化(Curry)**
+## 柯里化(Curry)
 
 如果到处使用 `partial` 和 `partialRight` 的话，会让代码变得冗长乏味；但是，将多元函数以一系列一元函数的形式调用同样不好。
 
@@ -131,7 +131,7 @@ const titlesForYear = (books, year) => {
 
 现在可以只使用参数 `year` 来调用 `publishedInYear`，并返回一个新函数，该函数接受参数 `book` 并执行原函数。但是，仍然可以按普通方式对它调用：`publishedInYear(2012, book)`，不需要写烦人的语法 `)(`。所以，柯里化的函数在两种情况下都能很好地工作。
 
-**参数的顺序**
+## 参数的顺序
 
 注意，为了让 `curry` 工作，我们不得不对参数的顺序进行翻转。这在函数式编程中非常常见，所以几乎所有的 Ramda 函数都将待处理的数据放到参数列表的最后面。
 
@@ -139,13 +139,13 @@ const titlesForYear = (books, year) => {
 
 我们已经在集合迭代函数中见过这样的例子。它们都将集合作为最后一个参数，这样可以使这种风格的编程更容易些。
 
-**顺序错误的参数**
+## 顺序错误的参数
 
 如果不改变 `publishedInYear` 的顺序，还可以继续使用柯里化特性的优势吗？
 
 当然可以了，Ramda 提供了几个选择。
 
-**flip**
+## flip
 
 第一个选择是 `flip`。`flip` 接受一个多元函数（元数 >= 2），返回一个元数相同的新函数，但前 2 个参数的顺序调换了。它主要用于二元函数，但也可以用于一般函数。
 
@@ -163,7 +163,7 @@ const titlesForYear = (books, year) => {
 
 多数情况下，我更喜欢使用方便的参数顺序，但如果用到不能自己掌控的函数，`flip` 是一个好的选择。
 
-**placeholder (占位符)**
+## placeholder (占位符)
 
 更通用的选择是使用 "placeholder" 参数（`__`）
 
@@ -199,7 +199,7 @@ const titlesForYear = (books, year) => {
 
 注意， `__` 仅适用于柯里化的函数，而 `partial`、`partialRight` 和 `flip` 适用于任何函数。如果需要对某个普通函数使用 `__`，可以先用 `curry` 将其包裹起来。
 
-**来做一条管道（pipeline）**
+## 来做一条管道（pipeline）
 
 现在看看能否将我们的 `filter` 和 `map` 调用放入 "pipeline" (管道)中？下面是代码当前的状态，使用了方便的参数顺序的 `publishedInYear`：
 
@@ -242,12 +242,12 @@ const titlesForYear = curry((year, books) =>
 )
 ```
 
-**结论**
+## 结论
 
 本文可能是这个系列中讲解最深的一篇。部分应用和柯里化可能需要花一些时间和精力来熟悉和掌握。但一旦学会，他们会以一种强大的方式将数据处理变得更加函数式。
 
 它们引导你通过创建包含许多小而简单代码块的 "pipeline" 的方式，来构建数据处理程序。
 
-**下一节**
+## 下一节
 
 为了以函数式的方式编写代码，我们需要用 "声明式" 的思维代替 "命令式" 思维。要做到这点，需要找到一种函数式的方式来表示命令式的结构。[声明式编程](https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Declarative-Programming/) 将会讨论这些想法。

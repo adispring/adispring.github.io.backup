@@ -16,7 +16,7 @@ categories: 'Thinking in Ramda'
 
 开始之前，先介绍一些背景知识。
 
-**命令式 vs 声明式**
+## 命令式 vs 声明式
 
 存在很多编程语言分类的方式，如静态语言和动态语言，解释型语言和编译型语言，底层和高层语言等等。
 
@@ -32,13 +32,13 @@ categories: 'Thinking in Ramda'
 
 即使在声明式程序中，也需要做一些命令式程序中的工作。控制流，算术、比较和逻辑操作仍然是必须使用的基本构建块。但我们需要找到一种声明式的方式来描述这些基本构建块。
 
-**声明式替换**
+## 声明式替换
 
 由于我们使用 JavaScript （一种命令式语言）编程，所以在编写 "普通" JavaScript 代码时，使用标准的命令式结构也是正常的。
 
 但当使用 "pipeline" 或类似的结构编写函数式变换时，命令式的结构并不能很好的工作。
 
-**算术**
+## 算术
 
 在 [第二节](https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/) ，我们实现了一系列算术变换来演示 "pipeline"：
 
@@ -87,7 +87,7 @@ const operate = pipe(
 
 `subtract` 是二元操作符 `-` 的替代，但还有一个表示取反的一元操作符 `-`。我们可以使用 `multiply(-1)`，但 Ramda 也提供了 `negate` 来实现相同的功能。
 
-**Comparison (比较)**
+## Comparison (比较)
 
 还是在 [第二节](https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/)，我们写了一些函数来确定一个人是否有资格投票。该代码的最终版本如下所示：
 
@@ -123,7 +123,7 @@ Ramda 还提供了其他比较运算符的替代：`gt` 对应 `>`，`lt` 对应
 
 `===` 还有一些其他的用途：可以检测字符串或数组是否为空（`str === ''` 或 `arr.length === 0`），也可以检查变量是否为 `null` 或 `undefined`。Ramda 为这两种情况提供了方便的判断函数：`isEmpty` 和 `isNil`。
 
-**Logic (逻辑)**
+## Logic (逻辑)
 
 在 [第二节](https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/) 中（参见上面的相关代码）。我们使用 `both` 和 `either` 来代替 `&&` 和 `||` 运算符。我们还提到使用 `complement` 代替 `!`。
 
@@ -147,11 +147,11 @@ const lineWidth = defaultTo(80, settings.lineWidth)
 
 `defaultTo` 检查第二个参数是否为空（`isNil`）。如果非空，则返回该值；否则返回第一个值。
 
-**Conditionals (条件)**
+## Conditionals (条件)
 
 控制流在函数式编程中不是必要的，但偶尔也会有些用处。在 [第一节](https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/) 中讨论的集合迭代函数在大部分情况下都可以很好的取代循环，但 "条件" 仍然非常重要。
 
-**ifElse**
+## ifElse
 
 我们来写一个函数，`forever21`，接受一个年龄，并返回下一个年龄。但正如名字所示，一旦成长到 21 岁，就一直保持这样。
 
@@ -175,7 +175,7 @@ const forever21 = age => ifElse(lte(21), () => 21, inc)(age)
 
 在这种情况下，我们不得不读作："21岁小于或等于给定年龄"。但这样可读性很低、比较乱，所以我坚持使用占位符版本的函数。
 
-**constants (常量)**
+## constants (常量)
 
 常量函数在这种情形下非常有用。你可能已经想到了，Ramda 为我们提供了一些便捷的方法。本例中，这个方法是 `always`。
 
@@ -185,7 +185,7 @@ const forever21 = age => ifElse(gte(__, 21), always(21), inc)(age)
 
 Ramda 还提供了 `T` 和 `F`，作为 `always(true) 和 always(false)` 的缩写。
 
-**identity (恒等)**
+## identity (恒等)
 
 再来写一个函数：`alwaysDrivingAge`。该函数接受一个年龄，如果 `gte` 16，则将该年龄返回；但如果小于 16，则返回 16。这样任何人都可以伪造他们的驾驶年龄了，即使他们还没有达到。
 
@@ -203,7 +203,7 @@ const alwaysDrivingAge = age => ifElse(lt(__, 16), always(16), identity)(age)
 
 `identity` 可以接受多个参数，但总是返回首个参数。如果想要返回除首个参数之外的参数，可以使用更通用的 `nthArg` 函数。但 `nthArg` 不如 `identity` 用的频繁。
 
-**when 和 unless**
+## when 和 unless
 
 在 `ifElse` 代码中，其中一个条件分支为 `identity` 也很常见。所以 Ramda 也提供了便捷的方法。
 
@@ -219,7 +219,7 @@ const alwaysDrivingAge = age => when(lt(__, 16), always(16))(age)
 const alwaysDrivingAge = age => unless(gte(__, 16), always(16))(age)
 ```
 
-**cond**
+## cond
 
 Ramda 还提供了 `cond` 函数，来代替 `switch` 语句或链式的 `if...then...else` 语句。
 
@@ -235,11 +235,11 @@ const water = temperature => cond([
 
 我目前还不需要在 Ramda 代码中使用 `cond`。但我很多年前编写过 Common Lisp 代码，所以 `cond` 函数感觉就像是位老朋友。
 
-**结论**
+## 结论
 
 本节中展示了很多将命令式代码转为函数声明式代码的 Ramda 函数。
 
-**下一节**
+## 下一节
 
 你可能已经注意到了，最后我们编写的几个函数（`forever21`、`alwaysDrivingAge` 和 `water`）都接受一个参数，构建一个新函数，然后将该函数作用于参数。
 

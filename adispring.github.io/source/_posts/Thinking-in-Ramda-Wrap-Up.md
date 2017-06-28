@@ -20,7 +20,7 @@ categories: 'Thinking in Ramda'
 
 这两个原则使我们能编写出非常清晰的函数式代码，可以将基本的构建模块组合成更强大的操作。
 
-**总结**
+## 总结
 
 作为参考，一下是本系列文章的简单概要。
 
@@ -40,7 +40,7 @@ categories: 'Thinking in Ramda'
 
 * [透镜(Lenses)](https://adispring.coding.me/2017/06/18/Thinking-in-Ramda-Lenses/)：引入了透镜的概念，该结构允许我们把重点聚焦在较大的数据结构的一小部分上。借助 `view`、`set` 和 `over` 函数，可以对较大数据结构的小部分被关注数据进行读取、更新和变换操作。
 
-**后续**
+## 后续
 
 该系列文章并未覆盖到 Ramda 所有部分。特别是，我们没有讨论处理字符串的函数，也没有讨论一些更高阶的概念，如 [transducers](http://ramda.cn/docs/#transduce)。
 

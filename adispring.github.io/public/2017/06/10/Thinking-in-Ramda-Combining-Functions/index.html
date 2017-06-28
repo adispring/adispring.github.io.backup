@@ -94,7 +94,7 @@
 <meta property="og:url" content="https://adispring.github.io/2017/06/10/Thinking-in-Ramda-Combining-Functions/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
 <meta property="og:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Combining Functions》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第二篇。 在第一节中，介绍了 Ramda 和函数式编程的一些基本思想，如函数、纯函数和数据不变性。并介绍了如何入门：可以从集合迭代函数（如 forEach、m">
-<meta property="og:updated_time" content="2017-06-13T13:33:09.000Z">
+<meta property="og:updated_time" content="2017-06-28T02:34:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinking in Ramda: 函数组合">
 <meta name="twitter:description" content="译者注：本文翻译自 Randy Coulman 的 《Thinking in Ramda: Combining Functions》，转载请与原作者或本人联系。下面开始正文。  本文是函数式编程系列文章：Thinking in Ramda 的第二篇。 在第一节中，介绍了 Ramda 和函数式编程的一些基本思想，如函数、纯函数和数据不变性。并介绍了如何入门：可以从集合迭代函数（如 forEach、m">
@@ -324,10 +324,10 @@
 <hr>
 <p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第二篇。</p>
 <p>在<a href="https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8/" target="_blank" rel="external">第一节</a>中，介绍了 Ramda 和函数式编程的一些基本思想，如函数、纯函数和数据不变性。并介绍了如何入门：可以从集合迭代函数（如 <code>forEach</code>、<code>map</code>、<code>reduce</code>）开始。</p>
-<p><strong>简单组合</strong></p>
+<h2 id="jian-dan-zu-he">简单组合</h2>
 <p>一旦熟悉了可以将函数传递给其他函数，你可能会开始找将多个函数组合在一起的场景。</p>
 <p>Ramda 为简单的函数组合提供了一些函数。我们来看看。</p>
-<p><strong>Complement</strong></p>
+<h2 id="complement">Complement</h2>
 <p>在上一节，我们使用 <code>find</code> 来查找列表中的首个偶数。</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isEven = <span class="function"><span class="params">x</span> =&gt;</span> x % <span class="number">2</span> === <span class="number">0</span></div><div class="line">find(isEven, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment">//=&gt; 2</span></div></pre></td></tr></table></figure></p>
 <p>如果想找首个奇数呢？我们可以随手写一个 <code>isOdd</code> 函数并使用它。但我们知道任何非偶整数都是奇数，所以可以重用 <code>isEven</code> 函数。</p>
@@ -346,18 +346,18 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isCitizen = either(wasBornInCountry, wasNaturalized)</div><div class="line"><span class="keyword">const</span> isEligibleToVote = both(isOver18, isCitizen)</div></pre></td></tr></table></figure></p>
 <p>注意，<code>both</code> 以函数的方式实现了逻辑与（<code>&amp;&amp;</code>）的功能，<code>either</code> 实现了逻辑或（<code>||</code>）的功能。</p>
 <p>Ramda 还提供了 <code>allPass</code> 和 <code>anyPass</code>，接受由任意多个函数组成的数组作为参数。如名称所示，<code>allPass</code> 类似于 <code>both</code>，而 <code>anyPass</code> 类似于 <code>either</code>。</p>
-<p><strong>Pipelines(管道)</strong></p>
+<h2 id="pipelines-guan-dao">Pipelines(管道)</h2>
 <p>有时我们需要以 pipeline 的方式将多个函数依次作用于某些数据。例如，接受两个数字，将它们相乘，加 1 ，然后平方。我们可以这样写：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> multiply = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a * b</div><div class="line"><span class="keyword">const</span> addOne = <span class="function"><span class="params">x</span> =&gt;</span> x + <span class="number">1</span></div><div class="line"><span class="keyword">const</span> square = <span class="function"><span class="params">x</span> =&gt;</span> x * x</div><div class="line"> </div><div class="line"><span class="keyword">const</span> operate = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> product = multiply(x, y)</div><div class="line">  <span class="keyword">const</span> incremented = addOne(product)</div><div class="line">  <span class="keyword">const</span> squared = square(incremented)</div><div class="line"> </div><div class="line">  <span class="keyword">return</span> squared</div><div class="line">&#125;</div><div class="line"> </div><div class="line">operate(<span class="number">3</span>, <span class="number">4</span>) <span class="comment">// =&gt; ((3 * 4) + 1)^2 =&gt; (12 + 1)^2 =&gt; 13^2 =&gt; 169</span></div></pre></td></tr></table></figure></p>
 <p>注意，每次操作是对上次操作的结果进行处理。</p>
-<p><strong>pipe</strong></p>
+<h2 id="pipe">pipe</h2>
 <p>Ramda 提供了 <code>pipe</code> 函数：接受一系列函数，并返回一个新函数。</p>
 <p>新函数的元数与第一个传入函数的元数相同（元数：接受参数的个数），然后顺次通过 &quot;管道&quot; 中的函数对输入参数进行处理。它将第一个函数作用于参数，返回结果作为下一个函数的入参，依次进行下去。&quot;管道&quot; 中最后一个函数的结果作为 <code>pipe</code> 调用的最终结果。</p>
 <p>注意，除首个函数外，其余的函数都是一元函数。</p>
 <p>了解这些后，我们可以使用 <code>pipe</code> 来简化我们的 <code>operate</code> 函数：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> operate = pipe(</div><div class="line">  multiply,</div><div class="line">  addOne,</div><div class="line">  square</div><div class="line">)</div></pre></td></tr></table></figure></p>
 <p>当调用 <code>operate(3, 4)</code> 时，<code>pipe</code> 将 <code>3</code> 和 <code>4</code> 传给 <code>multiply</code> 函数，输出 <code>12</code>，然后将 <code>12</code> 传给 <code>addOne</code>，返回 <code>13</code>，然后将 <code>13</code> 传给 <code>square</code>，返回 <code>169</code>，并将 <code>169</code> 作为最终 <code>operate</code> 的最终结果返回。</p>
-<p><strong>compose</strong></p>
+<h2 id="compose">compose</h2>
 <p>另一种编写原始 <code>operate</code> 函数的方式是内联所有暂时变量：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> operate = <span class="function">(<span class="params">x, y</span>) =&gt;</span> square(addOne(multiply(x, y)))</div></pre></td></tr></table></figure></p>
 <p>这样更紧凑，但也更不便于阅读。然而这种形式可以使用 Ramda 的 <code>compose</code> 函数进行重写。</p>
@@ -366,12 +366,12 @@
 <p>这与上面的 <code>pipe</code> 几乎一样，除了函数的顺序是相反的。实际上，Ramda 中的 <code>compose</code> 函数的内部是用 <code>pipe</code> 实现的。</p>
 <p>我一直这样思考 <code>compose</code> 的工作方式：<code>compose(f, g)(value)</code> 等价于 <code>f(g(value))</code>。</p>
 <p>注意，与 <code>pipe</code> 类似，<code>compose</code> 中的函数除最后一个外，其余都是一元函数。</p>
-<p><strong>compose 还是 pipe？</strong></p>
+<h2 id="compose-huan-shi-pipe">compose 还是 pipe？</h2>
 <p>具有命令式编程背景的人可能觉得 <code>pipe</code> 更容易理解，因为可以按照从左往右的顺序进行阅读。但 <code>compose</code> 更容易对如上所示的嵌套函数进行转换。</p>
 <p>我也不太清楚什么时候该用 <code>compose</code>，什么时候该用 <code>pipe</code>。由于它们在 Ramda 中基本等价，所以选择用哪个可能并不重要。只要根据自己的情况选择合适的即可。</p>
-<p><strong>结论</strong></p>
+<h2 id="jie-lun">结论</h2>
 <p>通过特定的方式进行函数组合，我们已经可以开始编写更强的函数了。</p>
-<p><strong>下一节</strong></p>
+<h2 id="xia-yi-jie">下一节</h2>
 <p>你可能已经注意到了，在进行函数组合时，我们多数情况下都可以省略函数参数。只有在最终调用组合好的函数时，才传入参数。</p>
 <p>这在函数式编程中非常常见，我们将在下一节 <a href="https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/" target="_blank" rel="external"><code>Partial Application</code> (部分应用)</a>进行更多详细介绍。我们还会讨论如何组合多元（多参数）函数。</p>
 
@@ -534,7 +534,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jian-dan-zu-he"><span class="nav-number">1.</span> <span class="nav-text">简单组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#complement"><span class="nav-number">2.</span> <span class="nav-text">Complement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pipelines-guan-dao"><span class="nav-number">3.</span> <span class="nav-text">Pipelines(管道)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pipe"><span class="nav-number">4.</span> <span class="nav-text">pipe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compose"><span class="nav-number">5.</span> <span class="nav-text">compose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compose-huan-shi-pipe"><span class="nav-number">6.</span> <span class="nav-text">compose 还是 pipe？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jie-lun"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xia-yi-jie"><span class="nav-number">8.</span> <span class="nav-text">下一节</span></a></li></ol></div>
             
           </div>
         </section>

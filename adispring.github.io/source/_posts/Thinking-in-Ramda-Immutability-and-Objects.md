@@ -14,7 +14,7 @@ categories: 'Thinking in Ramda'
 
 那时候，因为缺少一些工具，我们还无法将所有的函数转换为 "pointfree" 的风格。现在我们就来学习这些工具。
 
-**读取对象属性**
+## 读取对象属性
 
 再来回顾一下 [第五节](https://adispring.coding.me/2017/06/13/Thinking-in-Ramda-Pointfree-Style/) 已经重构过的 "合格选民" 的例子：
 
@@ -39,7 +39,7 @@ const isOver18 = person => gte(person.age, 18)
 
 为了让这些函数变为 "pointfree" 的，需要一种方法来使构建出来的函数的 `person` 参数排在参数列表的最后。问题是，我们需要访问 `person` 的属性，现有唯一的方法却是命令式的。
 
-**prop**
+## prop
 
 幸运的是， Ramda 为我们提供了访问对象属性的辅助函数：`prop`。
 
@@ -97,33 +97,33 @@ const isOver18 = compose(gte(__, 18), prop('age'))
 
 我们来展示更多 Ramda 处理对象的函数。
 
-**pick**
+## pick
 
 `prop` 用来读取并返回对象的单个属性，而 `pick` 读取对象的多个属性，然后返回有这些属性组成的新对象。
 
 例如，如果想同时获取一个人的名字和年龄，可以使用：`pick(['name', 'age'], person)`。
 
-**has**
+## has
 
 在不读取属性值的情况下，想知道对象中是否包含该属性，可以使用 `has` 来检测对象是否拥有该属性，如 `has('name' ,person)`；还可以使用 `hasIn` 来检测原型链上的属性。
 
-**path**
+## path
 
 `prop` 用来读取对象的属性，`path` 可以读取对象的嵌套属性。例如，我们可以从更深层的结构中访问邮编：`path(['address', 'zipCode'], person)`。
 
 注意，`path` 容错性更强。如果路径上的任意属性为 `null` 或 `undefined`，则 `path` 返回 `undefined`，而 `prop` 会引发错误。
 
-**propOr / pathOr**
+## propOr / pathOr
 
 `propOr` 和 `pathOr` 像是 `prop`/`path` 与 `defaultTo` 的组合。如果在目标对象中找不到属性或路径的值，它们允许你提供默认值。
 
 例如，当我们不知道某人的姓名时，可以提供一个占位符：`propOr('<Unnamed>', 'name', person)`。注意，与 `prop` 不同，如果 `person` 为 `null` 或 `undefined` 时，`propOr` 不会引发错误，而是会返回一个默认值。
 
-**keys / values**
+## keys / values
 
 `keys` 返回一个包含对象中所有属性名称的数组。`values` 返回这些属性的值组成的数组。当与 [第一节](https://adispring.coding.me/2017/06/09/Thinking-in-Ramda-%E5%85%A5%E9%97%A8) 中提到集合迭代函数结合使用时，这两个函数会非常有用。
 
-**对属性增、删、改、查**
+## 对属性增、删、改、查
 
 现在已经有很多对对象进行声明式读取的函数，但如果想要进行更改操作呢？
 
@@ -131,7 +131,7 @@ const isOver18 = compose(gte(__, 18), prop('age'))
 
 Ramda 再次为我们提供了很多辅助函数。
 
-**assoc / assocPath**
+## assoc / assocPath
 
 在命令式编程时，可以使用赋值操作符设置或更改一个人的名字：`person.name = 'New name'`。
 
@@ -141,7 +141,7 @@ Ramda 再次为我们提供了很多辅助函数。
 
 还有用于更新嵌套属性的方法：`assocPath`：`const updatedPerson = assocPath(['address', 'zipcode'], '97504', person)`。
 
-**dissoc / dissocPath / omit**
+## dissoc / dissocPath / omit
 
 如何删除属性呢？我们可能想删除 `person.age` 。在 Ramda 中，可以使用 `dissoc`：`const updatedPerson = dissoc('age', person)`。
 
@@ -151,7 +151,7 @@ Ramda 再次为我们提供了很多辅助函数。
 
 注意，`pick` 与 `omit` 的操作很像，两者是互补的关系。它们能辅助实现白名单（使用 `pick` 保留想要的属性集）和黑名单（使用 `omit` 删除不想要的属性集）的功能。
 
-**属性转换**
+## 属性转换
 
 我们现在已经知道如何利用声明式和数据不变性的方式来处理对象。我们来写一个函数：`celebrateBirthday`，在生日当前更新他的年龄。
 
@@ -180,7 +180,7 @@ const celebrateBirthday = evolve({ age: inc })
 
 `evolve` 已经很快成为我编程时的主力。
 
-**合并对象**
+## 合并对象
 
 有时，需要合并两个对象。一种常见的情形是当使用含有 "options" 配置项的函数时，常常需要将这些配置项与一组默认配置项进行组合。Ramda 为此提供了 `merge` 方法。
 
@@ -203,11 +203,11 @@ function f(a, b, options = {}) {
 
 注意，`merge` 只接受两个参数。如果想要将多个对象合并为一个对象，可以使用 `mergeAll`，它接受一个需要被合并对象的数组作为参数。
 
-**结论**
+## 结论
 
 本文展示了 Ramda 中一系列很好的以声明式和数据不变方式处理对象的方法。我们现在可以对对象进行增、删、改、查，而不会改变原有的对象。并且也可以在组合函数时使用这些方法来做这些事情。
 
-**下一节**
+## 下一节
 
 现在可以以 Immutable 的方式处理对象，那么数组呢？[数据不变性和数组](https://adispring.coding.me/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/) 将演示对数组的处理。
 

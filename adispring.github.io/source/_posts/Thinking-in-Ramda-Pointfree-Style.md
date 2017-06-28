@@ -16,7 +16,7 @@ categories: 'Thinking in Ramda'
 
 这是函数式编程里非常常见的一种模式，Ramda 同样提供了优化这种模式的方法。
 
-**Pointfree 风格（无参数风格）**
+## Pointfree 风格（无参数风格）
 
 我们在 [第三节](https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/) 中讨论了 Ramda 的两个指导原则：
 
@@ -81,7 +81,7 @@ const water = cond([
 ])
 ```
 
-**多元函数（多参数函数）**
+## 多元函数（多参数函数）
 
 如果函数接受多个参数会怎样呢？回顾一下 [第三节](https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/) 中的例子：`titlesForYear`。
 
@@ -112,7 +112,7 @@ const titlesForYear = year =>
 
 但只要有如上形式的单参数函数（或者可能以后会被重构），我几乎总是写成 pointfree 风格的。
 
-**重构为 pointfree 风格的代码**
+## 重构为 pointfree 风格的代码
 
 有时我们的代码不会遵循这种模式。我们可能会在同一函数内多次对数据进行操作。
 
@@ -149,7 +149,7 @@ const isCitizen = either(wasBornInCountry, wasNaturalized)
 const isEligibleToVote = both(isOver18, isCitizen)
 ```
 
-**为什么要这么做？**
+## 为什么要这么做？
 
 Pointfree 风格需要一定的时间才能习惯。可能并不需要所有的地方都没有参数。有时候知道某些 Ramda 函数需要多少参数，也是很重要的。
 
@@ -162,11 +162,11 @@ Pointfree 风格的优点是什么呢？人们可能会认为，这只不过是�
 * 它促使我们更专注于正在做的转换的本身，而不是正被转换的数据。
 * 它可以帮助我们将函数视为可以作用于不同数据的通用构建模块，而非对特定类型数据的操作。如果给数据一个名字，我们的思想便会被[禁锢](https://en.wikipedia.org/wiki/Anchoring)在："需要在哪里使用我们的函数"；如果去掉参数，便会使我们更有创造力。
 
-**结论**
+## 结论
 
 Pointfree 风格也被成为 [tacit 式编程](https://en.wikipedia.org/wiki/Tacit_programming)(隐含式编程)，可以使代码更清晰、更易于理解。通过代码重构将所有的转换组合成单一函数，我们最终会得到可以在更多地方使用的更小的构建块（函数）。
 
-**下一节**
+## 下一节
 
 在当前示例中，我们尚未将所有代码都重构为 pointfree 的风格。还有一些代码是命令式的。大部分这种代码是处理对象和数组的。
 

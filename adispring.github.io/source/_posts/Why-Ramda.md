@@ -77,7 +77,7 @@ var activeByUser = function(tasks) {
 var sortUserTasks = R.compose(R.map(R.sortBy(R.prop("dueDate"))), activeByUser);
 ```
 
-**一步到位？**
+## 一步到位？
 
 善于观察的读者可能已经注意到了，我们可以组合上述所有需求。由于 `compose` 函数可以接受多个参数，为什么不一次完成上面所有的功能呢？
 
@@ -109,7 +109,7 @@ var sortUserTasks = R.compose(R.mapObj(sortByDateDescend), activeByUser);
 
 如果确定只需要按日期降序排列，可以将所有这些操作都在 `sortByDateDescend` 中进行组合。如果不确定会升序还是降序排列，我个人会将升序和降序方法都保留。
 
-**数据在哪里？**
+## 数据在哪里？
 
 我们 **仍然** 没有任何数据。这是怎么回事？没有数据的 "数据处理" 是...什么呢？是 "处理"。接下来恐怕需要你多一些耐心了。当进行函数式编程时，所有能获得只是组成 pipeline （管道）的函数。一个函数将数据提供给下一个，下一个函数将数据提供给下下个，依次类推，直到所需的结果从 pipeline 末端输出。
 
@@ -135,7 +135,7 @@ var groupByUser = R.partition(R.prop('username'));
 
 （所以，我是否使用 "闪亮" 的新函数来分散了你的注意力？我在这里仍然没有提到数据！对不住了，看！一大波 "闪亮" 的新函数又来了！）
 
-**但等等，还有更多（函数）**
+## 但等等，还有更多（函数）
 
 如果我们愿意，可以继续这样下去。如果想从列表中选出前 5 个元素，可以使用 Ramda 的 `take` 函数。所以想要获取每个用户前 5 个任务，可以这样做：
 
@@ -167,7 +167,7 @@ var topDataAllUsers = R.compose(R.mapObj(R.compose(importantFields,
     R.take(5), sortByDateDescend)), activeByUser);
 ```
 
-**好吧，够了！我可以看一些数据吗？**
+## 好吧，够了！我可以看一些数据吗？
 
 好的，马上就可以了。
 
@@ -243,7 +243,7 @@ var incompleteTasks = incomplete(tasks);
 
 当然，你也可以将任务列表传给 `sortByDate`、`sortByDateDescend`、`importantFields`、`byUser` 或者 `activeByUser`。因为它们都处理相似的数据类型：一系列任务的列表。我们可以通过简单的组合创建出大量的工具。
 
-**新需求**
+## 新需求
 
 在游戏的最后，你刚刚被告知需要添加一个新特性。你需要过滤出仅属于特定用户的任务，然后对该用户进行与之前相同的过滤、排序和提取子集操作。
 
@@ -262,7 +262,7 @@ var byUser = R.use(R.filter).over(R.propEq("username"));
 var results = topData(byUser('Scott', tasks));
 ```
 
-**拜托，我只是想要我的数据！**
+## 拜托，我只是想要我的数据！
 
 "好的"，你说，"也许这很酷，但现在我真的只是想要我的数据，我不想要不知猴年马月才能返回给我数据的函数。我还能用 Ramda 吗？"
 
@@ -282,7 +282,7 @@ var incompleteTasks = R.filter(R.where({complete: false}), tasks);
 
 所有其他主要的函数也是这样：只需要在调用的最后面添加一个 `tasks` 参数，即可返回数据。
 
-**刚刚发生了什么？**
+## 刚刚发生了什么？
 
 这是 Ramda 的另一个重要特性。Ramda 所有主要的函数都是自动柯里化的。这意味着，如果你不提供给函数需要的所有参数，不想立即调用函数，我们会返会一个接受剩余参数的新函数。所以，`filter` 的定义既包含数组，也包含了过滤数组元素的 "predicate" 函数（判断函数）。在初始版本中，我们没有提供数组值，所以 `filter` 会返回一个新的接受数组为参数的函数。在第二个版本中，我们传入了数组，并与 "predicate" 函数一起来计算结果。
 
@@ -290,7 +290,7 @@ Ramda 函数的自动柯里化和 "函数优先，数据最后" 的 API 设计�
 
 但 Ramda 中柯里化的实现细节是另一篇文章的事情（更新：该文章已经发布了：[Favoring Curry](http://fr.umio.us/favoring-curry/)）。同时，Hugh Jackson 的这篇文章也绝对值得一读：[为什么柯里化有帮助](http://hughfdjackson.com/javascript/why-curry-helps/)。
 
-**但是，这些东西真能工作吗？**
+## 但是，这些东西真能工作吗？
 
 这是我们一直讨论的代码的 JSFiddle 示例：
 
@@ -298,7 +298,7 @@ Ramda 函数的自动柯里化和 "函数优先，数据最后" 的 API 设计�
 
 这段优雅的代码清楚的表明了使用 Ramda 的好处。
 
-**使用 Ramda**
+## 使用 Ramda
 
 [可以参考 Ramda 非常不错的文档](http://ramda.cn/docs/)。
 
