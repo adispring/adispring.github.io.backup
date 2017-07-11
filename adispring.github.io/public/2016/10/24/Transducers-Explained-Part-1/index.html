@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://adispring.github.io/2016/10/24/Transducers-Explained-Part-1/reduce.png">
 <meta property="og:image" content="https://adispring.github.io/2016/10/24/Transducers-Explained-Part-1/transduce.png">
 <meta property="og:image" content="https://adispring.github.io/2016/10/24/Transducers-Explained-Part-1/compose_transducers.png">
-<meta property="og:updated_time" content="2017-06-10T00:23:08.000Z">
+<meta property="og:updated_time" content="2017-07-11T11:23:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transducers Explained: Part 1 中文">
 <meta name="twitter:description" content="译者注：本文翻译自 Kevin Beaty 的《Transducers Explained: Part 1》, 转载请与原作者或本人联系。 对原文中出现的专业术语，在不妨碍理解的情况下采用原文单词。 Transduce 相较于 Reduce 的改进，用一句话概括：在使用 Reduce 对每个元素归约之前，先对取出的每个元素进行转换。 Transduce 的时间复杂度为 O(n), 传统 compo">
@@ -383,7 +383,7 @@
 <h2 id="zui-gu-dan-de-shu-zi">最孤单的数字</h2>
 <p>（注：One is the loneliest number，一句英文歌词，引出 <code>plus1</code> 转换）</p>
 <p>假设我们想要每个元素加1，定义一个加1函数。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> plus1 = <span class="function"><span class="params">item</span> =&gt;</span> itme + <span class="number">1</span>;</div></pre></td></tr></table></figure></p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> plus1 = <span class="function"><span class="params">item</span> =&gt;</span> item + <span class="number">1</span>;</div></pre></td></tr></table></figure></p>
 <p>现在创建一个 transformer ，它使用上面的函数在 step 中对每个独立元素进行转换。</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> xfplus1 = &#123;</div><div class="line">  <span class="attr">init</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'init not needed'</span>); &#125;,</div><div class="line"></div><div class="line">  <span class="attr">step</span>: <span class="function">(<span class="params">result, item</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">const</span> plus1ed = plus1(item);</div><div class="line">    <span class="keyword">return</span> append(result, plus1ed);</div><div class="line">  &#125;,</div><div class="line">  <span class="comment">// step: (result, item) =&gt; append(result, plus1(item)),</span></div><div class="line">  </div><div class="line">  result: <span class="function"><span class="params">result</span> =&gt;</span> result,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>可以使用 transformer 逐步遍历并输出每步结果</p>
@@ -458,7 +458,7 @@
 <p>再次注意，与本节前面的例子的唯一区别是 transducer 的创建。其它都没变。</p>
 <p>组合之所以能工作，是因为 transducers 的定义：接受一个 transformer 并返回一个新的 transformer。也即 transducer 的输入与返回值类型相同，且为单输入单输出。只要符合上述条件，便可以使用函数组合来创建与“输入函数”相同类型的“新函数”。</p>
 <p>由上可得，transducers 是一种 “可组合的算法变换”。这在实践中已经证明其强大之处：可以将新的变换定义为一系列较小变换的组合，然后将它们通过 <code>compose</code> 或 <code>pipe</code> 组合起来。我们将在后续章节中展示更多的例子。</p>
-<p>事实上，虽然函数组合调用顺序为由左向右，而 transformation 调用是自左向右的（译者注：这也是理解 transduce 的难点之一，理解了这个，也就基本理解了 transduce。可以通过单个 transducer 和 transformer 的组合，来理解 transformation 的调用顺序。transduce 本质上做的事情是 <strong>在对每个元素进行归约之前先对其进行变换</strong> ，将这句话重复五遍：），这也是 transduce 区别于 reduce 的“唯一”不同点）。</p>
+<p>事实上，虽然函数组合调用顺序为由右向左，而 transformation 调用是自左向右的（译者注：这也是理解 transduce 的难点之一，理解了这个，也就基本理解了 transduce。可以通过单个 transducer 和 transformer 的组合，来理解 transformation 的调用顺序。transduce 本质上做的事情是 <strong>在对每个元素进行归约之前先对其进行变换</strong> ，将这句话重复五遍：），这也是 transduce 区别于 reduce 的“唯一”不同点）。</p>
 <p>在上面的 <code>transducersPlus4</code> 示例中，每个元素先进行 <code>plus3</code> 转换，然后进行 <code>plus1</code> 转换。</p>
 <p>虽然在本例中 transducers 的调用顺序对结果没有影响，但是<strong>从左向右</strong>的变换顺序还是需要牢记在心。这个变换调用顺序让你在阅读代码时更容易理解，因为它与你的阅读顺序是一至的（如果使用的是英文，或者中文）。</p>
 <h2 id="part-1-zong-jie">part 1 总结</h2>

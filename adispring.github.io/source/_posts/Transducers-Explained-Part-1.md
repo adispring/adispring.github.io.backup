@@ -231,7 +231,7 @@ const output = reduce(append, [], input);
 假设我们想要每个元素加1，定义一个加1函数。
 
 ```js
-const plus1 = item => itme + 1;
+const plus1 = item => item + 1;
 ```
 
 现在创建一个 transformer ，它使用上面的函数在 step 中对每个独立元素进行转换。
@@ -582,7 +582,7 @@ const output = transduce(transducer, stepper, init, input);
 
 由上可得，transducers 是一种 “可组合的算法变换”。这在实践中已经证明其强大之处：可以将新的变换定义为一系列较小变换的组合，然后将它们通过 `compose` 或 `pipe` 组合起来。我们将在后续章节中展示更多的例子。
 
-事实上，虽然函数组合调用顺序为由左向右，而 transformation 调用是自左向右的（译者注：这也是理解 transduce 的难点之一，理解了这个，也就基本理解了 transduce。可以通过单个 transducer 和 transformer 的组合，来理解 transformation 的调用顺序。transduce 本质上做的事情是 **在对每个元素进行归约之前先对其进行变换** ，将这句话重复五遍：），这也是 transduce 区别于 reduce 的“唯一”不同点）。
+事实上，虽然函数组合调用顺序为由右向左，而 transformation 调用是自左向右的（译者注：这也是理解 transduce 的难点之一，理解了这个，也就基本理解了 transduce。可以通过单个 transducer 和 transformer 的组合，来理解 transformation 的调用顺序。transduce 本质上做的事情是 **在对每个元素进行归约之前先对其进行变换** ，将这句话重复五遍：），这也是 transduce 区别于 reduce 的“唯一”不同点）。
 
 在上面的 `transducersPlus4` 示例中，每个元素先进行 `plus3` 转换，然后进行 `plus1` 转换。
 
