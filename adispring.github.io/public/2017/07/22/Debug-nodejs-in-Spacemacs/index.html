@@ -88,16 +88,20 @@
 
 
 
-<meta name="description" content="译者注：本文翻译自 Michael Hurley 的 《Introducing Ramda》，转载请与原作者或本人联系。下面开始正文。  在过去一年的时间里，我的同事 Scott Sauyet 和我一直在编写 Ramda ：&amp;quot;一个实用的 JavaScript 函数式编程库&amp;quot;。当我们为 Frontend Masters 注册 &amp;quot;使用 JavaScript 进行核心函数式">
+<meta name="description" content="在调试代码时，往往会开两个窗口进行操作，一个用来编写代码（代码文件如 index.js），另一个用来调试（如运行 node index.js），这样会频繁的在编辑器和调试窗口之间切换；而且使用 node cli 会运行整个文件，而往往我们只想看文件中的部分内容。 nodejs-repl 库相当于在编辑器和 repl 之间做了桥接，类似于 tmux。 这里有两条命令比较重要： 12nodejs-re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ramda 简介">
-<meta property="og:url" content="https://adispring.github.io/2017/06/25/Introducing-Ramda/index.html">
+<meta property="og:title" content="Debug Nodejs in Spacemacs">
+<meta property="og:url" content="https://adispring.github.io/2017/07/22/Debug-nodejs-in-Spacemacs/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
-<meta property="og:description" content="译者注：本文翻译自 Michael Hurley 的 《Introducing Ramda》，转载请与原作者或本人联系。下面开始正文。  在过去一年的时间里，我的同事 Scott Sauyet 和我一直在编写 Ramda ：&amp;quot;一个实用的 JavaScript 函数式编程库&amp;quot;。当我们为 Frontend Masters 注册 &amp;quot;使用 JavaScript 进行核心函数式">
-<meta property="og:updated_time" content="2017-06-25T08:03:20.000Z">
+<meta property="og:description" content="在调试代码时，往往会开两个窗口进行操作，一个用来编写代码（代码文件如 index.js），另一个用来调试（如运行 node index.js），这样会频繁的在编辑器和调试窗口之间切换；而且使用 node cli 会运行整个文件，而往往我们只想看文件中的部分内容。 nodejs-repl 库相当于在编辑器和 repl 之间做了桥接，类似于 tmux。 这里有两条命令比较重要： 12nodejs-re">
+<meta property="og:image" content="https://adispring.github.io/2017/07/22/Debug-nodejs-in-Spacemacs/open-nodejs-repl.png">
+<meta property="og:image" content="https://adispring.github.io/2017/07/22/Debug-nodejs-in-Spacemacs/import-lib.png">
+<meta property="og:image" content="https://adispring.github.io/2017/07/22/Debug-nodejs-in-Spacemacs/eval.png">
+<meta property="og:updated_time" content="2017-07-22T08:07:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ramda 简介">
-<meta name="twitter:description" content="译者注：本文翻译自 Michael Hurley 的 《Introducing Ramda》，转载请与原作者或本人联系。下面开始正文。  在过去一年的时间里，我的同事 Scott Sauyet 和我一直在编写 Ramda ：&amp;quot;一个实用的 JavaScript 函数式编程库&amp;quot;。当我们为 Frontend Masters 注册 &amp;quot;使用 JavaScript 进行核心函数式">
+<meta name="twitter:title" content="Debug Nodejs in Spacemacs">
+<meta name="twitter:description" content="在调试代码时，往往会开两个窗口进行操作，一个用来编写代码（代码文件如 index.js），另一个用来调试（如运行 node index.js），这样会频繁的在编辑器和调试窗口之间切换；而且使用 node cli 会运行整个文件，而往往我们只想看文件中的部分内容。 nodejs-repl 库相当于在编辑器和 repl 之间做了桥接，类似于 tmux。 这里有两条命令比较重要： 12nodejs-re">
+<meta name="twitter:image" content="https://adispring.github.io/2017/07/22/Debug-nodejs-in-Spacemacs/open-nodejs-repl.png">
 
 
 
@@ -118,10 +122,10 @@
 
 
 
-  <link rel="canonical" href="https://adispring.github.io/2017/06/25/Introducing-Ramda/"/>
+  <link rel="canonical" href="https://adispring.github.io/2017/07/22/Debug-nodejs-in-Spacemacs/"/>
 
 
-  <title> Ramda 简介 | wangzengdi's Blog </title>
+  <title> Debug Nodejs in Spacemacs | wangzengdi's Blog </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="en">
@@ -254,7 +258,7 @@
             
             
               
-                Ramda 简介
+                Debug Nodejs in Spacemacs
               
             
           </h1>
@@ -266,8 +270,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2017-06-25T14:49:18+08:00" content="2017-06-25">
-              2017-06-25
+            <time itemprop="dateCreated" datetime="2017-07-22T15:04:44+08:00" content="2017-07-22">
+              2017-07-22
             </time>
           </span>
 
@@ -280,8 +284,8 @@
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Ramda/" itemprop="url" rel="index">
-                    <span itemprop="name">Ramda</span>
+                  <a href="/categories/Emacs/" itemprop="url" rel="index">
+                    <span itemprop="name">Emacs</span>
                   </a>
                 </span>
 
@@ -296,8 +300,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/06/25/Introducing-Ramda/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/25/Introducing-Ramda/" itemprop="commentsCount"></span>
+                <a href="/2017/07/22/Debug-nodejs-in-Spacemacs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/07/22/Debug-nodejs-in-Spacemacs/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -320,23 +324,41 @@
       
 
       
-        <p>译者注：本文翻译自 <a href="https://github.com/buzzdecafe" target="_blank" rel="external">Michael Hurley</a> 的 《<a href="http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda/" target="_blank" rel="external">Introducing Ramda</a>》，转载请与<a href="https://github.com/buzzdecafe" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
-<hr>
-<p>在过去一年的时间里，我的同事 Scott Sauyet 和我一直在编写 <a href="https://github.com/ramda/ramda" target="_blank" rel="external">Ramda</a> ：&quot;一个实用的 JavaScript 函数式编程库&quot;。当我们为 Frontend Masters 注册 &quot;使用 JavaScript 进行核心函数式编程&quot; 工作室时，惊讶地发现，他们选择 Ramda 来说明他们的示例。这件事给了我们信心，我们认为现在是宣布 Ramda 到来的时候了。</p>
-<p>现在已经存在一些优秀的函数式库，如 <a href="https://github.com/jashkenas/underscore" target="_blank" rel="external">Underscore</a> 和 <a href="https://github.com/lodash/lodash" target="_blank" rel="external">Lodash</a>。Ramda 包含了所有你想要的列表操作函数，像 <code>map</code>、<code>filter</code>、<code>reduce</code> 和 <code>find</code> 等。但 Ramda 跟 Underscore 和 Lodash 有很大的区别。Ramda 的主要特性如下：</p>
-<ul>
-<li><strong>Ramda 先接受函数参数，最后接受数据参数。</strong> <a href="http://www.youtube.com/watch?v=m3svKOdZijA" target="_blank" rel="external">Brian Lonsdorf 解释了为什么这样的参数顺序很重要</a>。简言之，柯里化和 &quot;函数优先&quot; 这两者相结合，使开发者在最终传入数据之前，能够以非常少的代码（通常为 &quot;point-free&quot; 风格，也即无参数风格）来组合函数。例如，以下面代码为例：</li>
-</ul>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Underscore/Lodash style:</span></div><div class="line"><span class="keyword">var</span> validUsersNamedBuzz = <span class="function"><span class="keyword">function</span>(<span class="params">users</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> _.filter(users, <span class="function"><span class="keyword">function</span>(<span class="params">user</span>) </span>&#123; </div><div class="line">    <span class="keyword">return</span> user.name === <span class="string">'Buzz'</span> &amp;&amp; _.isEmpty(user.errors); </div><div class="line">  &#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-<p>现在可以这么写：</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Ramda style:</span></div><div class="line"><span class="keyword">var</span> validUsersNamedBuzz = R.filter(R.where(&#123;<span class="attr">name</span>: <span class="string">'Buzz'</span>, <span class="attr">errors</span>: R.isEmpty&#125;));</div></pre></td></tr></table></figure></p>
-<ul>
-<li><strong>Ramda 的函数是自动柯里化的</strong> 。当你需要对 Underscore 或 Lodash 中的函数进行手动柯里化（或部分柯里化）时，Ramda 在内部已经替你完成这项工作了。实际上，Ramda 中所有的多元（多参数）函数都默认是柯里化的。例如：</li>
-</ul>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// `prop` takes two arguments. If I just give it one, I get a function back</span></div><div class="line"><span class="keyword">var</span> moo = R.prop(<span class="string">'moo'</span>);</div><div class="line"><span class="comment">// when I call that function with one argument, I get the result.</span></div><div class="line"><span class="keyword">var</span> value = moo(&#123;<span class="attr">moo</span>: <span class="string">'cow'</span>&#125;); <span class="comment">// =&gt; 'cow'</span></div></pre></td></tr></table></figure></p>
-<p>这种自动柯里化使得 &quot;通过组合函数来创建新函数&quot; 变得非常容易。因为 API 都是函数优先、数据最后（先传函数，最后传数据参数），你可以不断地组合函数，直到创建出需要的新函数，然后将数据传入其中。（Hugh Jackson 发表了一遍描述这种风格优点的 <a href="http://hughfdjackson.com/javascript/why-curry-helps/" target="_blank" rel="external">非常优秀的文章</a>。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// take an object with an `amount` property</span></div><div class="line"><span class="comment">// add one to it</span></div><div class="line"><span class="comment">// find its remainder when divided by 7</span></div><div class="line"><span class="keyword">var</span> amtAdd1Mod7 = R.compose(R.moduloBy(<span class="number">7</span>), R.add(<span class="number">1</span>), R.prop(<span class="string">'amount'</span>));</div><div class="line"></div><div class="line"><span class="comment">// we can use that as is:</span></div><div class="line">amtAdd1Mod7(&#123;<span class="attr">amount</span>: <span class="number">17</span>&#125;); <span class="comment">// =&gt; 4</span></div><div class="line">amtAdd1Mod7(&#123;<span class="attr">amount</span>: <span class="number">987</span>&#125;); <span class="comment">// =&gt; 1</span></div><div class="line">amtAdd1Mod7(&#123;<span class="attr">amount</span>: <span class="number">68</span>&#125;); <span class="comment">// =&gt; 6</span></div><div class="line"><span class="comment">// etc. </span></div><div class="line"></div><div class="line"><span class="comment">// But we can also use our composed function on a list of objects, e.g. to `map`:</span></div><div class="line"><span class="keyword">var</span> amountObjects = [</div><div class="line">  &#123;<span class="attr">amount</span>: <span class="number">903</span>&#125;, &#123;<span class="attr">amount</span>: <span class="number">2875654</span>&#125;, &#123;<span class="attr">amount</span>: <span class="number">6</span>&#125;</div><div class="line">]</div><div class="line">R.map(amtAdd1Mod7, amountObjects); <span class="comment">// =&gt; [1, 6, 0]</span></div><div class="line"></div><div class="line"><span class="comment">// of course, `map` is also curried, so you can generate a new function </span></div><div class="line"><span class="comment">// using `amtAdd1Mod7` that will wait for a list of "amountObjects" to </span></div><div class="line"><span class="comment">// get passed in:</span></div><div class="line"><span class="keyword">var</span> amountsToValue = map(amtAdd1Mod7);</div><div class="line">amountsToValue(amountObjects); <span class="comment">// =&gt; [1, 6, 0]</span></div></pre></td></tr></table></figure></p>
-<p><a href="https://www.npmjs.org/package/ramda" target="_blank" rel="external">Ramda 提供了 npm 包</a>，可以下载下来尝试一下。如果你对 Ramda 库有什么想法或改进建议，<a href="https://github.com/CrossEye/ramda/issues" target="_blank" rel="external">请联系我们</a>。</p>
+        <p>在调试代码时，往往会开两个窗口进行操作，一个用来编写代码（代码文件如 <code>index.js</code>），另一个用来调试（如运行 <code>node index.js</code>），这样会频繁的在编辑器和调试窗口之间切换；而且使用 node cli 会运行整个文件，而往往我们只想看文件中的部分内容。</p>
+<p>nodejs-repl 库相当于在编辑器和 repl 之间做了桥接，类似于 tmux。</p>
+<p>这里有两条命令比较重要：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">nodejs-repl-send-region ;; 用于将选中的区域发送至 repl 中，但不求值，在引入库时比较有用</div><div class="line">nodejs-repl-send-last-sexp ;; 将当前行光标前面的内容发送至 repl，并进行运算</div></pre></td></tr></table></figure></p>
+<p>具体步骤：</p>
+<h2 id="yi-pei-zhi">一、配置</h2>
+<ol>
+<li>
+<p>在 <code>~/.spacemacs</code> <code>dotspacemacs-additional-packages '(nodejs-repl)</code> 中添加 <code>nodejs-repl</code></p>
+</li>
+<li>
+<p>在 <code>dotspacemacs/user-config ()</code> 中添加快捷键</p>
+</li>
+</ol>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(add-hook &apos;js-mode-hook</div><div class="line">          (lambda ()</div><div class="line">            (define-key js-mode-map (kbd &quot;C-x C-e&quot;) &apos;nodejs-repl-send-last-sexp)</div><div class="line">            (define-key js-mode-map (kbd &quot;C-c C-r&quot;) &apos;nodejs-repl-send-region)</div><div class="line">            (define-key js-mode-map (kbd &quot;C-c C-l&quot;) &apos;nodejs-repl-load-file)</div><div class="line">            (define-key js-mode-map (kbd &quot;C-c C-z&quot;) &apos;nodejs-repl-switch-to-repl)))</div></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>运行 <code>M-m f e R</code>，安装 nodejs-repl</li>
+</ol>
+<h2 id="er-diao-shi">二、调试</h2>
+<ol>
+<li>使用 emacs 打开待调试文件；使用 <code>M-x</code> 运行命令 <code>nodejs-repl</code>，便会在编辑窗口相同 frame 里打开 nodejs 的 repl：</li>
+</ol>
+<p><img src="./open-nodejs-repl.png" alt="open-nodejs-repl"></p>
+<ol start="2">
+<li>选中文中的第三方库，使用 <code>nodejs-repl-send-region</code> 命令将其引入 repl 中。（注意，不能使用 <code>nodejs-repl-send-last-sexp</code>！）</li>
+</ol>
+<p><img src="./import-lib.png" alt="import-lib"></p>
+<ol start="3">
+<li>对于需要调试的代码行，运行 <code>nodejs-repl-send-last-sexp</code> ，便会将代码加入 repl 中，并进行运算：</li>
+</ol>
+<p><img src="./eval.png" alt="eval"></p>
+<h2 id="san-todo">三、TODO</h2>
+<ol>
+<li>快捷键配置在 js2-mode 中只能部分起作用，js-mode 中都可以。需要研究一下 emacs 快捷键配置和优先级。</li>
+</ol>
 
       
     </div>
@@ -362,17 +384,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/18/Thinking-in-Ramda-Wrap-Up/" rel="next" title="Thinking in Ramda: 概要总结">
-                <i class="fa fa-chevron-left"></i> Thinking in Ramda: 概要总结
+              <a href="/2017/06/28/Why-Curry-Helps/" rel="next" title="为什么柯里化有帮助">
+                <i class="fa fa-chevron-left"></i> 为什么柯里化有帮助
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/25/Why-Ramda/" rel="prev" title="Why Ramda">
-                Why Ramda <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -497,7 +515,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#yi-pei-zhi"><span class="nav-number">1.</span> <span class="nav-text">一、配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#er-diao-shi"><span class="nav-number">2.</span> <span class="nav-text">二、调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#san-todo"><span class="nav-number">3.</span> <span class="nav-text">三、TODO</span></a></li></ol></div>
             
           </div>
         </section>
@@ -617,9 +635,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'adispring';
-      var disqus_identifier = '2017/06/25/Introducing-Ramda/';
-      var disqus_title = "Ramda 简介";
-      var disqus_url = 'https://adispring.github.io/2017/06/25/Introducing-Ramda/';
+      var disqus_identifier = '2017/07/22/Debug-nodejs-in-Spacemacs/';
+      var disqus_title = "Debug Nodejs in Spacemacs";
+      var disqus_url = 'https://adispring.github.io/2017/07/22/Debug-nodejs-in-Spacemacs/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
