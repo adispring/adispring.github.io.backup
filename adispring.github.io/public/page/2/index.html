@@ -256,6 +256,192 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/13/Thinking-in-Ramda-Pointfree-Style/" itemprop="url">
+                  Thinking in Ramda: 无参数风格编程 (Pointfree Style)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-06-13T21:27:05+08:00" content="2017-06-13">
+              2017-06-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Thinking-in-Ramda/" itemprop="url" rel="index">
+                    <span itemprop="name">Thinking in Ramda</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/13/Thinking-in-Ramda-Pointfree-Style/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/13/Thinking-in-Ramda-Pointfree-Style/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/06/21/thinking-in-ramda-pointfree-style/" target="_blank" rel="external">Thinking in Ramda: Pointfree Style</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
+<hr>
+<p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第五篇。</p>
+<p>在<a href="https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Declarative-Programming/" target="_blank" rel="external">第四节</a>中，我们讨论了如何用声明式编程（告诉计算机做什么，我们想要什么）代替命令式编程（告诉计算机该怎么做，详细的执行步骤）来编写代码。</p>
+<p>你可能已经注意到了，我们编写的几个函数（如 <code>forever21</code>、<code>alwaysDrivingAge</code>、<code>water</code>）都接受一个参数，构建一个新函数，然后将该函数作用于该参数。</p>
+<p>这是函数式编程里非常常见的一种模式，Ramda 同样提供了优化这种模式的方法。</p>
+<h2 id="pointfree-feng-ge-wu-can-shu-feng-ge">Pointfree 风格（无参数风格）</h2>
+<p>我们在 <a href="https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/" target="_blank" rel="external">第三节</a> 中讨论了 Ramda 的两个指导原则：</p>
+<ul>
+<li>将数据放到参数列表的最后面。</li>
+<li>柯里化所有的东西。</li>
+</ul>
+<p>这两个原则衍生出了一种被函数式程序员称为 &quot;pointfree&quot; 的风格。我喜欢将 pointfree 的代码看作：&quot;数据？什么数据？这里没有数据！&quot;</p>
+<p>有一篇很好的博客：<a href="http://fr.umio.us/why-ramda/" target="_blank" rel="external">Why Ramda?</a>，展示了 pointfree 风格 真得不错。具体来说，它有一些有趣的标题，例如：&quot;数据在哪里？&quot;，&quot;好了，已经有了！&quot;，&quot;那么我可以看看数据吗？&quot; 和 &quot;拜托，我只是想要我的数据&quot;。</p>
+<p>我们还没有使用需要的工具来让所有的例子都变成完全 &quot;pointfree&quot; 的，现在就开始吧。</p>
+<p>再看一下 <code>forever21</code>：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> forever21 = <span class="function"><span class="params">age</span> =&gt;</span> ifElse(gte(__, <span class="number">21</span>), always(<span class="number">21</span>), inc)(age)</div></pre></td></tr></table></figure></p>
+<p>注意，参数 <code>age</code> 出现了两次：一次在参数列表中；一次在函数的最后面：我们将由 <code>ifElse</code> 返回的新函数作用于 <code>age</code>。</p>
+<p>在使用 Ramda 编程时稍加留意，就会发现很多这种模式的代码。这也意味着，总应该有一种方法将这些函数转成 &quot;pointfree&quot; 风格。</p>
+<p>我们来看看这会是什么样子：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> forever21 = ifElse(gte(__, <span class="number">21</span>), always(<span class="number">21</span>), inc)</div></pre></td></tr></table></figure></p>
+<p>嘭~~！我们刚刚让 <code>age</code> 消失了。这就是 Pointfree 风格。注意，这两个版本所做的事情完全一样。我们仍然返回一个接受年龄的函数，但并未显示的指定 <code>age</code> 参数。</p>
+<p>可以对 <code>alwaysDrivingAge</code> 和 <code>water</code> 进行相同的处理。</p>
+<p>原来的 <code>alwaysDrivingAge</code> 如下所示：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> alwaysDrivingAge = <span class="function"><span class="params">age</span> =&gt;</span> ifElse(lt(__, <span class="number">16</span>), always(<span class="number">16</span>), identity)(age)</div></pre></td></tr></table></figure></p>
+<p>可以使用相同的方法使其变为 pointfree 的。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> alwaysDrivingAge = when(lt(__, <span class="number">16</span>), always(<span class="number">16</span>))</div></pre></td></tr></table></figure></p>
+<p>下面是 <code>water</code> 原来的形式：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> water = <span class="function"><span class="params">temperature</span> =&gt;</span> cond([</div><div class="line">  [equals(<span class="number">0</span>),   always(<span class="string">'water freezes at 0°C'</span>)],</div><div class="line">  [equals(<span class="number">100</span>), always(<span class="string">'water boils at 100°C'</span>)],</div><div class="line">  [T,           temp =&gt; <span class="string">`nothing special happens at <span class="subst">$&#123;temp&#125;</span>°C`</span>]</div><div class="line">])(temperature)</div></pre></td></tr></table></figure></p>
+<p>现在将其变为 pointfree 风格的：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> water = cond([</div><div class="line">  [equals(<span class="number">0</span>),   always(<span class="string">'water freezes at 0°C'</span>)],</div><div class="line">  [equals(<span class="number">100</span>), always(<span class="string">'water boils at 100°C'</span>)],</div><div class="line">  [T,           temp =&gt; <span class="string">`nothing special happens at <span class="subst">$&#123;temp&#125;</span>°C`</span>]</div><div class="line">])</div></pre></td></tr></table></figure></p>
+<h2 id="duo-yuan-han-shu-duo-can-shu-han-shu">多元函数（多参数函数）</h2>
+<p>如果函数接受多个参数会怎样呢？回顾一下 <a href="https://adispring.coding.me/2017/06/11/Thinking-in-Ramda-Partial-Application/" target="_blank" rel="external">第三节</a> 中的例子：<code>titlesForYear</code>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> titlesForYear = curry(<span class="function">(<span class="params">year, books</span>) =&gt;</span></div><div class="line">  pipe(</div><div class="line">    filter(publishedInYear(year)),</div><div class="line">    map(<span class="function"><span class="params">book</span> =&gt;</span> book.title)</div><div class="line">  )(books)</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>注意，<code>books</code> 出现了两次：一次作为参数列表的最后一个参数（最后一个数据！）；一次出现在函数最后，当我们将其传入 pipeline 的时候。这跟我们之前看到参数为 <code>age</code> 的模式类似，所以可以对它进行相同的转换：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> titlesForYear = <span class="function"><span class="params">year</span> =&gt;</span></div><div class="line">  pipe(</div><div class="line">    filter(publishedInYear(year)),</div><div class="line">    map(<span class="function"><span class="params">book</span> =&gt;</span> book.title)</div><div class="line">  )</div></pre></td></tr></table></figure></p>
+<p>可以了！我们现在有了一个 pointfree 版本的 <code>titlesFroYear</code>。</p>
+<p>其实，这种情况下，我可能不会刻意追求 pointfree 风格，因为就像之前文章讨论过的：JavaScript 在调用一系列单参数函数方面并不方便。</p>
+<p>在 pipeline 中使用 <code>titleForYear</code> 是很方便，如我们可以很轻松的调用 <code>titlesForYear(2012)</code>，但当想要单独使用它时，我们就不得不回到之前文章里看到的形式 <code>)(</code>，对我而言，并不值得做出这种妥协（没必要为了 pointfree 而 pointfree）。</p>
+<p>但只要有如上形式的单参数函数（或者可能以后会被重构），我几乎总是写成 pointfree 风格的。</p>
+<h2 id="zhong-gou-wei-pointfree-feng-ge-de-dai-ma">重构为 pointfree 风格的代码</h2>
+<p>有时我们的代码不会遵循这种模式。我们可能会在同一函数内多次对数据进行操作。</p>
+<p>在 <a href="https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/" target="_blank" rel="external">第二节</a> 的几个例子中便是这种情形。我们使用诸如 <code>both</code>、<code>either</code>、<code>pipe</code>、<code>compose</code> 来重构代码。一旦我们这样做了，便会很容易让函数转换为 pointfree 风格的。</p>
+<p>我们来回顾一下 <code>isEligibleToVote</code> 这个例子，代码如下：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> wasBornInCountry = <span class="function"><span class="params">person</span> =&gt;</span> person.birthCountry === OUR_COUNTRY</div><div class="line"><span class="keyword">const</span> wasNaturalized = <span class="function"><span class="params">person</span> =&gt;</span> <span class="built_in">Boolean</span>(person.naturalizationDate)</div><div class="line"><span class="keyword">const</span> isOver18 = <span class="function"><span class="params">person</span> =&gt;</span> person.age &gt;= <span class="number">18</span></div><div class="line"> </div><div class="line"><span class="keyword">const</span> isCitizen = <span class="function"><span class="params">person</span> =&gt;</span> wasBornInCountry(person) || wasNaturalized(person)</div><div class="line"> </div><div class="line"><span class="keyword">const</span> isEligibleToVote = <span class="function"><span class="params">person</span> =&gt;</span> isOver18(person) &amp;&amp; isCitizen(person)</div></pre></td></tr></table></figure></p>
+<p>先从 <code>isCitizen</code> 开始。它接受一个 <code>person</code>, 然后将两个函数作用于该 <code>person</code>，将结果使用 <code>||</code> 组合起来。正如在 <a href="https://adispring.coding.me/2017/06/10/Thinking-in-Ramda-Combining-Functions/" target="_blank" rel="external">第二节</a> 中学到的，可以使用 <code>either</code> 将两个函数组合成一个新函数，然后将该组合函数作用于该 <code>person</code>。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isCitizen = <span class="function"><span class="params">person</span> =&gt;</span> either(wasBornInCountry, wasNaturalized)(person)</div></pre></td></tr></table></figure></p>
+<p>可以使用 <code>both</code> 对 <code>isEligibleToVote</code> 做类似的处理。</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isEligibleToVote = <span class="function"><span class="params">person</span> =&gt;</span> both(isOver18, isCitizen)(person)</div></pre></td></tr></table></figure></p>
+<p>现在我们已经完成了这些重构，可以看到，这两个函数都遵循上面提到的模式：<code>person</code> 出现了两次，一次作为函数参数；一次放到最后，将组合函数作用其上。现在可以将它们重构为 pointfree 风格的代码：</p>
+<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isCitizen = either(wasBornInCountry, wasNaturalized)</div><div class="line"><span class="keyword">const</span> isEligibleToVote = both(isOver18, isCitizen)</div></pre></td></tr></table></figure></p>
+<h2 id="wei-shi-yao-yao-zhe-yao-zuo">为什么要这么做？</h2>
+<p>Pointfree 风格需要一定的时间才能习惯。可能并不需要所有的地方都没有参数。有时候知道某些 Ramda 函数需要多少参数，也是很重要的。</p>
+<p>但是，一旦习惯了这种方式，它将变得非常强大：可以以非常有趣的方式将很多小的 pointfree 函数组合起来。</p>
+<p>Pointfree 风格的优点是什么呢？人们可能会认为，这只不过是为了让函数式编程赢得 &quot;优点徽章&quot; 的学术活动而已（实际上并没有什么用处）。然而，我认为还是有一些优点的，即使需要花一些时间来习惯这种方式也是值得的：</p>
+<ul>
+<li>它让编程更简单、精练。这并不总是一件好事，但大部分情况下是这样的。</li>
+<li>它让算法更清晰。通过只关注正在组合的函数，我们可以在没有参数的干扰下，更好地了解发生了什么。</li>
+<li>它促使我们更专注于正在做的转换的本身，而不是正被转换的数据。</li>
+<li>它可以帮助我们将函数视为可以作用于不同数据的通用构建模块，而非对特定类型数据的操作。如果给数据一个名字，我们的思想便会被<a href="https://en.wikipedia.org/wiki/Anchoring" target="_blank" rel="external">禁锢</a>在：&quot;需要在哪里使用我们的函数&quot;；如果去掉参数，便会使我们更有创造力。</li>
+</ul>
+<h2 id="jie-lun">结论</h2>
+<p>Pointfree 风格也被成为 <a href="https://en.wikipedia.org/wiki/Tacit_programming" target="_blank" rel="external">tacit 式编程</a>(隐含式编程)，可以使代码更清晰、更易于理解。通过代码重构将所有的转换组合成单一函数，我们最终会得到可以在更多地方使用的更小的构建块（函数）。</p>
+<h2 id="xia-yi-jie">下一节</h2>
+<p>在当前示例中，我们尚未将所有代码都重构为 pointfree 的风格。还有一些代码是命令式的。大部分这种代码是处理对象和数组的。</p>
+<p>我们需要找到声明式的方式来处理对象和数组。Immutability (不变性) 怎么样？我们如何以 &quot;不变&quot; (immutable) 的方式来操作对象和数组呢？</p>
+<p>本系列的下一节，<a href="https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" target="_blank" rel="external">数据不变性和对象</a> 将讨论如何以函数式和 immutable 的方式来处理对象。紧随其后的章节：<a href="https://adispring.coding.me/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/" target="_blank" rel="external">数据不变性和数组</a> 对数组也是相同的处理方式。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/06/11/Thinking-in-Ramda-Declarative-Programming/" itemprop="url">
                   Thinking in Ramda: 声明式编程
                 </a>
@@ -1888,170 +2074,11 @@ lazy lists, indefinite sequence generation, CSP[http://phuu.net/2014/08/31/csp-a
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/21/Ramda-SourceCode-Analyze/" itemprop="url">
-                  Ramda 源码分析（一） 柯里化curry
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-10-21T09:34:59+08:00" content="2016-10-21">
-              2016-10-21
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/21/Ramda-SourceCode-Analyze/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/21/Ramda-SourceCode-Analyze/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="ramda-mu-lu-shuo-ming">Ramda 目录说明</h2>
-<p><a href="http://ramdajs.com" target="_blank" rel="external">Ramda</a> API 的源码都在 src/ 文件夹中，src/ 下包含一个 internal/ 文件夹和若干外部模块。直接在 <strong>src/</strong> 下编写的模块（函数）供<strong>外部调用</strong>，在 <strong>internal/</strong> 下编写的模块仅供<strong>内部使用</strong>，属于帮助函数，<strong>内部函数以下划线 &quot;_&quot; 开头</strong>。</p>
-<p>本次源码分析使用版本号为：Ramda v0.22.1。</p>
-<h2 id="yuan-ma-fen-xi">源码分析</h2>
-<ul>
-<li>
-<p>__ 占位符</p>
-<p>占位符是一个 “普通的” object ，key 为 <code>@@functional/placeholder</code> ，value 为 true。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;<span class="string">'@@functional/placeholder'</span>: <span class="literal">true</span>&#125;;</div></pre></td></tr></table></figure></p>
-<p>配合柯里化函数使用，可以使柯里化函数传入实参不在限于从左往右依次传入，大大增强了柯里化函数的能力。</p>
-<p>举例如下，g 是一个柯里化的 ternary（三元）函数，_ 代表 R.__ ，下面的写法是等价的。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">g(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>, <span class="number">3</span>)(<span class="number">1</span>)</div><div class="line">g(_, _, <span class="number">3</span>)(<span class="number">1</span>)(<span class="number">2</span>)</div><div class="line">g(_, _, <span class="number">3</span>)(<span class="number">1</span>, <span class="number">2</span>)</div><div class="line">g(_, <span class="number">2</span>, _)(<span class="number">1</span>, <span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>)(<span class="number">1</span>)(<span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>)(<span class="number">1</span>, <span class="number">3</span>)</div><div class="line">g(_, <span class="number">2</span>)(_, <span class="number">3</span>)(<span class="number">1</span>)</div></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<ul>
-<li>
-<p>_isPlaceholder</p>
-<p>判断实参是否为占位符（R.__），在柯里化函数中使用。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_isPlaceholder</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> a != <span class="literal">null</span> &amp;&amp;</div><div class="line">    <span class="keyword">typeof</span> a === <span class="string">'object'</span> &amp;&amp;</div><div class="line">    a[<span class="string">'@@functional/placeholder'</span>] === <span class="literal">true</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<ul>
-<li>
-<p>_curry1</p>
-<p>优化的内部单参数柯里化函数：对单参数函数<code>fn</code> 进行柯里化，返回柯里化了的 fn' → f1。</p>
-<p>当传入参数为空或者传入的是占位符，返回 f1；否则执行 f1 ，并返回执行结果。</p>
-<p>柯里化用到了闭包。_curry1/_curry2/_curry3 是为了柯里化 ramda API 优化用的。因为 ramda API 都是原生柯里化的，且参数一般不超过3个，所以用到上述3个内部优化的柯里化函数，以提高效率。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_curry1</span>(<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">arguments</span>.length === <span class="number">0</span> || _isPlaceholder(a)) &#123;</div><div class="line">      <span class="keyword">return</span> f1;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<ul>
-<li>
-<p>_curry2</p>
-<p>优化的内部双参数柯里化函数：对双参数函数 <code>fn</code> 进行柯里化，返回柯里化了的 fn' → f2。</p>
-<p>原理讲解：</p>
-<ol>
-<li>当无参数传入时，返回 f2；</li>
-<li>当有一个参数（a）传入时，判断该参数是否为 R.__ ：是则返回 f2，否则返回加持一个参数（a）的单参数柯里化函数；</li>
-<li>当传入两个参数时，若都是占位符，返回 f2，若有一个占位符则返回加持一个参数的单参数柯里化函数，若无占位符，则执行 fn。</li>
-</ol>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_curry2</span>(<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">    <span class="keyword">switch</span> (<span class="built_in">arguments</span>.length) &#123;</div><div class="line">      <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">        <span class="keyword">return</span> f2;</div><div class="line">      <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">return</span> _isPlaceholder(a) ? f2</div><div class="line">             : _curry1(<span class="function"><span class="keyword">function</span>(<span class="params">_b</span>) </span>&#123; <span class="keyword">return</span> fn(a, _b); &#125;);</div><div class="line">      <span class="keyword">default</span>:</div><div class="line">        <span class="keyword">return</span> _isPlaceholder(a) &amp;&amp; _isPlaceholder(b) ? f2</div><div class="line">             : _isPlaceholder(a) ? _curry1(<span class="function"><span class="keyword">function</span>(<span class="params">_a</span>) </span>&#123; <span class="keyword">return</span> fn(_a,   b); &#125;)</div><div class="line">             : _isPlaceholder(b) ? _curry1(<span class="function"><span class="keyword">function</span>(<span class="params">_b</span>) </span>&#123; <span class="keyword">return</span> fn(a, _b); &#125;)</div><div class="line">             : fn(a, b);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-</li>
-<li>
-<p>_arity</p>
-<p>没有看出来 _arity 是干嘛用的，控制（限制）函数参数的个数？</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> <span class="title">_arity</span>(<span class="params">n, fn</span>) </span>&#123;</div><div class="line">  <span class="comment">/* eslint-disable no-unused-vars */</span></div><div class="line">  <span class="keyword">switch</span> (n) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="number">0</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">1</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">2</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">3</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">4</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">5</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">6</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">7</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">8</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6, a7</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">9</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6, a7, a8</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">case</span> <span class="number">10</span>: <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a0, a1, a2, a3, a4, a5, a6, a7, a8, a9</span>) </span>&#123; <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); &#125;;</div><div class="line">    <span class="keyword">default</span>: <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'First argument to _arity must be a non-negative integer no greater than ten'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-</li>
-<li>
-<p>curryN</p>
-<p>length：待柯里化函数参数的个数，fn：带柯里化函数</p>
-<p>参数个数为1，用 _curry1 对 fn 柯里化；参数个数范围为 (1，10] ，用 _curryN。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = _curry2(<span class="function"><span class="keyword">function</span> <span class="title">curryN</span>(<span class="params">length, fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (length === <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">return</span> _curry1(fn);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> _arity(length, _curryN(length, [], fn));</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-</li>
-<li>
-<p>curry</p>
-<p>平时实际用到的柯里化函数</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = _curry1(<span class="function"><span class="keyword">function</span> <span class="title">curry</span>(<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> curryN(fn.length, fn);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2092,7 +2119,7 @@ lazy lists, indefinite sequence generation, CSP[http://phuu.net/2014/08/31/csp-a
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

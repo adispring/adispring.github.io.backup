@@ -234,7 +234,7 @@ var getIncompleteTaskSummaries = function(membername) {
 
 让我们看看发生了什么。
 
-`get` （也成为 `prop`）定义如下：
+`get` （也称为 `prop`）定义如下：
 
 ```js
  ramda.get = curry(function(name, obj) {

@@ -94,7 +94,7 @@
 <meta property="og:url" content="https://adispring.github.io/2017/06/27/Favoring-Curry/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
 <meta property="og:description" content="译者注：本文翻译自 Scott Sauyet 的 《Favoring Curry》，转载请与原作者或本人联系。下面开始正文。  我最近一篇 关于 Ramda 函数式组合的文章阐述了一个重要的话题。为了使用 Ramda 函数做这种组合，需要这些函数是柯里化的。 Curry，咖喱？某种辛辣的食物？是什么呢？又在哪里？ 实际上，curry 是为纪念 Haskell Curry 而命名的，他是第一个研究这">
-<meta property="og:updated_time" content="2017-06-28T02:25:37.000Z">
+<meta property="og:updated_time" content="2017-09-15T05:47:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爱上柯里化 (Favoring Curry)">
 <meta name="twitter:description" content="译者注：本文翻译自 Scott Sauyet 的 《Favoring Curry》，转载请与原作者或本人联系。下面开始正文。  我最近一篇 关于 Ramda 函数式组合的文章阐述了一个重要的话题。为了使用 Ramda 函数做这种组合，需要这些函数是柯里化的。 Curry，咖喱？某种辛辣的食物？是什么呢？又在哪里？ 实际上，curry 是为纪念 Haskell Curry 而命名的，他是第一个研究这">
@@ -365,7 +365,7 @@
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> getIncompleteTaskSummaries = <span class="function"><span class="keyword">function</span>(<span class="params">membername</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> fetchData()</div><div class="line">        .then(R.get(<span class="string">'tasks'</span>))</div><div class="line">        .then(R.filter(R.propEq(<span class="string">'username'</span>, membername)))</div><div class="line">        .then(R.reject(R.propEq(<span class="string">'complete'</span>, <span class="literal">true</span>)))</div><div class="line">        .then(R.map(R.pick([<span class="string">'id'</span>, <span class="string">'dueDate'</span>, <span class="string">'title'</span>, <span class="string">'priority'</span>])))</div><div class="line">        .then(R.sortBy(R.get(<span class="string">'dueDate'</span>)));</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
 <p>如果是的话，那么柯里化会更适合你。所有上面代码块中提及的 Ramda 函数都是柯里化的。（事实上，绝大多数 Ramda 的多参数函数都是柯里化的，除了极个别的几个之外）在很多情形下，柯里化是使代码能更容易组合成这么简洁优雅的模块的原因之一。</p>
 <p>让我们看看发生了什么。</p>
-<p><code>get</code> （也成为 <code>prop</code>）定义如下：</p>
+<p><code>get</code> （也称为 <code>prop</code>）定义如下：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ramda.get = curry(<span class="function"><span class="keyword">function</span>(<span class="params">name, obj</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> obj[name];</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
 <p>但是，当调用上面的代码时，我们只提供第一个参数：<code>name</code>。正如之前讨论的，这意味着我们会返回一个新函数，等待第一个 <code>then</code> 传入 <code>obj</code> 参数给它，这就意味着下面的代码：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">.then(R.get(<span class="string">'task'</span>))</div></pre></td></tr></table></figure></p>
@@ -535,7 +535,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
