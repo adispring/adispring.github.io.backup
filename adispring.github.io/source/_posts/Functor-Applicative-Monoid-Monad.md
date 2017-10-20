@@ -1,7 +1,7 @@
 ---
 title: Functor/Applicative/Monoid/Monad
 date: 2016-11-19 13:31:25
-tags:
+categories: 'Haskell'
 ---
 ## Applicative类 的定义
 
