@@ -88,15 +88,16 @@
 
 
 
-<meta name="description" content="FE@Meituan.com">
-<meta property="og:type" content="website">
-<meta property="og:title" content="wangzengdi&#39;s Blog">
-<meta property="og:url" content="https://adispring.github.io/categories/Thinking-in-Ramda/index.html">
+<meta name="description" content="What are typeclasses? Typeclasses define a set of functions that can have different implementations depending on the type of data they are given.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Haskell: Type and TypeClass">
+<meta property="og:url" content="https://adispring.github.io/2017/10/15/Haskell-Type-and-TypeClass/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
-<meta property="og:description" content="FE@Meituan.com">
+<meta property="og:description" content="What are typeclasses? Typeclasses define a set of functions that can have different implementations depending on the type of data they are given.">
+<meta property="og:updated_time" content="2017-10-15T04:05:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wangzengdi&#39;s Blog">
-<meta name="twitter:description" content="FE@Meituan.com">
+<meta name="twitter:title" content="Haskell: Type and TypeClass">
+<meta name="twitter:description" content="What are typeclasses? Typeclasses define a set of functions that can have different implementations depending on the type of data they are given.">
 
 
 
@@ -117,10 +118,10 @@
 
 
 
-  <link rel="canonical" href="https://adispring.github.io/categories/Thinking-in-Ramda/"/>
+  <link rel="canonical" href="https://adispring.github.io/2017/10/15/Haskell-Type-and-TypeClass/"/>
 
 
-  <title> Category: Thinking in Ramda | wangzengdi's Blog </title>
+  <title> Haskell: Type and TypeClass | wangzengdi's Blog </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="en">
@@ -160,7 +161,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -232,271 +233,147 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        Thinking in Ramda
-        <small>Category</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/18/Thinking-in-Ramda-Wrap-Up/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 概要总结</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-18T10:17:35+08:00"
-              content="2017-06-18" >
-          06-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/18/Thinking-in-Ramda-Lenses/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 透镜（Lenses）</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-18T07:27:42+08:00"
-              content="2017-06-18" >
-          06-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 数据不变性和数组</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-17T22:21:48+08:00"
-              content="2017-06-17" >
-          06-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 数据不变性和对象</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-16T23:00:08+08:00"
-              content="2017-06-16" >
-          06-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/13/Thinking-in-Ramda-Pointfree-Style/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 无参数风格编程 (Pointfree Style)</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-13T21:27:05+08:00"
-              content="2017-06-13" >
-          06-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/11/Thinking-in-Ramda-Declarative-Programming/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 声明式编程</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-11T20:27:38+08:00"
-              content="2017-06-11" >
-          06-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/11/Thinking-in-Ramda-Partial-Application/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 部分应用</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-11T06:01:57+08:00"
-              content="2017-06-11" >
-          06-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/10/Thinking-in-Ramda-Combining-Functions/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 函数组合</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-10T15:38:05+08:00"
-              content="2017-06-10" >
-          06-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/09/Thinking-in-Ramda-入门/" itemprop="url">
-              
-                <span itemprop="name">Thinking in Ramda: 入门</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-09T21:45:47+08:00"
-              content="2017-06-09" >
-          06-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </section>
 
   
+  
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Haskell: Type and TypeClass
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-10-15T11:52:43+08:00" content="2017-10-15">
+              2017-10-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Haskell/" itemprop="url" rel="index">
+                    <span itemprop="name">Haskell</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/10/15/Haskell-Type-and-TypeClass/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/15/Haskell-Type-and-TypeClass/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>What are typeclasses?</p>
+<p>Typeclasses define a set of functions that can have different implementations depending on the type of data they are given.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/29/Functional-Programming-Abstract-and-Composition/" rel="next" title="Functional Programming: Abstract and Composition">
+                <i class="fa fa-chevron-left"></i> Functional Programming: Abstract and Composition
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/21/What-Function-Should-I-Use/" rel="prev" title="Ramda 函数简介">
+                Ramda 函数简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -504,6 +381,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -523,8 +411,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -578,6 +475,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -674,6 +582,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
 
   
 
@@ -690,9 +602,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'adispring';
-      var disqus_identifier = 'categories/Thinking-in-Ramda/index.html';
-      var disqus_title = "";
-      var disqus_url = '';
+      var disqus_identifier = '2017/10/15/Haskell-Type-and-TypeClass/';
+      var disqus_title = "Haskell: Type and TypeClass";
+      var disqus_url = 'https://adispring.github.io/2017/10/15/Haskell-Type-and-TypeClass/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
@@ -703,6 +615,13 @@
       }
 
       run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
       
     </script>
   

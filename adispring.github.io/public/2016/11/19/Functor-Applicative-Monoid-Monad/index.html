@@ -94,7 +94,7 @@
 <meta property="og:url" content="https://adispring.github.io/2016/11/19/Functor-Applicative-Monoid-Monad/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
 <meta property="og:description" content="Applicative类 的定义 123class (Functor f) =&amp;gt; Applicative f where  pure :: a -&amp;gt; f a  (&amp;lt;*&amp;gt;) :: f (a -&amp;gt; b) -&amp;gt; f a -&amp;gt; f b Applicative 中定义了 pure 和 &amp;lt;*&amp;gt; Applicative Functor 的几个实例 Maybe">
-<meta property="og:updated_time" content="2017-03-06T15:38:43.000Z">
+<meta property="og:updated_time" content="2017-10-24T02:36:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Functor&#x2F;Applicative&#x2F;Monoid&#x2F;Monad">
 <meta name="twitter:description" content="Applicative类 的定义 123class (Functor f) =&amp;gt; Applicative f where  pure :: a -&amp;gt; f a  (&amp;lt;*&amp;gt;) :: f (a -&amp;gt; b) -&amp;gt; f a -&amp;gt; f b Applicative 中定义了 pure 和 &amp;lt;*&amp;gt; Applicative Functor 的几个实例 Maybe">
@@ -272,6 +272,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Haskell/" itemprop="url" rel="index">
+                    <span itemprop="name">Haskell</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -321,6 +340,7 @@
 <p>例如
 <figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="title">fs</span> = [f1, f2, f3]</div><div class="line"><span class="title">xs</span> = [x1, x2]</div><div class="line"><span class="title">fs</span> &lt;*&gt; xs === [f1 x1, f1 f2, f2 x1, f2 x2, f3 x1, f3 x2]</div></pre></td></tr></table></figure></p>
 <h3 id="han-shu-code-gt-r-code-ye-shi-applicative-functor-hen-you-yi-si">函数 <code>(-&gt;) r</code> 也是 Applicative Functor 很有意思</h3>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="type">Function</span> :: ((-&gt;) r)</div><div class="line"><span class="type">Function</span> a = ((-&gt;) r) a </div><div class="line">           = r -&gt; a</div></pre></td></tr></table></figure></p>
 <p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Applicative</span> ((-&gt;) r) <span class="keyword">where</span></span></div><div class="line">  pure x = (\_ -&gt; x)</div><div class="line">  f &lt;*&gt; g = \x -&gt; f x (g x)</div></pre></td></tr></table></figure></p>
 <p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(pure <span class="number">3</span>) <span class="string">"blah"</span> <span class="comment">-- 3</span></div><div class="line">(+) &lt;$&gt; (+<span class="number">3</span>) &lt;*&gt; (*<span class="number">100</span>) $ <span class="number">5</span> <span class="comment">-- 508</span></div></pre></td></tr></table></figure></p>
 <p><code>&lt;$&gt;</code> + <code>&lt;*&gt;</code> 大致对标 Ramda 中的 converge</p>
@@ -443,7 +463,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

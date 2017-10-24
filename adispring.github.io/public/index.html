@@ -256,6 +256,1306 @@
             
               
                 
+                <a class="post-title-link" href="/2017/10/21/What-Function-Should-I-Use/" itemprop="url">
+                  Ramda 函数简介
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-10-21T07:25:36+08:00" content="2017-10-21">
+              2017-10-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ramda/" itemprop="url" rel="index">
+                    <span itemprop="name">Ramda</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/10/21/What-Function-Should-I-Use/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/21/What-Function-Should-I-Use/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Ramda 有 200 多个函数，所以有时候很难知道什么时候该用什么函数。所以就有了这份常见操作的列表，以及最适用于该操作对应的函数。</p>
+<h1 id="lie-biao">列表</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Action</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">列表转换</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#map" target="_blank" rel="external">map</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表过滤：过滤出符合条件的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#filter" target="_blank" rel="external">filter</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表过滤：过滤掉符合条件的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#reject" target="_blank" rel="external">reject</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表折叠：从左向右对所有元素依次归约（折叠）</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#reduce" target="_blank" rel="external">reduce</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表折叠：从右向左对所有元素依次归约（折叠）</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#reduceRight" target="_blank" rel="external">reduceRight</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表折叠(增强版)</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#transduce" target="_blank" rel="external">transduce</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表去重</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#uniq" target="_blank" rel="external">uniq</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表去重：对处理后的元素做相等性判断</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#uniqBy" target="_blank" rel="external">uniqBy</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表去重：通过断言函数（predicate）判断</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#uniqWith" target="_blank" rel="external">uniqWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表排序</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#sort" target="_blank" rel="external">sort</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表翻转</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#reverse" target="_blank" rel="external">reverse</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表拼接</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#concat" target="_blank" rel="external">concat</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表长度</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#length" target="_blank" rel="external">length</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表表头拼接元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#prepend" target="_blank" rel="external">prepend</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表表尾拼接元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#append" target="_blank" rel="external">append</a></td>
+</tr>
+<tr>
+<td style="text-align:left">更新指定索引处的值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#adjust" target="_blank" rel="external">adjust</a></td>
+</tr>
+<tr>
+<td style="text-align:left">替换指定索引处的值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#update" target="_blank" rel="external">update</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将列表元素转换为其指定的属性值，等价于 R.map(R.prop)</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pluck" target="_blank" rel="external">pluck</a></td>
+</tr>
+<tr>
+<td style="text-align:left">为列表迭代函数添加两个参数：索引和整个列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#addIndex" target="_blank" rel="external">addIndex</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出特定索引范围内的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#slice" target="_blank" rel="external">slice</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将列表通过分隔符拼接成字符串</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#join" target="_blank" rel="external">join</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出第 N 个元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#nth" target="_blank" rel="external">nth</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出前 N 个元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#take" target="_blank" rel="external">take</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出后 N 个元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#takeLast" target="_blank" rel="external">takeLast</a></td>
+</tr>
+<tr>
+<td style="text-align:left">从前往后取出满足条件的元素，直至不满足条件的首个元素止</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#takeWhile" target="_blank" rel="external">takeWhile</a></td>
+</tr>
+<tr>
+<td style="text-align:left">从后向前取出满足条件的元素，直至不满足条件的首个元素止</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#takeLastWhile" target="_blank" rel="external">takeLastWhile</a></td>
+</tr>
+<tr>
+<td style="text-align:left">删除前 N 个元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#drop" target="_blank" rel="external">drop</a></td>
+</tr>
+<tr>
+<td style="text-align:left">删除后 N 个元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#dropLast" target="_blank" rel="external">dropLast</a></td>
+</tr>
+<tr>
+<td style="text-align:left">从前往后删除满足条件的元素，直至不满足条件的首个元素止</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#dropWhile" target="_blank" rel="external">dropWhile</a></td>
+</tr>
+<tr>
+<td style="text-align:left">从后向前删除满足条件的元素，直至不满足条件的首个元素止</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#dropLastWhile" target="_blank" rel="external">dropLastWhile</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出首个元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#head" target="_blank" rel="external">head</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出末尾元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#taillast" target="_blank" rel="external">last</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出前 length - 1 个元素（删除末尾元素）</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#init" target="_blank" rel="external">init</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出后 length - 1 个元素（删除首个元素）</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#tail" target="_blank" rel="external">tail</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求差集：{a∣a∈xs ∩ a∉ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#difference" target="_blank" rel="external">difference</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求差集：{a∣a∉xs ∩ a∈ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#without" target="_blank" rel="external">without</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求差集：根据条件计算第一个列表与第二个列表的差集</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#differenceWith" target="_blank" rel="external">differenceWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求对称差集：{(xs ∪ ys) - (xs ∩ ys)}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#symmetricDifference" target="_blank" rel="external">symmetricDifference</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求对称差集：根据条件计算所有不属于两个列表交集的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#symmetricDifferenceWith" target="_blank" rel="external">symmetricDifferenceWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求交集：{xs ∩ ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#intersection" target="_blank" rel="external">intersection</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求交集：从 xs 中挑选出在 ys 中符合条件的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#innerJoin" target="_blank" rel="external">innerJoin</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求并集：{xs ∪ ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#union" target="_blank" rel="external">union</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求并集：根据条件判断两元素是否重复</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#unionWith" target="_blank" rel="external">unionWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">查找列表中首个满足条件的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#find" target="_blank" rel="external">find</a></td>
+</tr>
+<tr>
+<td style="text-align:left">查找列表中首个满足条件的元素的索引</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#findIndex" target="_blank" rel="external">findIndex</a></td>
+</tr>
+<tr>
+<td style="text-align:left">查找列表中最后一个满足条件的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#findLast" target="_blank" rel="external">findLast</a></td>
+</tr>
+<tr>
+<td style="text-align:left">查找列表中最后一个满足条件的元素的索引</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#findLastIndex" target="_blank" rel="external">findLastIndex</a></td>
+</tr>
+<tr>
+<td style="text-align:left">查找给定元素在列表中首次出现时的索引</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#indexOf" target="_blank" rel="external">indexOf</a></td>
+</tr>
+<tr>
+<td style="text-align:left">查找给定元素在列表中末次出现时的索引</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lastIndexOf" target="_blank" rel="external">lastIndexOf</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表判断：判断元素是否包含在列表中</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#contains" target="_blank" rel="external">contains</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表判断：判断是否列表中所有元素都满足条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#all" target="_blank" rel="external">all</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表判断：判断是否列表中所有元素都不满足条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#none" target="_blank" rel="external">none</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表判断：判断是否列表中存在满足条件的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#any" target="_blank" rel="external">any</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表判断：判断列表是否以给定的值开头</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#startsWith" target="_blank" rel="external">startsWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表判断：判断列表是否以给定的值结尾</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#endsWith" target="_blank" rel="external">endsWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表分组：按是否符合条件，将元素分为两组</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#partition" target="_blank" rel="external">partition</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表分组：对列表中元素按指定规则分组</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#groupBy" target="_blank" rel="external">groupBy</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表分段：对列表中元素按指定规则分段</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#groupWith" target="_blank" rel="external">groupWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表分组：对列表中元素按指定规则分组折叠</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#reduceBy" target="_blank" rel="external">reduceBy</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表分割：在指定索引处</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#splitAt" target="_blank" rel="external">splitAt</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表分割：每隔 N 个元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#splitEvery" target="_blank" rel="external">splitEvery</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表分割：按条件分割</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#splitWhen" target="_blank" rel="external">splitWhen</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对两个列表相同位置的元素进行组合</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#zip" target="_blank" rel="external">zip</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对两个列表相同位置的元素进行键值对组合，fromPairs ∘ zip</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#zipObj" target="_blank" rel="external">zipObj</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对两个列表相同位置的元素按规则进行组合</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#zipWith" target="_blank" rel="external">zipWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">由一系列键值对列表创建对象</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#fromPairs" target="_blank" rel="external">fromPairs</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表彻底扁平化</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#flatten" target="_blank" rel="external">flatten</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表单层扁平化</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#unnest" target="_blank" rel="external">unnest</a></td>
+</tr>
+<tr>
+<td style="text-align:left">先对列表内元素做 Kleisli 映射，再做扁平化，flatMap，&gt;&gt;=</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#chain" target="_blank" rel="external">chain</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函子间的自然变化？</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#sequence" target="_blank" rel="external">sequence</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表插入</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#insert" target="_blank" rel="external">insert</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将子列表插入列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#insertAll" target="_blank" rel="external">insertAll</a></td>
+</tr>
+<tr>
+<td style="text-align:left">在列表元素之间插入分割元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#intersperse" target="_blank" rel="external">intersperse</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表转换 + 折叠？</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#into" target="_blank" rel="external">into</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将 reduce 的迭代过程记录下来</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mapAccum" target="_blank" rel="external">mapAccum</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将 reduceRight 的迭代过程记录下来</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mapAccumRight" target="_blank" rel="external">mapAccumRight</a></td>
+</tr>
+<tr>
+<td style="text-align:left">合并多个对象</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mergeAll" target="_blank" rel="external">mergeAll</a></td>
+</tr>
+<tr>
+<td style="text-align:left">由两个参数组成列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pair" target="_blank" rel="external">pair</a></td>
+</tr>
+<tr>
+<td style="text-align:left">从 reduce 或 transduce 中提前退出迭代时的值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#reduced" target="_blank" rel="external">reduced</a></td>
+</tr>
+<tr>
+<td style="text-align:left">可以提前退出的 reduce 迭代</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#reduceWhile" target="_blank" rel="external">reduceWhile</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表生成：生成左闭右开的升序数字列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#range" target="_blank" rel="external">range</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表生成：生成含有 N 个同一元素的列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#repeat" target="_blank" rel="external">repeat</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表生成：函数执行 N 次，生成 N 元列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#times" target="_blank" rel="external">times</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表生成：通过迭代函数生成列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#unfold" target="_blank" rel="external">unfold</a></td>
+</tr>
+<tr>
+<td style="text-align:left">二维列表行列式转换</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#transpose" target="_blank" rel="external">transpose</a></td>
+</tr>
+<tr>
+<td style="text-align:left">二维列表生成</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#xprod" target="_blank" rel="external">xprod</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="han-shu">函数</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Action</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">函数组合：纵向，从右往左</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#compose" target="_blank" rel="external">compose</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数组合：纵向，从左往右</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pipe" target="_blank" rel="external">pipe</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数组合：纵向</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#o" target="_blank" rel="external">o</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数组合：横向</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#converge" target="_blank" rel="external">converge</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数组合：横向</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#useWith" target="_blank" rel="external">useWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Kleisili 函数组合</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#composeK" target="_blank" rel="external">composeK</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Kleisili 函数组合</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pipeK" target="_blank" rel="external">pipeK</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Promise 函数组合</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#composeP" target="_blank" rel="external">composeP</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Promise 函数组合</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pipeP" target="_blank" rel="external">pipeP</a></td>
+</tr>
+<tr>
+<td style="text-align:left">单位函数：输出等于输入</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#identity" target="_blank" rel="external">identity</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数柯里化</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#curry" target="_blank" rel="external">curry</a></td>
+</tr>
+<tr>
+<td style="text-align:left">N 元函数柯里化</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#curryN" target="_blank" rel="external">curryN</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将柯里化函数 转为 N 元函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#uncurryN" target="_blank" rel="external">uncurryN</a></td>
+</tr>
+<tr>
+<td style="text-align:left">柯里化函数的参数占位符</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#__" target="_blank" rel="external">__</a></td>
+</tr>
+<tr>
+<td style="text-align:left">参数部分调用：从左往右</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#partial" target="_blank" rel="external">partial</a></td>
+</tr>
+<tr>
+<td style="text-align:left">参数部分调用：从右往左</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#partialRight" target="_blank" rel="external">partialRight</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数缓存</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#memoize" target="_blank" rel="external">memoize</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数缓存：可以自定义缓存键值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#memoizeWith" target="_blank" rel="external">memoizeWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">只执行一次的函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#once" target="_blank" rel="external">once</a></td>
+</tr>
+<tr>
+<td style="text-align:left">创建返回恒定值的函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#always" target="_blank" rel="external">always</a></td>
+</tr>
+<tr>
+<td style="text-align:left">恒定返回 <code>true</code> 的函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#T" target="_blank" rel="external">T</a></td>
+</tr>
+<tr>
+<td style="text-align:left">恒定返回 <code>false</code>  的函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#F" target="_blank" rel="external">F</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Applicative Functor 的 ap 方法，&lt;*&gt;</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#ap" target="_blank" rel="external">ap</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将函数作用于参数列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#apply" target="_blank" rel="external">apply</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将接受 <strong>单列表参数</strong> 的函数转为接受 <strong>普通参数列表</strong> 的函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#unapply" target="_blank" rel="external">unapply</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将首个参数（函数）作用于其余参数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#call" target="_blank" rel="external">call</a></td>
+</tr>
+<tr>
+<td style="text-align:left">绑定函数上下文</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#bind" target="_blank" rel="external">bind</a></td>
+</tr>
+<tr>
+<td style="text-align:left">利用属性值为函数的对象生成同构对象</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#applySpec" target="_blank" rel="external">applySpec</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将函数列表作用于参数列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#juxt" target="_blank" rel="external">juxt</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将给定值传给给定函数，CPS: flip($)</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#applyTo" target="_blank" rel="external">applyTo</a></td>
+</tr>
+<tr>
+<td style="text-align:left">比较函数，一般用于排序</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#comparator" target="_blank" rel="external">comparator</a></td>
+</tr>
+<tr>
+<td style="text-align:left">升序比较函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#ascend" target="_blank" rel="external">ascend</a></td>
+</tr>
+<tr>
+<td style="text-align:left">降序比较函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#descend" target="_blank" rel="external">descend</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将函数封装为 N 元函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#nArg" target="_blank" rel="external">nArg</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将函数封装为一元函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#unary" target="_blank" rel="external">unary</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将函数封装为二元函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#binary" target="_blank" rel="external">binary</a></td>
+</tr>
+<tr>
+<td style="text-align:left">提取第 N 个参数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#nthArg" target="_blank" rel="external">nthArg</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将构造函数封装为普通函数，创建实例时，不需要 new 操作符</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#construct" target="_blank" rel="external">construct</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将构造函数封装为 N 元普通函数，创建实例时，不需要 new 操作符</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#constructN" target="_blank" rel="external">constructN</a></td>
+</tr>
+<tr>
+<td style="text-align:left">通过函数名调用函数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#invoker" target="_blank" rel="external">invoker</a></td>
+</tr>
+<tr>
+<td style="text-align:left">创建相应类型的空值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#empty" target="_blank" rel="external">empty</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断是否为空值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#isEmpty" target="_blank" rel="external">isEmpty</a></td>
+</tr>
+<tr>
+<td style="text-align:left">交换函数前两个参数的位置</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#flip" target="_blank" rel="external">flip</a></td>
+</tr>
+<tr>
+<td style="text-align:left">函数提升</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lift" target="_blank" rel="external">lift</a></td>
+</tr>
+<tr>
+<td style="text-align:left">N 元函数提升</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#liftN" target="_blank" rel="external">liftN</a></td>
+</tr>
+<tr>
+<td style="text-align:left">生成单元素列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#of" target="_blank" rel="external">of</a></td>
+</tr>
+<tr>
+<td style="text-align:left">输出等于输入，但产生副作用的函数，一般用于调试</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#tap" target="_blank" rel="external">tap</a></td>
+</tr>
+<tr>
+<td style="text-align:left">异常捕获</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#tryCatch" target="_blank" rel="external">tryCatch</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="dui-xiang">对象</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Action</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">属性设置</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#assoc" target="_blank" rel="external">assoc</a></td>
+</tr>
+<tr>
+<td style="text-align:left">属性按路径设置</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#assocPath" target="_blank" rel="external">assocPath</a></td>
+</tr>
+<tr>
+<td style="text-align:left">属性删除</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#dissoc" target="_blank" rel="external">dissoc</a></td>
+</tr>
+<tr>
+<td style="text-align:left">属性按路径删除</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#disscoPath" target="_blank" rel="external">disscoPath</a></td>
+</tr>
+<tr>
+<td style="text-align:left">获取属性值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#prop" target="_blank" rel="external">prop</a></td>
+</tr>
+<tr>
+<td style="text-align:left">获取属性值，带有默认值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#propOr" target="_blank" rel="external">propOr</a></td>
+</tr>
+<tr>
+<td style="text-align:left">获取路径上的属性值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#path" target="_blank" rel="external">path</a></td>
+</tr>
+<tr>
+<td style="text-align:left">获取路径上的属性值，带有默认值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pathOr" target="_blank" rel="external">pathOr</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断属性是否满足给定的条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#propSatisfies" target="_blank" rel="external">propSatisfies</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断属性是否与给定值相等</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#propEq" target="_blank" rel="external">propEq</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断两个对象指定的属性值是否相等</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#eqProps" target="_blank" rel="external">eqProps</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断路径上的属性值是否满足给定的条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pathSatisfies" target="_blank" rel="external">pathSatisfies</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断路径上的属性值是否与给定值相等</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pathEq" target="_blank" rel="external">pathEq</a></td>
+</tr>
+<tr>
+<td style="text-align:left">获取属性值组成的列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#props" target="_blank" rel="external">props</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断属性是否为给定类型</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#propIs" target="_blank" rel="external">propIs</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断多个属性是否同时满足给定的条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#where" target="_blank" rel="external">where</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断多个属性是否等于给定对应属性值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#whereEq" target="_blank" rel="external">whereEq</a></td>
+</tr>
+<tr>
+<td style="text-align:left">删除多个属性</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#omit" target="_blank" rel="external">omit</a></td>
+</tr>
+<tr>
+<td style="text-align:left">提取多个属性</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pick" target="_blank" rel="external">pick</a></td>
+</tr>
+<tr>
+<td style="text-align:left">提取多个属性</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pickAll" target="_blank" rel="external">pickAll</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对列表中元素提取多个属性，模拟 SQL 的 <code>select</code></td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#project" target="_blank" rel="external">project</a></td>
+</tr>
+<tr>
+<td style="text-align:left">提取键值满足条件的属性</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#pickBy" target="_blank" rel="external">pickBy</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对特定属性进行特定变换</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#evolve" target="_blank" rel="external">evolve</a></td>
+</tr>
+<tr>
+<td style="text-align:left">是否包含指定的键</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#has" target="_blank" rel="external">has</a></td>
+</tr>
+<tr>
+<td style="text-align:left">是否包含指定的键：包括原型链上的键</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#hasIn" target="_blank" rel="external">hasIn</a></td>
+</tr>
+<tr>
+<td style="text-align:left">键值对换位</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#invertObj" target="_blank" rel="external">invertObj</a></td>
+</tr>
+<tr>
+<td style="text-align:left">键值对换位：将值放入数组中</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#invert" target="_blank" rel="external">invert</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出所有的键</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#keys" target="_blank" rel="external">keys</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出所有的键：包括原型链上的键</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#keysIn" target="_blank" rel="external">keysIn</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出所有的值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#values" target="_blank" rel="external">values</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取出所有的值：包括原型链上的值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#valuesIn" target="_blank" rel="external">valuesIn</a></td>
+</tr>
+<tr>
+<td style="text-align:left">透镜：包括属性的 getter 和 setter</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lens" target="_blank" rel="external">lens</a></td>
+</tr>
+<tr>
+<td style="text-align:left">透镜：指定索引的透镜</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lensIndex" target="_blank" rel="external">lensIndex</a></td>
+</tr>
+<tr>
+<td style="text-align:left">透镜：指定路径的透镜</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lensPath" target="_blank" rel="external">lensPath</a></td>
+</tr>
+<tr>
+<td style="text-align:left">透镜：指定属性的透镜</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lensProp" target="_blank" rel="external">lensProp</a></td>
+</tr>
+<tr>
+<td style="text-align:left">透镜：对被 <code>lens</code> 聚焦的属性做变换</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#over" target="_blank" rel="external">over</a></td>
+</tr>
+<tr>
+<td style="text-align:left">透镜：对被 <code>lens</code> 聚焦的属性进行设置</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#set" target="_blank" rel="external">set</a></td>
+</tr>
+<tr>
+<td style="text-align:left">透镜：读取被 <code>lens</code> 聚焦的属性值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#view" target="_blank" rel="external">view</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>Object</code> 版 <code>map</code>，转换函数参数：(value, key, obj)</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mapObjIndexed" target="_blank" rel="external">mapObjIndexed</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对象合并</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#merge" target="_blank" rel="external">merge</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对象合并：对重复的属性值按给定规则合并</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mergeWith" target="_blank" rel="external">mergeWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对象合并：对重复的属性值按给定规则合并</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mergeWithKey" target="_blank" rel="external">mergeWithKey</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对象深递归合并：以左侧对象属性为主</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mergeDeepLeft" target="_blank" rel="external">mergeDeepLeft</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对象深递归合并：以右侧对象属性为主</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mergeDeepRight" target="_blank" rel="external">mergeDeepRight</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对象深递归合并：对重复的非对象类型的值按给定规则合并</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mergeDeepWith" target="_blank" rel="external">mergeDeepWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对象深递归合并：对重复的非对象类型的值按给定规则合并</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mergeDeepWithKey" target="_blank" rel="external">mergeDeepWithKey</a></td>
+</tr>
+<tr>
+<td style="text-align:left">创建包含单个键值对的对象</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#objOf" target="_blank" rel="external">objOf</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将对象键值对转换为元素为键值二元组的列表</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#toPairs" target="_blank" rel="external">toPairs</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将对象键值对转换为元素为键值二元组的列表:包括原型链上的键</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#toPairsIn" target="_blank" rel="external">toPairsIn</a></td>
+</tr>
+<tr>
+<td style="text-align:left">将二元组的列表转换为对象</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#fromPairs" target="_blank" rel="external">fromPairs</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="luo-ji-yun-suan">逻辑运算</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Action</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">判断是否满足所有条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#allPass" target="_blank" rel="external">allPass</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断是否满足任一条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#anyPass" target="_blank" rel="external">anyPass</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断是否同时满足两个条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#both" target="_blank" rel="external">both</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断是否满足两个条件中的任意一个</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#either" target="_blank" rel="external">either</a></td>
+</tr>
+<tr>
+<td style="text-align:left">逻辑与操作</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#and" target="_blank" rel="external">and</a></td>
+</tr>
+<tr>
+<td style="text-align:left">逻辑或操作</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#or" target="_blank" rel="external">or</a></td>
+</tr>
+<tr>
+<td style="text-align:left">模式匹配，相当于多个 <code>if/else</code></td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#cond" target="_blank" rel="external">cond</a></td>
+</tr>
+<tr>
+<td style="text-align:left">单个 <code>if/else</code>，<code>cond</code> 的特例</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#ifElse" target="_blank" rel="external">ifElse</a></td>
+</tr>
+<tr>
+<td style="text-align:left">满足条件，则执行处理函数，否则原样返回输入值，<code>ifElse</code> 的特例</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#when" target="_blank" rel="external">when</a></td>
+</tr>
+<tr>
+<td style="text-align:left">不满足条件时，执行处理函数，否则原样返回输入值，<code>ifElse</code> 的特例</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#unless" target="_blank" rel="external">unless</a></td>
+</tr>
+<tr>
+<td style="text-align:left">逻辑非操作，参数为布尔值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#not" target="_blank" rel="external">not</a></td>
+</tr>
+<tr>
+<td style="text-align:left">对函数返回值取反</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#complement" target="_blank" rel="external">complement</a></td>
+</tr>
+<tr>
+<td style="text-align:left">添加默认值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#defaultTo" target="_blank" rel="external">defaultTo</a></td>
+</tr>
+<tr>
+<td style="text-align:left">一直计算，直到满足给定条件</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#until" target="_blank" rel="external">until</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断给定值是否为该类型的空值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#isEmpty" target="_blank" rel="external">isEmpty</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断给定值是否为 <code>null</code> 或 <code>undefined</code></td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#isNil" target="_blank" rel="external">isNil</a></td>
+</tr>
+<tr>
+<td style="text-align:left">返回给定值所属类型的空值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#empty" target="_blank" rel="external">empty</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="guan-xi-yun-suan">关系运算</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Action</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">等于</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#equals" target="_blank" rel="external">equals</a></td>
+</tr>
+<tr>
+<td style="text-align:left">完全相等</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#identical" target="_blank" rel="external">identical</a></td>
+</tr>
+<tr>
+<td style="text-align:left">通过规则判断是否相等</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#eqBy" target="_blank" rel="external">eqBy</a></td>
+</tr>
+<tr>
+<td style="text-align:left">大于</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#gt" target="_blank" rel="external">gt</a></td>
+</tr>
+<tr>
+<td style="text-align:left">大于等于</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#gte" target="_blank" rel="external">gte</a></td>
+</tr>
+<tr>
+<td style="text-align:left">小于</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lt" target="_blank" rel="external">lt</a></td>
+</tr>
+<tr>
+<td style="text-align:left">小于等于</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#lte" target="_blank" rel="external">lte</a></td>
+</tr>
+<tr>
+<td style="text-align:left">限定有序数据类型的范围</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#clamp" target="_blank" rel="external">clamp</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求两个数的较大值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#max" target="_blank" rel="external">max</a></td>
+</tr>
+<tr>
+<td style="text-align:left">按规则求两个数的较大值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#maxBy" target="_blank" rel="external">maxBy</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求两个数的较小值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#min" target="_blank" rel="external">min</a></td>
+</tr>
+<tr>
+<td style="text-align:left">按规则求两个数的较小值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#minBy" target="_blank" rel="external">minBy</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求差集：{a∣a∈xs ∩ a∉ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#difference" target="_blank" rel="external">difference</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求差集：{a∣a∉xs ∩ a∈ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#without" target="_blank" rel="external">without</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求差集：根据条件计算第一个列表与第二个列表的差集</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#differenceWith" target="_blank" rel="external">differenceWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求对称差集：{(xs ∪ ys) - (xs ∩ ys)}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#symmetricDifference" target="_blank" rel="external">symmetricDifference</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求对称差集：根据条件计算所有不属于两个列表交集的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#symmetricDifferenceWith" target="_blank" rel="external">symmetricDifferenceWith</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求交集：{xs ∩ ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#intersection" target="_blank" rel="external">intersection</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求交集：从 xs 中挑选出在 ys 中符合条件的元素</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#innerJoin" target="_blank" rel="external">innerJoin</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求并集：{xs ∪ ys}</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#union" target="_blank" rel="external">union</a></td>
+</tr>
+<tr>
+<td style="text-align:left">求并集：根据条件判断两元素是否重复</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#unionWith" target="_blank" rel="external">unionWith</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="shu-xue-yun-suan">数学运算</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Action</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">加</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#add" target="_blank" rel="external">add</a></td>
+</tr>
+<tr>
+<td style="text-align:left">减</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#subtract" target="_blank" rel="external">subtract</a></td>
+</tr>
+<tr>
+<td style="text-align:left">乘</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#multiply" target="_blank" rel="external">multiply</a></td>
+</tr>
+<tr>
+<td style="text-align:left">除</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#divide" target="_blank" rel="external">divide</a></td>
+</tr>
+<tr>
+<td style="text-align:left">加1</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#inc" target="_blank" rel="external">inc</a></td>
+</tr>
+<tr>
+<td style="text-align:left">减1</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#dec" target="_blank" rel="external">dec</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取反</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#negate" target="_blank" rel="external">negate</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表累加和</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#sum" target="_blank" rel="external">sum</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表累乘积</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#product" target="_blank" rel="external">product</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表平均值</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mean" target="_blank" rel="external">mean</a></td>
+</tr>
+<tr>
+<td style="text-align:left">列表中位数</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#median" target="_blank" rel="external">median</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取模：算术</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#mathMod" target="_blank" rel="external">mathMod</a></td>
+</tr>
+<tr>
+<td style="text-align:left">取模：JS</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#modulo" target="_blank" rel="external">modulo</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="lei-xing-cao-zuo">类型操作</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Action</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">类型判断</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#is" target="_blank" rel="external">is</a></td>
+</tr>
+<tr>
+<td style="text-align:left">类型描述</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#type" target="_blank" rel="external">type</a></td>
+</tr>
+<tr>
+<td style="text-align:left">属性类型判断</td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#propIs" target="_blank" rel="external">propIs</a></td>
+</tr>
+<tr>
+<td style="text-align:left">判断是否为 <code>null</code> 或 <code>undefined</code></td>
+<td style="text-align:left"><a href="http://ramda.cn/docs/#isNil" target="_blank" rel="external">isNil</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="can-kao-zi-liao">参考资料</h1>
+<p>关于 <code>Applicative Functor</code>，及其操作符 <a href="%5Bap%5D(http://ramda.cn/docs/#ap)">R.ap</a> (haskell 中的 <code>&lt;*&gt;</code>) 和 <a href="http://ramda.cn/docs/#lift" target="_blank" rel="external">lift</a> (haskell 中的 <code>&lt;$&gt;</code>) 的论述可参考下列资料：</p>
+<ol>
+<li>《Learn You A Haskell For Great Good》的 <a href="http://learnyouahaskell.com/functors-applicative-functors-and-monoids#applicative-functors" target="_blank" rel="external">Applicative 章节</a>，函数 <code>(-&gt;) r</code> 也是 Applicative，需要深入理解。</li>
+</ol>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="type">Function</span> :: ((-&gt;) r)</div><div class="line"><span class="type">Function</span> a = ((-&gt;) r) a </div><div class="line">           = r -&gt; a</div><div class="line"></div><div class="line">;; <span class="type">Functor</span>、<span class="type">Applicative</span>、<span class="type">Monad</span> 的类定义</div><div class="line"><span class="class"></span></div><div class="line"><span class="keyword">class</span> <span class="type">Functor</span> f <span class="keyword">where</span>  </div><div class="line">    fmap :: (a -&gt; b) -&gt; f a -&gt; f b  </div><div class="line"><span class="class"></span></div><div class="line"><span class="keyword">class</span> (<span class="type">Functor</span> <span class="title">f</span>) =&gt; <span class="type">Applicative</span> f <span class="keyword">where</span>  </div><div class="line">    pure :: a -&gt; f a  </div><div class="line">    (&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b  </div><div class="line"><span class="class"></span></div><div class="line"><span class="keyword">class</span> <span class="type">Monad</span> m <span class="keyword">where</span>  </div><div class="line">    return :: a -&gt; m a  </div><div class="line">  </div><div class="line">    (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b  </div><div class="line">  </div><div class="line">    (&gt;&gt;) :: m a -&gt; m b -&gt; m b  </div><div class="line">    x &gt;&gt; y = x &gt;&gt;= \_ -&gt; y  </div><div class="line">  </div><div class="line">    fail :: <span class="type">String</span> -&gt; m a  </div><div class="line">    fail msg = error msg  </div><div class="line"></div><div class="line">;; 作为<span class="type">Functor</span>、<span class="type">Applicative</span>、<span class="type">Monad</span> 的实例的 <span class="type">Function</span> 的定义，可以对比上面的类定义查看</div><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Functor</span> ((-&gt;) r) <span class="keyword">where</span></span></div><div class="line">    fmap = (.)</div><div class="line"></div><div class="line"><span class="title">fmap</span> :: (a -&gt; b) -&gt; (c -&gt; a) -&gt; (c -&gt; b)</div><div class="line"></div><div class="line"><span class="title">f</span> :: a -&gt; b</div><div class="line"></div><div class="line"><span class="title">g</span> :: c -&gt; a</div><div class="line"><span class="title">h</span> :: c -&gt; b</div><div class="line"></div><div class="line"><span class="title">const</span> h = fmap(f, g) = map(f, g) = compose(f, g)</div><div class="line"><span class="class"></span></div><div class="line"><span class="keyword">instance</span> <span class="type">Applicative</span> ((-&gt;) r) <span class="keyword">where</span></div><div class="line">    pure x = (\_ -&gt; x)</div><div class="line">    f &lt;*&gt; g = \x -&gt; f x (g x)</div><div class="line"></div><div class="line"><span class="title">f</span> &lt;*&gt; g = (r-&gt;(a-&gt;b)) -&gt; (r-&gt;a) -&gt; (r-&gt;b)</div><div class="line">        = (r-&gt;a-&gt;b) -&gt; (r-&gt;a) -&gt; r -&gt; b</div><div class="line"><span class="class"></span></div><div class="line"><span class="keyword">instance</span> <span class="type">Monad</span> ((-&gt;) r) <span class="keyword">where</span></div><div class="line">    return x = \_ -&gt; x</div><div class="line">    h &gt;&gt;= f = \w -&gt; f (h w) w</div></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>
+<p><a href="https://github.com/MostlyAdequate/mostly-adequate-guide" target="_blank" rel="external">《JS 函数式编程指南》</a>：</p>
+<ol>
+<li><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch10.html" target="_blank" rel="external">第 10 章: Applicative Functor</a></li>
+<li><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch10.html#lift" target="_blank" rel="external">第 10 章: Applicative Functor lift</a></li>
+</ol>
+</li>
+<li>
+<p>stackoverflow: function as Functor/Applicative Functor/Monad：</p>
+<ol>
+<li><a href="https://stackoverflow.com/questions/10294272/confused-about-function-as-instance-of-functor-in-haskell" target="_blank" rel="external">confused about function as instance of Functor in haskell</a></li>
+<li><a href="https://stackoverflow.com/questions/11810889/functions-as-applicative-functors-haskell-lyah" target="_blank" rel="external">functions as applicative functors (Haskell / LYAH)</a></li>
+<li><a href="https://stackoverflow.com/questions/13080014/function-as-an-instance-of-monad" target="_blank" rel="external">Function as an Instance of Monad</a></li>
+</ol>
+</li>
+<li>
+<p><a href="http://www.tomharding.me/2017/04/15/functions-as-functors/" target="_blank" rel="external">Functions as Functors</a></p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/Haskell-Type-and-TypeClass/" itemprop="url">
+                  Haskell: Type and TypeClass
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-10-15T11:52:43+08:00" content="2017-10-15">
+              2017-10-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Haskell/" itemprop="url" rel="index">
+                    <span itemprop="name">Haskell</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/10/15/Haskell-Type-and-TypeClass/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/15/Haskell-Type-and-TypeClass/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>What are typeclasses?</p>
+<p>Typeclasses define a set of functions that can have different implementations depending on the type of data they are given.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/09/29/Functional-Programming-Abstract-and-Composition/" itemprop="url">
                   Functional Programming: Abstract and Composition
                 </a>
@@ -1549,312 +2849,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/18/Thinking-in-Ramda-Lenses/" itemprop="url">
-                  Thinking in Ramda: 透镜（Lenses）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2017-06-18T07:27:42+08:00" content="2017-06-18">
-              2017-06-18
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Thinking-in-Ramda/" itemprop="url" rel="index">
-                    <span itemprop="name">Thinking in Ramda</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/06/18/Thinking-in-Ramda-Lenses/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/18/Thinking-in-Ramda-Lenses/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/07/12/thinking-in-ramda-lenses/" target="_blank" rel="external">Thinking in Ramda: Lenses</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
-<hr>
-<p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第八篇。</p>
-<p>在 <a href="https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" target="_blank" rel="external">第六节</a>  和 <a href="https://adispring.coding.me/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/" target="_blank" rel="external">第七节</a> 中，我们学习了如何以声明式和不变式来读取、更新和转换对象的属性和数组的元素。</p>
-<p>Ramda 提供了一个更通用的工具：透镜（lens），来进行这些操作。</p>
-<h2 id="shi-yao-shi-tou-jing">什么是透镜？</h2>
-<p>透镜将 &quot;getter&quot; 和 &quot;setter&quot; 函数组合为一个单一模块。Ramda 提供了一系列配合透镜一起工作的函数。</p>
-<p>可以将透镜视为对某些较大数据结构的特定部分的聚焦、关注。</p>
-<h2 id="ru-he-chuang-jian-tou-jing">如何创建透镜</h2>
-<p>在 Ramda 中，最常见的创建透镜的方法是 <code>lens</code> 函数。<code>lens</code> 接受一个 &quot;getter&quot; 函数和一个 &quot;setter&quot; 函数，然后返回一个新透镜。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> person = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'Randy'</span>,</div><div class="line">  <span class="attr">socialMedia</span>: &#123;</div><div class="line">    <span class="attr">github</span>: <span class="string">'randycoulman'</span>,</div><div class="line">    <span class="attr">twitter</span>: <span class="string">'@randycoulman'</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="keyword">const</span> nameLens = lens(prop(<span class="string">'name'</span>), assoc(<span class="string">'name'</span>))</div><div class="line"><span class="keyword">const</span> twitterLens = lens(</div><div class="line">  path([<span class="string">'socialMedia'</span>, <span class="string">'twitter'</span>]),</div><div class="line">  assocPath([<span class="string">'socialMedia'</span>, <span class="string">'twitter'</span>])</div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p>这里使用 <code>prop</code> 和 <code>path</code> 作为 &quot;getter&quot; 方法；<code>assoc</code> 和 <code>assocPath</code> 作为 &quot;setter&quot; 方法。</p>
-<p>注意，上面实现不得不重复传递属性和路径参数给 &quot;getter&quot; 和 &quot;setter&quot; 方法。幸运的是，Ramda 为最常见类型的透镜提供了便捷方法：<code>lensProp</code>、<code>lensPath</code> 和 <code>lensIndex</code>。</p>
-<ul>
-<li><code>LensProp</code>：创建关注对象某一属性的透镜。</li>
-<li><code>lensPath</code>: 创建关注对象某一嵌套属性的透镜。</li>
-<li><code>lensIndex</code>: 创建关注数组某一索引的透镜。</li>
-</ul>
-<p>可以用 <code>lensProp</code> 和 <code>lensPath</code> 来重写上述示例：</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> nameLens = lensProp(<span class="string">'name'</span>)</div><div class="line"><span class="keyword">const</span> twitterLens = lensPath([<span class="string">'socialMedia'</span>, <span class="string">'twitter'</span>])</div></pre></td></tr></table></figure></p>
-<p>这样便摆脱了向 &quot;getter&quot; 和 &quot;setter&quot; 重复输入两次相同参数的烦扰，变得简洁多了。在实际工作中，我发现我几乎从来不需要使用通用的 <code>lens</code> 函数。</p>
-<h2 id="wo-neng-yong-ta-zuo-shi-yao-ni">我能用它做什么呢？</h2>
-<p>我们创建了一些透镜，可以用它们做些什么呢？</p>
-<p>Ramda 提供了三个配合透镜一起使用的的函数：</p>
-<ul>
-<li><code>view</code>：读取透镜的值。</li>
-<li><code>set</code>：更新透镜的值。</li>
-<li><code>over</code>：将变换函数作用于透镜。</li>
-</ul>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">view(nameLens, person) <span class="comment">// =&gt; 'Randy'</span></div><div class="line"> </div><div class="line">set(twitterLens, <span class="string">'@randy'</span>, person)</div><div class="line"><span class="comment">// =&gt; &#123;</span></div><div class="line"><span class="comment">//   name: 'Randy',</span></div><div class="line"><span class="comment">//   socialMedia: &#123;</span></div><div class="line"><span class="comment">//     github: 'randycoulman',</span></div><div class="line"><span class="comment">//     twitter: '@randy'</span></div><div class="line"><span class="comment">//   &#125;</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"> </div><div class="line">over(nameLens, toUpper, person)</div><div class="line"><span class="comment">// =&gt; &#123;</span></div><div class="line"><span class="comment">//   name: 'RANDY',</span></div><div class="line"><span class="comment">//   socialMedia: &#123;</span></div><div class="line"><span class="comment">//     github: 'randycoulman',</span></div><div class="line"><span class="comment">//     twitter: '@randycoulman'</span></div><div class="line"><span class="comment">//   &#125;</span></div><div class="line"><span class="comment">// &#125;</span></div></pre></td></tr></table></figure></p>
-<p>注意，<code>set</code> 和 <code>over</code> 会按指定的方式对被透镜关注的属性进行修改，并返回整个新的对象。</p>
-<h2 id="jie-lun">结论</h2>
-<p>如果想从复杂数据结构的操作中抽象出简单、通用的方法，透镜可以提供很多帮助。我们只需暴露透镜；而不需要暴露整个数据结构、或者为每个可访问属性都提供 &quot;setter&quot;、&quot;getter&quot; 和 变换方法。</p>
-<h2 id="xia-yi-jie">下一节</h2>
-<p>我们现在已经了解了许多 Ramda 提供的方法，已经足以应对大部分编程需要。<a href="https://adispring.coding.me/2017/06/18/Thinking-in-Ramda-Wrap-Up/" target="_blank" rel="external">总结</a> 将回顾整个系列的内容，并会提到一些可能需要自己进一步探索的其他主题。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/" itemprop="url">
-                  Thinking in Ramda: 数据不变性和数组
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2017-06-17T22:21:48+08:00" content="2017-06-17">
-              2017-06-17
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Thinking-in-Ramda/" itemprop="url" rel="index">
-                    <span itemprop="name">Thinking in Ramda</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/17/Thinking-in-Ramda-Immutability-and-Arrays/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>译者注：本文翻译自 Randy Coulman 的 《<a href="http://randycoulman.com/blog/2016/07/05/thinking-in-ramda-immutability-and-arrays/" target="_blank" rel="external">Thinking in Ramda: Immutability and Arrays</a>》，转载请与<a href="https://github.com/randycoulman" target="_blank" rel="external">原作者</a>或<a href="https://github.com/adispring" target="_blank" rel="external">本人</a>联系。下面开始正文。</p>
-<hr>
-<p>本文是函数式编程系列文章：<a href="https://adispring.coding.me/categories/Thinking-in-Ramda/" target="_blank" rel="external">Thinking in Ramda</a> 的第七篇。</p>
-<p>在 <a href="https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" target="_blank" rel="external">第六节</a> 中，讨论了以函数式和数据不变性（immutable）的方式来处理 JavaScript 对象。</p>
-<p>本节将继续用相同的方式讨论数组。</p>
-<h2 id="du-qu-shu-zu-yuan-su">读取数组元素</h2>
-<p>在 <a href="https://adispring.coding.me/2017/06/16/Thinking-in-Ramda-Immutability-and-Objects/" target="_blank" rel="external">第六节</a> 中，展示了许多读取对象属性的 Ramda 函数，包括 <code>prop</code>、<code>pick</code> 和 <code>has</code>。Ramda 有更多的方法来读取数组的元素。</p>
-<p>数组中与 <code>prop</code> 类似的是 <code>nth</code>；与 <code>pick</code> 类似的是 <code>slice</code>，跟 <code>has</code> 类似的是 <code>contains</code>。来看一些例子。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">nth(<span class="number">3</span>, numbers) <span class="comment">// =&gt; 40  (0-based indexing)</span></div><div class="line"> </div><div class="line">nth(<span class="number">-2</span>, numbers) <span class="comment">// =&gt; 50 (negative numbers start from the right)</span></div><div class="line"> </div><div class="line">slice(<span class="number">2</span>, <span class="number">5</span>, numbers) <span class="comment">// =&gt; [30, 40, 50] (see below)</span></div><div class="line"> </div><div class="line">contains(<span class="number">20</span>, numbers) <span class="comment">// =&gt; true</span></div></pre></td></tr></table></figure></p>
-<p><code>slice</code> 接受两个索引，返回从第 1 个索引开始（以 0 为起始）到第 2 个索引结束（不包含）的所有元素组成的子数组。</p>
-<p>经常会访问首个（<code>nth(0)</code>）和最后一个（<code>nth(-1)</code>）元素，所以 Ramda 为这两种特殊情形提供的便捷方法：<code>head</code> 和 <code>last</code>。还提供了访问除首个元素之外的所有元素的函数：<code>tail</code>，除最后一个元素之外的所有元素的方法：<code>init</code>，前 <code>N</code> 个元素：<code>take(N)</code>，后 <code>N</code> 个元素：<code>takeLast(N)</code>。来看看这些函数的实例。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">head(numbers) <span class="comment">// =&gt; 10</span></div><div class="line">tail(numbers) <span class="comment">// =&gt; [20, 30, 40, 50, 60]</span></div><div class="line"> </div><div class="line">last(numbers) <span class="comment">// =&gt; 60</span></div><div class="line">init(numbers) <span class="comment">// =&gt; [10, 20, 30, 40, 50]</span></div><div class="line"> </div><div class="line">take(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [10, 20, 30]</span></div><div class="line">takeLast(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [40, 50, 60]</span></div></pre></td></tr></table></figure></p>
-<h2 id="zeng-shan-gai-shu-zu-yuan-su">增、删、改数组元素</h2>
-<p>对于对象，我们已经学了对其属性进行增、删、改的函数：<code>assoc</code>、<code>dissoc</code>、<code>evolve</code> 等。</p>
-<p>但数组是有序数据结构，有好多函数与 <code>assoc</code> 类似。最常用的是 <code>insert</code> 和 <code>update</code>，Ramda 还提供了 <code>append</code> 和 <code>prepend</code> 来在数组头部或尾部添加元素。<code>insert</code>、<code>append</code> 和 <code>prepend</code> 会给数组添加新元素；<code>update</code> 使用新值替换已有元素。</p>
-<p>正如一般函数式库应该具备的，所有这些函数都返回修改后的新数组，原有数组保持不变。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">insert(<span class="number">3</span>, <span class="number">35</span>, numbers) <span class="comment">// =&gt; [10, 20, 30, 35, 40, 50, 60]</span></div><div class="line"> </div><div class="line">append(<span class="number">70</span>, numbers) <span class="comment">// =&gt; [10, 20, 30, 40, 50, 60, 70]</span></div><div class="line"> </div><div class="line">prepend(<span class="number">0</span>, numbers) <span class="comment">// =&gt; [0, 10, 20, 30, 40, 50, 60]</span></div><div class="line"> </div><div class="line">update(<span class="number">1</span>, <span class="number">15</span>, numbers) <span class="comment">// =&gt; [10, 15, 30, 40, 50, 60]</span></div></pre></td></tr></table></figure></p>
-<p>为了将两个对象合并为一个，我们学习了 <code>merge</code>；Ramda 为数组合并提供了 <code>concat</code>。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">concat(numbers, [<span class="number">70</span>, <span class="number">80</span>, <span class="number">90</span>]) <span class="comment">// =&gt; [10, 20, 30, 40, 50, 60, 70, 80, 90]</span></div></pre></td></tr></table></figure></p>
-<p>注意，第二个数组添加到第一个数组之后。当单独使用 <code>concat</code> 时，可以很好的工作；但类似于 <code>merge</code>，在 pipeline 中可能并不像预期的那样工作。可以为在 pipeline 中使用定义一个辅助函数 <code>concatAfter</code>：<code>const concatAfter = flip(concat)</code>。</p>
-<p>Ramda 还提供了几个删除元素的函数。<code>remove</code> 删除指定索引处的元素，<code>without</code> 通过值删除元素。还有常用到的删除前 <code>N</code> 或 后 <code>N</code> 个元素的函数：<code>drop</code> 和 <code>dropLast</code>。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">remove(<span class="number">2</span>, <span class="number">3</span>, numbers) <span class="comment">// =&gt; [10, 20, 60]</span></div><div class="line"> </div><div class="line">without([<span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>], numbers) <span class="comment">// =&gt; [10, 20, 60]</span></div><div class="line"> </div><div class="line">drop(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [40, 50, 60]</span></div><div class="line"> </div><div class="line">dropLast(<span class="number">3</span>, numbers) <span class="comment">// =&gt; [10, 20, 30]</span></div></pre></td></tr></table></figure></p>
-<p>注意，<code>remove</code> 接受一个索引和一个删除元素的数量，而 <code>slice</code> 接受两个索引。如果你不知道这种不一致，可能会造成使用上的困扰。</p>
-<h2 id="bian-huan-yuan-su">变换元素</h2>
-<p>与对象一样，我们可能希望通过将函数应用于元素的原始值来更新数组元素。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">update(<span class="number">2</span>, multiply(<span class="number">10</span>, nth(<span class="number">2</span>, numbers)), numbers) <span class="comment">// =&gt; [10, 20, 300, 40, 50, 60]</span></div></pre></td></tr></table></figure></p>
-<p>为了简化这个常见的用例， Ramda 提供了 <code>adjust</code>，其工作方式类似于操作对象的 <code>evolve</code>。与 <code>evolve</code> 不同的是， <code>adjust</code> 只能作用于数组的单个元素。</p>
-<p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>]</div><div class="line"> </div><div class="line">adjust(multiply(<span class="number">10</span>), <span class="number">2</span>, numbers)</div></pre></td></tr></table></figure></p>
-<p>注意，与 <code>update</code> 相比，<code>adjust</code> 将前两个参数的位置交换了一下。这可能会引起困扰，但当进行部分应用时，这样做还是很有道理的。你可能会先提供一个调整函数，比如 <code>adjust(multiply(10))</code> ，然后再决定要调整的索引和数组。</p>
-<h2 id="jie-lun">结论</h2>
-<p>我们现在有了以声明式和不变式操作对象和数组的一系列方法。这允许我们在不改变已有数据的情况下，从较小的、函数式的构建模块来构建程序，通过对函数进行组合来实现我们想要的功能。</p>
-<h2 id="xia-yi-jie">下一节</h2>
-<p>我们学习了读取、更新和转换对象属性和数组元素的方法。Ramda 提供了更通用的进行这些操作的工具：lens（透镜）。<a href="https://adispring.coding.me/2017/06/18/Thinking-in-Ramda-Lenses/" target="_blank" rel="external">Lenses</a> 向我们演示了它们的工作原理和方式。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1900,7 +2894,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

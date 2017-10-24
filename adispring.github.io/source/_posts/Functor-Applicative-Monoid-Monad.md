@@ -64,6 +64,13 @@ fs <*> xs === [f1 x1, f1 f2, f2 x1, f2 x2, f3 x1, f3 x2]
 ### 函数 `(->) r` 也是 Applicative Functor 很有意思
 
 ```haskell
+Function :: ((->) r)
+Function a = ((->) r) a 
+           = r -> a
+```
+
+
+```haskell
 instance Applicative ((->) r) where
   pure x = (\_ -> x)
   f <*> g = \x -> f x (g x)
