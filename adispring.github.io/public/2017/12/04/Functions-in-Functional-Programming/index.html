@@ -88,21 +88,21 @@
 
 
 
-<meta name="description" content="函数式编程中函数有三种不同的解读方式，包括纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。 纯函数 定义：   相同的输入必定产生相同的输出； 在计算的过程中，不会产生副作用。   满足上述两个条件，我们就说该函数是纯函数。 纯函数也即数学意义上的函数，表达的是数据之间的转换（映射）关系，而非计算步骤的详述。数学函数的定义：  函数通常由定义域 X 和值域 Y，以及定义域到">
+<meta name="description" content="函数式编程中的函数有三种不同的解读方式，分别为纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。 纯函数 定义：   相同的输入必定产生相同的输出； 在计算的过程中，不会产生副作用。   满足上述两个条件，我们就说该函数是纯函数。 纯函数也即数学意义上的函数，表达的是数据之间的转换（映射）关系，而非计算步骤的详述。数学函数的定义：  函数通常由定义域 X 、值域 Y 以及定义">
 <meta property="og:type" content="article">
 <meta property="og:title" content="函数式编程中的“函数们”">
 <meta property="og:url" content="https://adispring.github.io/2017/12/04/Functions-in-Functional-Programming/index.html">
 <meta property="og:site_name" content="wangzengdi&#39;s Blog">
-<meta property="og:description" content="函数式编程中函数有三种不同的解读方式，包括纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。 纯函数 定义：   相同的输入必定产生相同的输出； 在计算的过程中，不会产生副作用。   满足上述两个条件，我们就说该函数是纯函数。 纯函数也即数学意义上的函数，表达的是数据之间的转换（映射）关系，而非计算步骤的详述。数学函数的定义：  函数通常由定义域 X 和值域 Y，以及定义域到">
+<meta property="og:description" content="函数式编程中的函数有三种不同的解读方式，分别为纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。 纯函数 定义：   相同的输入必定产生相同的输出； 在计算的过程中，不会产生副作用。   满足上述两个条件，我们就说该函数是纯函数。 纯函数也即数学意义上的函数，表达的是数据之间的转换（映射）关系，而非计算步骤的详述。数学函数的定义：  函数通常由定义域 X 、值域 Y 以及定义">
 <meta property="og:image" content="https://adispring.github.io/2017/12/04/Functions-in-Functional-Programming/function.png">
 <meta property="og:image" content="https://adispring.github.io/2017/12/04/Functions-in-Functional-Programming/pipeline-leaking.png">
 <meta property="og:image" content="https://adispring.github.io/2017/12/04/Functions-in-Functional-Programming/functions_composition.png">
 <meta property="og:image" content="https://adispring.github.io/2017/12/04/Functions-in-Functional-Programming/closure.png">
 <meta property="og:image" content="https://adispring.github.io/2017/12/04/Functions-in-Functional-Programming/functions-in-memoize.png">
-<meta property="og:updated_time" content="2017-12-08T08:43:26.708Z">
+<meta property="og:updated_time" content="2017-12-09T01:26:23.323Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="函数式编程中的“函数们”">
-<meta name="twitter:description" content="函数式编程中函数有三种不同的解读方式，包括纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。 纯函数 定义：   相同的输入必定产生相同的输出； 在计算的过程中，不会产生副作用。   满足上述两个条件，我们就说该函数是纯函数。 纯函数也即数学意义上的函数，表达的是数据之间的转换（映射）关系，而非计算步骤的详述。数学函数的定义：  函数通常由定义域 X 和值域 Y，以及定义域到">
+<meta name="twitter:description" content="函数式编程中的函数有三种不同的解读方式，分别为纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。 纯函数 定义：   相同的输入必定产生相同的输出； 在计算的过程中，不会产生副作用。   满足上述两个条件，我们就说该函数是纯函数。 纯函数也即数学意义上的函数，表达的是数据之间的转换（映射）关系，而非计算步骤的详述。数学函数的定义：  函数通常由定义域 X 、值域 Y 以及定义">
 <meta name="twitter:image" content="https://adispring.github.io/2017/12/04/Functions-in-Functional-Programming/function.png">
 
 
@@ -307,7 +307,7 @@
       
 
       
-        <p>函数式编程中函数有三种不同的解读方式，包括纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。</p>
+        <p>函数式编程中的函数有三种不同的解读方式，分别为纯函数、高阶函数和一等函数。本文分别对这三者的概念、应用和联系进行详解。</p>
 <h1 id="chun-han-shu">纯函数</h1>
 <p>定义：</p>
 <blockquote>
@@ -319,7 +319,7 @@
 <p>满足上述两个条件，我们就说该函数是纯函数。</p>
 <p>纯函数也即数学意义上的函数，表达的是数据之间的转换（映射）关系，而非计算步骤的详述。数学函数的定义：</p>
 <blockquote>
-<p>函数通常由定义域 <em>X</em> 和值域 <em>Y</em>，以及定义域到值域的映射 <em>f</em> （<em>f: X -&gt; Y</em>）组成。</p>
+<p>函数通常由定义域 <em>X</em> 、值域 <em>Y</em> 以及定义域到值域的映射 <em>f</em> （<em>f: X -&gt; Y</em>）组成。</p>
 </blockquote>
 <p><img src="./function.png" alt="function"></p>
 <p>纯函数让我们对写出的函数具有完全的控制能力。纯函数的结果 <strong>必须</strong> 只依赖于输入参数，不受外部环境的影响；同时纯函数在计算结果的过程中，也不会影响（污染）外部环境，即不会产生副作用。</p>
@@ -328,13 +328,15 @@
 <p>只有函数组合中的所有函数都是纯函数，我们组合起来的新函数才会是纯函数。我们可以对使用纯函数组合出来的新函数从数学上证明（推导）其正确性，而无需借助大量的单元测试。</p>
 <p>只要在函数组合时引入一个非纯函数，整个组合出来的函数将沦为非纯函数。如果将函数组合比作管道的拼接，只要组成管道的任何一小节有泄露或者外部注入，我们便失去了对整条管道的完全控制。</p>
 <p><img src="./pipeline-leaking.png" alt="pipeline-leaking"></p>
-<p>要想实现函数组合，还需要满足连续性，描述如下：因为纯函数可以看作定义域到值域映射，待组合的函数中：上一个函数的值域须等于下一个函数的定义域，也即上一个函数的输出（类型）等于下一个的输入（类型）。假设有两个函数：<em>f: X -&gt; Y</em> 和 <em>g: Y -&gt; Z</em>，只有 <code>codomain(f) = domain(g)</code> 时，<em>f</em> 和 <em>g</em> 才可以组合。</p>
+<p>要想实现函数组合，还需要满足连续性，描述如下：</p>
+<p>因为纯函数可以看作定义域到值域映射，待组合的函数中的上一个函数的值域须等于下一个函数的定义域，也即上一个函数的输出（类型）等于下一个的输入（类型）。</p>
+<p>假设有两个函数：<em>f: X -&gt; Y</em> 和 <em>g: Y -&gt; Z</em>，只有 <code>codomain(f) = domain(g)</code> 时，<em>f</em> 和 <em>g</em> 才可以组合。</p>
 <p><img src="./functions_composition.png" alt="function_composition"></p>
 <h2 id="yin-yong-tou-ming-ji-huan-cun">引用透明及缓存</h2>
 <p>在不改变整个程序行为的情况下，如果能将其中的一段代码替换为其执行的结果，我们就说这段代码是引用透明的。</p>
 <p>因此，执行一段引用透明的代码（函数），对于相同的参数，总是给出相同的结果。我们也称这样的函数（代码）为纯函数。</p>
-<p>引用透明的一个典型应用即函数缓存。我们可以将已经执行过的输入值缓存，下次调用时，若输入值相同，直接跳过计算过程，用缓存结果代替计算结果返回即可。</p>
-<p>函数缓存的实现依赖于闭包，而闭包的实现又依赖于高阶函数，高阶函数的实现又依赖于一等函数。我们按照这条依赖链，从里往外依次对其进行讲解。</p>
+<p>引用透明的一个典型应用即函数缓存。我们可以将已经执行过的函数输入值缓存起来，下次调用时，若输入值相同，直接跳过计算过程，用缓存结果代替计算结果返回即可。</p>
+<p>函数缓存的实现依赖于闭包，而闭包的实现又依赖于高阶函数，高阶函数的实现又依赖于一等函数。我们按照这条依赖链，从里往外依次对它们进行讲解。</p>
 <h1 id="yi-deng-han-shu-first-class-functions">一等函数（First Class Functions）</h1>
 <p>程序语言会对基本元素的使用方式进行限制，带有最少限制的元素被称为一等公民，其拥有的 “权利” 如下：</p>
 <blockquote>
@@ -351,7 +353,7 @@
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> square = <span class="function"><span class="params">x</span> =&gt;</span> x * x</div></pre></td></tr></table></figure></p>
 <p>上面代码定义了一个求平方值的函数，并将其赋给了 square 变量。</p>
 <h2 id="ke-yi-bao-han-zai-shu-ju-jie-gou-zhong">可以包含在数据结构中</h2>
-<p><a href="http://ramda.cn/" target="_blank" rel="external">Ramda</a> 中有一个API：<a href="http://ramda.cn/docs/#evolve" target="_blank" rel="external">evolve</a>，其接受的首个参数便是一个属性值为函数的对象。<a href="http://ramda.cn/docs/#evolve" target="_blank" rel="external">evolve</a> 函数会递归地对待处理对象的属性进行变换，变换的方式由 transformation 内置函数属性值的对象定义。示例如下（示例中的 <code>R.xxx</code> 都是 <a href="http://ramda.cn/docs/" target="_blank" rel="external">Ramda</a> 中的API，相关API的功能可以参考<a href="http://ramda.cn/docs/" target="_blank" rel="external">Ramda</a>文档）：</p>
+<p><a href="http://ramda.cn/" target="_blank" rel="external">Ramda</a> 中有一个API：<a href="http://ramda.cn/docs/#evolve" target="_blank" rel="external">evolve</a>，其接受的首个参数便是一个属性值为函数的对象。<a href="http://ramda.cn/docs/#evolve" target="_blank" rel="external">evolve</a> 函数会递归地对 &quot;待处理对象&quot; 的属性进行变换，变换的方式由 transformation 内置函数属性值的对象定义。示例如下（示例中的 <code>R.xxx</code> 都是 <a href="http://ramda.cn/docs/" target="_blank" rel="external">Ramda</a> 中的API，相关API的功能可以参考<a href="http://ramda.cn/docs/" target="_blank" rel="external">Ramda</a>文档）：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> tomato  = &#123;<span class="attr">name</span>: <span class="string">'Tomato'</span>, <span class="attr">data</span>: &#123;<span class="attr">elapsed</span>: <span class="number">100</span>, <span class="attr">remaining</span>: <span class="number">1400</span>&#125;, <span class="attr">id</span>:<span class="number">123</span>&#125;;</div><div class="line"><span class="keyword">var</span> transformations = &#123;</div><div class="line">  <span class="attr">name</span>: R.toUpper,</div><div class="line">  <span class="attr">data</span>: &#123;<span class="attr">elapsed</span>: R.add(<span class="number">1</span>), <span class="attr">remaining</span>: R.add(<span class="number">-1</span>)&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">R.evolve(transformations)(tomato);</div><div class="line"><span class="comment">//=&gt; &#123;name: 'TOMATO', data: &#123;elapsed: 101, remaining: 1399&#125;, id:123&#125;</span></div></pre></td></tr></table></figure></p>
 <h1 id="gao-jie-han-shu">高阶函数</h1>
 <p>定义：</p>
@@ -372,7 +374,7 @@
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> xIn = x;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">addInner</span>(<span class="params">y</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> xIn + y;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">const</span> inc = add(<span class="number">1</span>);</div><div class="line">inc(<span class="number">8</span>); <span class="comment">//=&gt; 9;</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> plus2 = add(<span class="number">2</span>);</div><div class="line">plus2(<span class="number">8</span>); <span class="comment">//=&gt; 10;</span></div></pre></td></tr></table></figure></p>
 <p>上述代码中返回的函数 <code>addInner</code> 及由其捕获的在其上下文中定义的自由变量 <code>xIn</code>，便组成了一个闭包。</p>
 <p><img src="./closure.png" alt="closure"></p>
-<p>上述代码中最外层的 <code>add</code> 函数个高阶函数，其返回值为一等函数 <code>addInner</code>。</p>
+<p>上述代码中最外层的 <code>add</code> 函数是一个高阶函数，其返回值为一等函数 <code>addInner</code>。</p>
 <p>其实 <code>add</code> 函数的参数 <code>x</code> 也是 <code>addInner</code> 上下文的一部分，所以 'xIn' 也就没有存在的必要了，<code>add</code> 代码优化如下：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">addInner</span>(<span class="params">y</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> x + y;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>借助于箭头函数，我们可以进一步优化 <code>add</code> 的实现：</p>
@@ -383,8 +385,9 @@
 <p>上述代码中的 <code>const inc = add(1);</code> 和 <code>const plus2 = add(2);</code> 是一种函数工厂模式，通过向 <code>add</code> 函数传入不同的参数，便会产生功能不同的函数。函数工厂可以提高函数的抽象和复用能力。</p>
 <p>例如我们有一个如下形式的 Ajax 请求函数：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> ajax = <span class="function"><span class="params">method</span> =&gt;</span> type =&gt; <span class="function"><span class="params">query</span> =&gt;</span> &#123; ... &#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> get = ajax(<span class="string">'GET'</span>);</div><div class="line"><span class="keyword">const</span> post = ajax(<span class="string">'POST'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> getJson = get(<span class="string">'json'</span>);</div><div class="line"><span class="keyword">const</span> getHtml = ajax(<span class="string">'GET'</span>)(<span class="string">'text/html'</span>) = get(<span class="string">'text/html'</span>);</div></pre></td></tr></table></figure></p>
-<p>我们抽象除了最一般的 <code>ajax</code> 请求函数，在具体应用时，我们用能通过函数工厂生产出作用不同的函数。</p>
-<p>通过上面几个小节，我们讲解纯函数（数学意义上的函数）、一等函数、高阶函数，还用闭包，下面通过集上述所有概念于一身的 <strong>函数缓存</strong> ，来结束我们的论述。</p>
+<p>我们抽象出了最一般的 <code>ajax</code> 请求函数，在具体应用时，我们用能通过函数工厂生产出作用不同的函数。</p>
+<p>通过上面几个小节，我们讲解了纯函数（数学意义上的函数）、一等函数、高阶函数，还有闭包。</p>
+<p>下面通过一个集上述所有概念于一身的 <strong>函数缓存</strong> ，来结束函数式编程中的 “函数们” 的论述。</p>
 <h1 id="han-shu-huan-cun-memoize">函数缓存 memoize</h1>
 <p>函数实现：</p>
 <p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> memoize = <span class="function"><span class="params">pureFunc</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> cache = &#123;&#125;;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">const</span> argStr = <span class="built_in">JSON</span>.stringify(<span class="built_in">arguments</span>);</div><div class="line">    cache[argStr] = cache[argStr] || pureFunc.apply(pureFunc, <span class="built_in">arguments</span>);</div><div class="line">    <span class="keyword">return</span> cache[argStr];</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
@@ -396,8 +399,8 @@
 <p><code>memoize</code> 内部实现了一个闭包的创建。返回的缓存函数和自由变量 <code>cache</code> 共同构成了一个闭包。自由变量 <code>cached</code> 用于对已经计算过的数据（参数）的缓存。而闭包本身是由高阶函数和一等函数实现的。</p>
 <p><img src="./functions-in-memoize.png" alt="functions-in-memoize"></p>
 <h1 id="zong-jie">总结</h1>
-<p>本文对函数式编程中的 “函数” 们做了详细解释：纯函数、一等函数、高阶函数，展示了它们的应用。其中纯函数是函数组合的基础；一等函数是高阶函数的实现基础，一等函数和高阶函数又是闭包的实现基础。</p>
-<p>最后通过函数缓存函数 <code>memoize</code> 将纯函数、一等函数、高阶函数和闭包联系起来了，作为函数式编程中的 “函数们” 的一次 “联欢” 结束了本文。</p>
+<p>本文对函数式编程中的 “函数们” 做了详细解释：纯函数、一等函数、高阶函数，并展示了它们的应用。其中纯函数是函数组合的基础；一等函数是高阶函数的实现基础，一等函数和高阶函数又是闭包的实现基础。</p>
+<p>最后通过函数缓存函数 <code>memoize</code> 将纯函数、一等函数、高阶函数和闭包联系了起来，用函数式编程中的 “函数们” （函数式三镖客）的一次 “联合行动” 结束本文。</p>
 <h1 id="can-kao-wen-dang">参考文档</h1>
 <p><a href="http://www.mathsisfun.com/sets/function.html" target="_blank" rel="external">What is a Function?</a>.</p>
 <p><a href="https://en.wikipedia.org/wiki/Functional_programming" target="_blank" rel="external">Functional Programming</a>.</p>
