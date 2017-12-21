@@ -304,7 +304,7 @@ _.pluck(flintstones2, 'age'); //=> [28, 30, 2]
 
 JavaScript 是一门多范式语言。你可以编写简单的命令式代码，面对对象的代码，或函数式代码。原始命令式的代码非常直白、简单。有很多库可以帮助你将 JavaScript 作为面向对象的语言使用。但是将 JavaScript 作为函数式语言使用的库非常少。Ramda 帮忙填补了这个空缺。
 
-如前所述，我们当然不是第一个。其他库通过各种不同方式达让人们可以在 JavaScript 中进行函数式编程（FP）。在我看来，将函数式世界与 JavaScript 结合最成功的可能是 [allong.es](https://github.com/raganwald/allong.es)。但它不是一个流行的库，与 [Underscore](http://underscorejs.org/) 、 [Lodash](http://lodash.com/) 这些库不在一个级别上（就流行程度而言）；并且它有一个与 Ramda 不同的目标：它被设计为一种教学工具，一本书的演示库。
+如前所述，我们当然不是第一个。其他库通过各种不同方式让人们可以在 JavaScript 中进行函数式编程（FP）。在我看来，将函数式世界与 JavaScript 结合最成功的可能是 [allong.es](https://github.com/raganwald/allong.es)。但它不是一个流行的库，与 [Underscore](http://underscorejs.org/) 、 [Lodash](http://lodash.com/) 这些库不在一个级别上（就流行程度而言）；并且它有一个与 Ramda 不同的目标：它被设计为一种教学工具，一本书的演示库。
 
 Ramda 正在尝试一些不同的东西。它的目标是成为一个能进行日常实际工作的实用的函数式库。
 
@@ -378,7 +378,7 @@ var userRatingForComments = R.pipe(
 
 需要再次重申，Ramda 函数不会修改输入数据。这是函数式编程的核心原则，也是 Ramda 工作的核心。虽然这些函数可能会改变内部局部变量，但 Ramda 不会改变传递给它的任何数据。
 
-这并不意味着你使用的所有东西都会被复制。Ramda 重用了它所能用到的。因此，在像 `assoc` 和 `assocPath` 这样的函数，返回具有特定更新属性的对象的克隆中，原始数据的所有非原生（non-primitive）属性在新对象中将以引用的方式使用。如果你想要一个对象的完全解耦的副本，Ramda 提供了 `cloneDeep` 函数。
+这并不意味着你使用的所有东西都会被复制。Ramda 重用了它所能用到的。因此，在像 `assoc` 和 `assocPath` 这样的函数，返回具有特定更新属性的对象的克隆中，原始数据的所有非原生（non-primitive）属性在新对象中将以引用的方式使用。如果你想要一个对象的完全解耦的副本，Ramda 提供了 `cloneDeep`（译者注：现在 Ramda 只提供 `clone` 用作深拷贝） 函数。
 
 这种不变性对 Ramda 来说是硬性规定。任何牵扯到变更用户数据的 pull request 都会被拒绝。我们认为这是 Ramda 的主要特征之一。
 

@@ -414,7 +414,7 @@
 <p>一些使用这种方式的函数的例子包括max / min / sort / uniq / difference。</p>
 <h1 id="han-shu-shi">函数式</h1>
 <p>JavaScript 是一门多范式语言。你可以编写简单的命令式代码，面对对象的代码，或函数式代码。原始命令式的代码非常直白、简单。有很多库可以帮助你将 JavaScript 作为面向对象的语言使用。但是将 JavaScript 作为函数式语言使用的库非常少。Ramda 帮忙填补了这个空缺。</p>
-<p>如前所述，我们当然不是第一个。其他库通过各种不同方式达让人们可以在 JavaScript 中进行函数式编程（FP）。在我看来，将函数式世界与 JavaScript 结合最成功的可能是 <a href="https://github.com/raganwald/allong.es" target="_blank" rel="external">allong.es</a>。但它不是一个流行的库，与 <a href="http://underscorejs.org/" target="_blank" rel="external">Underscore</a> 、 <a href="http://lodash.com/" target="_blank" rel="external">Lodash</a> 这些库不在一个级别上（就流行程度而言）；并且它有一个与 Ramda 不同的目标：它被设计为一种教学工具，一本书的演示库。</p>
+<p>如前所述，我们当然不是第一个。其他库通过各种不同方式让人们可以在 JavaScript 中进行函数式编程（FP）。在我看来，将函数式世界与 JavaScript 结合最成功的可能是 <a href="https://github.com/raganwald/allong.es" target="_blank" rel="external">allong.es</a>。但它不是一个流行的库，与 <a href="http://underscorejs.org/" target="_blank" rel="external">Underscore</a> 、 <a href="http://lodash.com/" target="_blank" rel="external">Lodash</a> 这些库不在一个级别上（就流行程度而言）；并且它有一个与 Ramda 不同的目标：它被设计为一种教学工具，一本书的演示库。</p>
 <p>Ramda 正在尝试一些不同的东西。它的目标是成为一个能进行日常实际工作的实用的函数式库。</p>
 <p>我们从头开始构建这个函数式库，使用了许多其他函数式语言通用的技术，以对 JavaScript 有意义的方式对这些技术进行移植。我们并没有试图弥合与面向对象世界之间的鸿沟，或者复制每一种函数式语言的每一个特性。实际上，我们甚至没有试图复制单一函数式语言的每个特性。它仍然是 JavaScript，甚至还继承了 JavaScript 缺陷。</p>
 <h2 id="han-shu-shi-te-xing">函数式特性</h2>
@@ -450,7 +450,7 @@
 <p>为了让其工作，Ramda 的函数必须具有足够小的规模。这与 Unix 的哲学不谋而合：大型的工具应该由小工具构建而成，每个工具做且只做一件事情。Ramda 的函数也是如此。理想情况下，这意味着以这些函数为基础的系统的复杂性只是问题自身固有的复杂性，而不是由库增加的附带的复杂性。</p>
 <h2 id="bu-bian-xing">不变性</h2>
 <p>需要再次重申，Ramda 函数不会修改输入数据。这是函数式编程的核心原则，也是 Ramda 工作的核心。虽然这些函数可能会改变内部局部变量，但 Ramda 不会改变传递给它的任何数据。</p>
-<p>这并不意味着你使用的所有东西都会被复制。Ramda 重用了它所能用到的。因此，在像 <code>assoc</code> 和 <code>assocPath</code> 这样的函数，返回具有特定更新属性的对象的克隆中，原始数据的所有非原生（non-primitive）属性在新对象中将以引用的方式使用。如果你想要一个对象的完全解耦的副本，Ramda 提供了 <code>cloneDeep</code> 函数。</p>
+<p>这并不意味着你使用的所有东西都会被复制。Ramda 重用了它所能用到的。因此，在像 <code>assoc</code> 和 <code>assocPath</code> 这样的函数，返回具有特定更新属性的对象的克隆中，原始数据的所有非原生（non-primitive）属性在新对象中将以引用的方式使用。如果你想要一个对象的完全解耦的副本，Ramda 提供了 <code>cloneDeep</code>（译者注：现在 Ramda 只提供 <code>clone</code> 用作深拷贝） 函数。</p>
 <p>这种不变性对 Ramda 来说是硬性规定。任何牵扯到变更用户数据的 pull request 都会被拒绝。我们认为这是 Ramda 的主要特征之一。</p>
 <h1 id="shi-yong-xing">实用性</h1>
 <p>最后，Ramda 的目标是成为一个实用的库。这更难表述，因为实用性就像 “美丽” 一样：总是在旁观者眼中才能反映出来。永远都会有对不符合 Ramda 哲学的功能的要求，在那些提议者心目中，这些功能都是非常实用的。通常这些函数（功能）本身是有用的，但是由于不符合 Ramda 的哲学而被拒绝。</p>
