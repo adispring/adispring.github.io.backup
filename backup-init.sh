@@ -4,6 +4,11 @@ GIT_ROOT_DIR="$(git rev-parse --show-toplevel)"
 HEXO_DIR="$GIT_ROOT_DIR/adispring.github.io"
 HOOK_DIR="$GIT_ROOT_DIR/git-hook"
 
+cd "$HOOK_DIR"
+source git-hook-install.sh
+
+cd "$GIT_ROOT_DIR"
+
 hexo_git=(.git .deploy_git)
 
 cd "$HEXO_DIR"
@@ -27,7 +32,3 @@ do
 done
 hexo clean
 
-cd "$HOOK_DIR"
-source git-hook-install.sh
-
-cd "$GIT_ROOT_DIR"
