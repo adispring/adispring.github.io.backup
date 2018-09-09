@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# An hook script to verify what is about to be pushed.
+#
+# $1 -- Name of the remote to which the push is being done
+# $2 -- URL to which the push is being done
+#
+# Information about the commits which are being pushed is supplied as lines to
+# the standard input in the form:
+#   <local ref> <local sha1> <remote ref> <remote sha1>
+
+GIT_ROOT_DIR="$(git rev-parse --show-toplevel)"
+HEXO_DIR="$GIT_ROOT_DIR/adispring.github.io"
+cd "$HEXO_DIR"
+
+hexo g -d

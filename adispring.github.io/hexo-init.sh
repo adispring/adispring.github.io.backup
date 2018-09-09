@@ -4,6 +4,7 @@ npm i hexo-cli -g
 
 yarn
 
+rm -rf ./themes/next
 git clone https://github.com/theme-next/hexo-theme-next themes/next
 
 # 修复锚点不生效问题

@@ -95,3 +95,13 @@ cp ./init_source/hexo-renderer-markdown-it/lib/renderer.js ./node_modules/hexo-r
 # 自动配置 favicon
 cp ./init_source/next/_config.yml ./themes/next/_config.yml
 ```
+
+### Git pull 下来的 Hexo 工程，hexo deploy 后将整个项目都 push 上去了
+
+每次 git pull 备份的工程后，需要清理一下 hexo 工程，具体方法如下：
+
+```bash
+$ cd adispring.github.io
+rm -rf .git .deploy_git hexo clean
+```
+
