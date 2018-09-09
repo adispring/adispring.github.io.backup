@@ -78,7 +78,7 @@ module.exports = function (data, options) {
 
 写了一个自动化脚本，git pull 下我的博客备份后，自动安装、修复上述问题。
 
-运行工程目录下的 `./hexo-init.sh`，里面内容如下：
+运行工程目录下的 `./hexo-init.sh`，内容如下：
 
 ```bash
 #!/bin/bash
