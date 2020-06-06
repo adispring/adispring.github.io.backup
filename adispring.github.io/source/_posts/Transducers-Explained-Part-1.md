@@ -9,25 +9,27 @@ tags:
 
 Transduce 相较于 Reduce 的改进，用一句话概括：在使用 Reduce 对每个元素归约之前，先对取出的每个元素进行转换。
 
-Transduce 的时间复杂度为 O(n), 传统 compose + reduce 的为O(mn)，m：compose 中包含 转变函数的个数，n：输入“类数组”的长度。
+Transduce 的时间复杂度为 O(n), 传统 compose + reduce 的为O(mn)，m：compose 中包含 转变函数的个数，n：输入“数组”的长度。
 
 名词解释：
 
 * reduce：归约、折叠。
+* reducer：用来进行 reduce 的二元函数。
+* result：reducer 的首个参数，累积值。
+* item：reducer 的第二个参数，reduce 数组遍历过程中的当前元素。
+
+
 * transduce：transform + reduce。
-* transducer：出入一个transformer，返回一个新的transformer。
-* transformer：封装 *reducing function*，返回控制 reduce 声明周期的对象 `init` `step` `result` 
-* xf：reduce 函数的首个参数，可以是 *reducing Function*，也可以是 transformer。
-* reducing function：用来进行 reduce 的二元函数。
-* stepper function：等同于 reducing function。
-* result：reducing function 的首个参数，累加器。
-* item：reducing function 的第二个参数。reduce 遍历对象的每个元素。
+* transducer：传入一个transformer，返回一个新的transformer。
+* transformer：封装 *reducer*，返回一个控制 reduce 归约进程的对象 `{ init, step, result }`
+* xf：reduce 函数的首个参数，可以是 *reducer*，也可以是 transformer。
+* stepper：等同于 reducer。
 
 下面开始正文。
 
 ---
 
-本文使用 JavaScript 对 transducers 原理进行剖析。首先介绍数组的 reducing(归约) 过程，以此讲解 reduce 中用于转换的 transformers；然后逐步引入 transducers，并将其用于 transduce 中。文末会有总结、展望、一些补充链接，以及当前涉及 transducer 的一些库。
+本文使用 JavaScript 对 transducers 原理进行剖析。首先介绍数组的 reducing(归约) 过程，并以此讲解在 reduce 中用于转换的 transformers；然后逐步引入 transducers，并将其用于 transduce 中。文末会有总结、展望、一些补充链接，以及当前涉及 transducer 的一些库。
 
 **Transducers...**
 
@@ -42,11 +44,11 @@ Transduce 的时间复杂度为 O(n), 传统 compose + reduce 的为O(mn)，m：
 
 ## 还是不太理解
 
-让我们看看相关的代码。当使用 transducers 时，"algorithmic transformations" 已经（至少部分）被定义了, 定义的函数类似于传入 reduce 的“函数参数”。[Clojure 文档](http://clojure.org/reference/transducers)将这些"algorithmic transformations" 称为 reducing functions。这又是什么东西？好吧…… ，让我们从数组的 reduce 函数开始讲解。可以先看下 [MDN 的定义](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)。 
+让我们看看相关的代码。当使用 transducers 时，"算法变换"函数已经（至少部分）被定义了, 类似于传入 reduce 的 “reducer”。[Clojure 文档](http://clojure.org/reference/transducers) 将这些 "算法变换" 称为 *reducers*。这又是什么东西？好吧…… ，让我们从 `Array#reduce` 函数开始讲解。可以先看下 [MDN 的定义](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)。 
 
 ## Reduce
 
-> reduce() 方法将一个二元函数作用于一个累加器和数组的每个元素（从左到右依次取出）， 最终输出为与累加器类型相同的单个值。
+> reduce() 方法将一个二元函数作用于一个累积值和数组的每个元素（按从左到右的顺序）， 最终输出为与累积值类型相同的单个值。
 
 更多解释可以参考 [MDN 文档](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)（译者注：reduce 在某些语言中称为 foldl 左折叠，如 Haskell）。大家对 reduce 可能已经比较熟悉，在此将快速举些例子说明一下。
 
@@ -62,39 +64,39 @@ const summed = [2,3,4].reduce(sum, 1);
 const multed = [2,3,4].reduce(mult, 1);
 ```
 
-上述代码中的 *reducing functions* 是 `sum` 和 `mult`。*reducing functions* 连同初始值：1，一起传入 `reduce` 中。“输入源”是数组 [2, 3, 4]，“输出源”是通过 reduce 内部实现创建的新数组。
+上述代码中的 *reducers* 是 `sum` 和 `mult`。*reducers* 连同初始值：1，一起传入 `reduce` 中。“输入源”是数组 [2, 3, 4]，“输出源”是通过 reduce 内部实现创建的新数组。
 
 关于 `reduce`， 需要记住的非常重要几点是：
 
 1. 归约（reduce）从输入的初始值开始。
-2. *reducing functions* 每次对一个元素进行操作，操作过程为：
-    * 初始值作为第一步的“结果参数”
-    * 单步操作函数(*reducing functions* )的返回值作为下次迭代的“结果参数”
+2. *reducer* 每次对一个元素进行操作，操作过程为：
+    * 初始值作为第一步的累积值
+    * 单步操作函数(*reducers* )的返回值作为下次迭代的累积值
 3. 将最后一次计算结果作为返回值。
 
-注意，在上述两例中，*reducing function* 是一个二元函数。*reducing function* 第一个参数是由 reduce 函数外部提供的, 其值为传入的初始值或者上次调用 *reducing function* 的计算结果。第二个参数是由某个迭代过程传入的单个元素。本例中， reduce 对数组中的每个元素进行迭代。我们稍后会看到其他的迭代方式。我们使用 *reduce function* 来描述 “转换（归约）的本质”。
+注意，在上述两例中，*reducer* 是一个二元函数。*reducer* 第一个参数是由 reduce 函数外部提供的, 其值为传入的初始值或者上次调用 *reducer* 的计算结果。第二个参数是由迭代过程中传入的单个元素。本例中， reduce 对数组中的每个元素进行迭代。我们稍后会看到其他的迭代方式。我们使用 *reducer* 函数来描述 “转换的本质”。
 
 ## Transformer
 
 我们来正式实现 *transformer* 的归约过程：
 
 ```js
-const transformer = reducingFunction => ({
+const transformer = reducer => ({
   // 1. 作为 reduce 开始的初始值
   init: () => 1,
 
   // 2. 每次输入一个元素，并将本次计算结果
-  //    传给下次迭代的 reducing function
-  step: reducingFunction,
+  //    传给下次迭代的 reducer
+  step: reducer,
 
-  // 3. 将最后一次的计算结果作为输出
+  // 3. 将最后一次的计算结果作为最终输出
   result: result => result,
 });
 ```
 
-我们创建一个对象来封装 reduce 的内部实现。其中包括一个名为 `step` 的 reducing function，一个用来初始化 transformer 的 `init`函数和一个用来将最后一次计算结果转换为需要的输出的 `result`函数。注意，在本文中，我们将只关注 `step` 函数，`init` 和 `result` 函数将在后续文章中做深入分析。现在，你可以把它们当作管理 transformation 声明周期的方法：`init` 用于初始化，`step` 用于迭代，`result` 用于输出整个归约结果。
+我们创建一个对象来封装 reducer，并将其命名为名为 `step`；另外还提供了 `init` 函数用来初始化 transformer，`result` 函数来将最后一次计算结果转换为需要的最终输出。注意，在本文中，我们将只关注 `step` 函数，`init` 和 `result` 函数将在后续文章中做深入分析。现在，你可以把它们当作管理 transformation 生命周期的方法：`init` 用于初始化，`step` 用于迭代，`result` 用于输出整个归约结果。
 
-现在让我们将刚定义的 transformer 运用到 reduce 中。
+现在，我们来将刚定义的 transformer 运用到 reduce 中。
 
 ```js
 const input = [2,3,4];
@@ -108,7 +110,7 @@ const output = input.reduce(xf.step, xf.init());
 // output = 24 (=1*2*3*4)
 ```
 
-我们的目标是将 transformation 与输入和输出解耦，所以将 reduce 定义为函数。
+我们的最终目标是将 transformation 与输入和输出解耦，所以现在我们将 `reduce` 定义为函数的形式。
 
 ```js
 const reduce = (xf, init, input) => {
@@ -117,7 +119,7 @@ const reduce = (xf, init, input) => {
 };
 ```
 
-在使用 reduce 时，我们传入一个 transducer、初始值和输入源。上述实现将 *step function* 与数组的 reduce 方法结合使用，并将 *step function* 的结果作为输出。本次 reduce 的内部实现仍然假设输入类型为数组。 我们稍后将去掉这个假设。
+为了使用 reduce ，我们向其传入一个 transformer、初始值和输入源。上述实现结合了 transformer 的 `step` 函数和数组的 reduce 函数，并将 `step` 函数的结果作为输出。本次 reduce 的内部实现仍然假设输入类型为数组。 我们稍后将去掉这个假设。
 
 我们还接受一个 `init` 值作为 reduce 的参数，我们本可以使用 transformer 的 `init`，但是考虑到 reduce 函数的灵活性，需要能够自定义初始值。在实践中，transformer 的 `init` 函数仅在 reduce 未提供初始值的情况下使用。
 
@@ -168,8 +170,8 @@ const wrap = xf => ({
   },
 
   // 2. 每次输入一个元素，并将本次计算结果
-  //    传给下次迭代的 reducing function
-  step: reducingFunction,
+  //    传给下次迭代的 reducer
+  step: xf,
 
   // 3. 将最后一次的计算结果作为输出
   result: result => result,
@@ -178,7 +180,7 @@ const wrap = xf => ({
 
 首先我们检查参数 `xf` 的类型是否为 function。若是，我们假定它是一个 step function, 并调用 wrap 函数将其转换为 transformer。然后像之前一样调用 reduce 。
 
-现在已经可以直接向 reduce 传递 reducing function了。
+现在已经可以直接向 reduce 传递 reducer 了。
 
 ```js
 const input = [2,3,4];
@@ -206,11 +208,11 @@ const output = reduce(xf, 1, input);
 // output = 24 (=1*2*3*4)
 ```
 
-请注意，我们现在可以在外部借助 wrap 直接封装已有的 *reducing functions* 来创建 transformer。这是使用 transducers 时经常用到的方法：将 transformations 定义为简单的函数，然后使用 transducers 库将其转换为transformer。
+请注意，我们现在可以在外部借助 wrap 直接封装已有的 *reducers* 来创建 transformer。这是使用 transducers 时经常用到的方法：将 transformations 定义为简单的函数，然后使用 transducers 库将其转换为transformer。
 
 ## 不一样的数组拷贝
 
-目前，我们一直使用数字作为初始值和算术 *reducing functions* 的处理元素。其实不一定非要这样，`reduce` 也可以将数组作为处理元素。
+目前，我们一直使用数字作为初始值和算术 *reducers* 的处理元素。其实不一定非要这样，`reduce` 也可以将数组作为处理元素。
 
 ```js
 const append = (result, item) => result.push(item);
@@ -220,7 +222,7 @@ const output = reduce(append, [], input);
 // output = [2, 3, 4]
 ```
 
-我们定义一个步进函数（stepper function）`append`，用于将每个元素拷贝到新数组中，并返回该数组。借助 `append`， reduce 便可以创建一份数组的拷贝。
+我们定义一个步进函数（stepper）`append`，用于将每个元素拷贝到新数组中，并返回该数组。借助 `append`， reduce 便可以创建一份数组的拷贝。
 
 上述操作是否够酷？或许算不上...。当你在将元素添加到输出数组之前先对它变换一下时，情况才变得有趣起来。
 
@@ -281,7 +283,7 @@ const output = reduce(sum, 0, output);
 
 事实上是有的。回顾上面的 `xfplus1` ，如果我们将 `append` 调用换为 `sum` 调用，并且以 0 作为初始值，就可以定义一个不会产生中间数组，但直接对元素求和的 transformer。
 
-但是，有时我们想立即查看替换 *reducing function* 后的结果，因为中间涉及的唯一变化就是将 `append` 替换为 `sum`。因此我们希望有一个能够创建 transformation 的函数，该函数不依赖于用于组合中间结果的 transformer。
+但是，有时我们想立即查看替换 *reducer* 后的结果，因为中间涉及的唯一变化就是将 `append` 替换为 `sum`。因此我们希望有一个能够创建 transformation 的函数，该函数不依赖于用于组合中间结果的 transformer。
 
 ```js
 const transducerPlus1 = (xf) => ({
@@ -414,7 +416,7 @@ const xf = transducer(stepper);
 const init = [];
 ```
 
-然后使用 *reducing function* `xf.step` 来遍历每个输入元素。将初始值作为 step 函数的第一个 `result` 参数（另一个是输入源中的元素），上一个 step 函数的返回值供所有后续元素迭代使用。
+然后使用 *reducer* `xf.step` 来遍历每个输入元素。将初始值作为 step 函数的第一个 `result` 参数（另一个是输入源中的元素），上一个 step 函数的返回值供所有后续元素迭代使用。
 
 ```js
 let result = xf.step(init, 2);
@@ -596,7 +598,7 @@ Transducers 将 “可组合的算法转换” 抽象出来，使其独立于输
 
 相较于 [Underscore.js](http://underscorejs.org/) 或 [Lo-Dash](https://lodash.com/)对数组和计算中间结果的对象进行操作，transducers 定义的 transformation 在函数方面类似于传递给 reduce 的 stepping function：将初始值作为首次迭代的“结果参数”，执行输入为一个“结果参数”和元素的函数，返回可能变换过的结果，并将其作为下次迭代的“结果参数”。一旦将 transformation 从数据中抽象出来，就可以将相同的 transformations 应用于以某初始值开始并遍历某个“累积结果”的不同处理过程。
 
-我们已经展示了相同的 transducers 可以操作不同的“输出源”，只需改变创建 transducer 时用到的初始值和 stepper function。这种抽象的好处之一是：可以遍历一次得到结果，且没有中间数组产生。
+我们已经展示了相同的 transducers 可以操作不同的“输出源”，只需改变创建 transducer 时用到的初始值和 stepper。这种抽象的好处之一是：可以遍历一次得到结果，且没有中间数组产生。
 
 尽管没有明确说明，我们还是展示了 transducers 将 transducer 与 迭代过程及输入源解耦。在迭代过程中，我们使用相同的 transducer 对元素进行转换，并将转换结果传给 step function，我们使用数组的 reduce 从数组中获取数据。
 
